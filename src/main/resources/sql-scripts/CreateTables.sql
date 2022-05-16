@@ -73,7 +73,7 @@ CREATE TABLE category (                                                         
 
 CREATE TABLE product_category (
     prod_id BIGINT REFERENCES product (prod_id) ON DELETE CASCADE,
-    category_id BIGINT REFERENCES category (category_id) ON DELETE RESTRICT,d
+    category_id BIGINT REFERENCES category (category_id) ON DELETE RESTRICT,
     PRIMARY KEY (prod_id, category_id)
 );
 
