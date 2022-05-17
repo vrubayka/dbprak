@@ -5,50 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="changed DB table creation and added data files">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/JPAMappingSettings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/POJOGeneratorSettings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/AddressEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/ArtistEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/AuthorEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/AuthorEntityPK.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/BookEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CategoryEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CdEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CdTitleEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CdTitleEntityPK.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CustomerEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/DvdEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/DvdPersonEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/DvdPersonEntityPK.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/InventoryEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/OrderEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/PersonEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntityPK.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/ReviewEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/ReviewEntityPK.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/StoreEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/TitleEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/parser/Reader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/parser/ShopReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data-files/categories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data-files/dresden.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data-files/leipzig_transformed.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/data-files/reviews.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateDB.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +24,17 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/pom.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/Main.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/entities/BookEntity.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/parser/ShopReader.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/parser/XmlParser.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/resources/data-files/leipzig_transformed.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateDB.sql" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -126,8 +96,16 @@
       <workItem from="1652367875708" duration="10499000" />
       <workItem from="1652431716338" duration="9934000" />
       <workItem from="1652524441953" duration="2880000" />
-      <workItem from="1652688493696" duration="5106000" />
+      <workItem from="1652688493696" duration="8624000" />
     </task>
+    <task id="LOCAL-00001" summary="changed DB table creation and added data files">
+      <created>1652693983223</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1652693983223</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
