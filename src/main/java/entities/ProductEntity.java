@@ -24,7 +24,7 @@ public class ProductEntity {
     private int salesRank;
     @Basic
     @Column(name = "image", nullable = true)
-    private byte[] image;
+    private String image;
     @OneToOne(mappedBy = "productByBookId",
               cascade = CascadeType.ALL)
     private BookEntity bookByProdId;
@@ -86,11 +86,11 @@ public class ProductEntity {
         this.salesRank = salesRank;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -100,13 +100,12 @@ public class ProductEntity {
         if (o == null || getClass() != o.getClass()) return false;
         ProductEntity that = (ProductEntity) o;
         return prodId == that.prodId && Double.compare(that.rating, rating) == 0 && salesRank == that.salesRank &&
-               Objects.equals(prodName, that.prodName) && Arrays.equals(image, that.image);
+               Objects.equals(prodName, that.prodName) && image.equals(that.image);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(prodId, prodName, rating, salesRank);
-        result = 31 * result + Arrays.hashCode(image);
+        int result = Objects.hash(prodId, prodName, rating, salesRank, image);
         return result;
     }
 
