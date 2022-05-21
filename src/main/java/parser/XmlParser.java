@@ -1,23 +1,18 @@
 package parser;
 
 import entities.AddressEntity;
+import org.hibernate.SessionFactory;
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
-
-import javax.xml.XMLConstants;
+;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
+
 import java.io.File;
-import java.io.IOException;
 
 public class XmlParser implements Reader{
 
     @Override
-    public void readFile(String filePath) {
+    public void readFile(String filePath, SessionFactory sessionFactory) {
         File inputFile = new File(filePath);
         Document doc = getNormalizedDocument(inputFile);
 
@@ -25,7 +20,7 @@ public class XmlParser implements Reader{
         switch (rootElement) {
             case "shop":
                 System.out.println("Reading shop...");
-                StoreReader storeReader = new StoreReader(doc);
+                StoreReader storeReader = new StoreReader(doc, sessionFactory);
                 storeReader.readStoreXml();
 
                 System.out.println("Finished reading.");

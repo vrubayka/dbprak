@@ -2,6 +2,7 @@ package daos;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -38,13 +39,19 @@ public class GenericDao <T> implements IGenericDao <T>{
     @Override
     public void create(T entity) {
         Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
         session.persist(entity);
+        tx.commit();
     }
 
     @Override
-    public void update(T entity) {
+    public T update(T entity) {
         Session session = sessionFactory.getCurrentSession();
-        session.merge(entity);
+        Transaction tx = session.beginTransaction();
+        T updatedEntity = session.merge(entity);
+        tx.commit();
+
+        return updatedEntity;
     }
 
     @Override
