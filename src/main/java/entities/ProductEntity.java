@@ -9,10 +9,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "product", schema = "public", catalog = "dbprak")
 public class ProductEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "prod_id", nullable = false)
-    private long prodId;
+    private String prodId;
     @Basic
     @Column(name = "prod_name", nullable = false, length = 255)
     private String prodName;
@@ -24,7 +23,7 @@ public class ProductEntity {
     private int salesRank;
     @Basic
     @Column(name = "image", nullable = true)
-    private byte[] image;
+    private String image;
     @OneToOne(mappedBy = "productByBookId",
               cascade = CascadeType.ALL)
     private BookEntity bookByProdId;
@@ -54,11 +53,11 @@ public class ProductEntity {
         this.image     = image;
     }
 
-    public long getProdId() {
+    public String getProdId() {
         return prodId;
     }
 
-    public void setProdId(long prodId) {
+    public void setProdId(String prodId) {
         this.prodId = prodId;
     }
 
@@ -86,11 +85,11 @@ public class ProductEntity {
         this.salesRank = salesRank;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -100,13 +99,12 @@ public class ProductEntity {
         if (o == null || getClass() != o.getClass()) return false;
         ProductEntity that = (ProductEntity) o;
         return prodId == that.prodId && Double.compare(that.rating, rating) == 0 && salesRank == that.salesRank &&
-               Objects.equals(prodName, that.prodName) && Arrays.equals(image, that.image);
+               Objects.equals(prodName, that.prodName) && image.equals(that.image);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(prodId, prodName, rating, salesRank);
-        result = 31 * result + Arrays.hashCode(image);
+        int result = Objects.hash(prodId, prodName, rating, salesRank, image);
         return result;
     }
 

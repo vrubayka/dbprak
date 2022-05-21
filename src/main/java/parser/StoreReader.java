@@ -2,6 +2,7 @@ package parser;
 
 import daos.GenericDao;
 import entities.AddressEntity;
+import entities.ProductEntity;
 import entities.StoreEntity;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.*;
@@ -60,5 +61,6 @@ public class StoreReader {
     }
 
     private void readItem(Node currentNode) {
+        
     }
 }
