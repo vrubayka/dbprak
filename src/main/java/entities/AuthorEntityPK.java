@@ -11,18 +11,17 @@ import java.util.Objects;
 public class AuthorEntityPK implements Serializable {
     @Column(name = "book_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long bookId;
+    private String bookId;
     @Column(name = "person_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long personId;
 
-    public long getBookId() {
+    public String getBookId() {
         return bookId;
     }
 
-    public void setBookId(long bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 

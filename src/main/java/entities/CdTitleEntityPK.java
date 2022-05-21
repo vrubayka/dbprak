@@ -11,18 +11,17 @@ import java.util.Objects;
 public class CdTitleEntityPK implements Serializable {
     @Column(name = "cd_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cdId;
+    private String cdId;
     @Column(name = "title_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long titleId;
 
-    public long getCdId() {
+    public String getCdId() {
         return cdId;
     }
 
-    public void setCdId(long cdId) {
+    public void setCdId(String cdId) {
         this.cdId = cdId;
     }
 
@@ -39,7 +38,7 @@ public class CdTitleEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CdTitleEntityPK that = (CdTitleEntityPK) o;
-        return cdId == that.cdId && titleId == that.titleId;
+        return cdId.equals(that.cdId) && titleId == that.titleId;
     }
 
     @Override

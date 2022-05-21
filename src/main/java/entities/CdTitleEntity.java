@@ -8,10 +8,9 @@ import java.util.Objects;
 @Table(name = "cd_title", schema = "public", catalog = "dbprak")
 @IdClass(CdTitleEntityPK.class)
 public class CdTitleEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "cd_id", nullable = false)
-    private long cdId;
+    private String cdId;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "title_id", nullable = false)
@@ -23,11 +22,11 @@ public class CdTitleEntity {
     @JoinColumn(name = "title_id", referencedColumnName = "title_id", nullable = false, insertable = false, updatable = false)
     private TitleEntity titleByTitleId;
 
-    public long getCdId() {
+    public String getCdId() {
         return cdId;
     }
 
-    public void setCdId(long cdId) {
+    public void setCdId(String cdId) {
         this.cdId = cdId;
     }
 
@@ -44,7 +43,7 @@ public class CdTitleEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CdTitleEntity that = (CdTitleEntity) o;
-        return cdId == that.cdId && titleId == that.titleId;
+        return cdId.equals(that.cdId) && titleId == that.titleId;
     }
 
     @Override

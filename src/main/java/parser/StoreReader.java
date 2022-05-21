@@ -61,6 +61,6 @@ public class StoreReader {
     }
 
     private void readItem(Node currentNode) {
-        
+
     }
 }

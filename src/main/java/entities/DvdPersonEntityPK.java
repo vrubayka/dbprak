@@ -11,8 +11,7 @@ import java.util.Objects;
 public class DvdPersonEntityPK implements Serializable {
     @Column(name = "dvd_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long dvdId;
+    private String dvdId;
     @Column(name = "person_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +21,11 @@ public class DvdPersonEntityPK implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String pRole;
 
-    public long getDvdId() {
+    public String getDvdId() {
         return dvdId;
     }
 
-    public void setDvdId(long dvdId) {
+    public void setDvdId(String dvdId) {
         this.dvdId = dvdId;
     }
 

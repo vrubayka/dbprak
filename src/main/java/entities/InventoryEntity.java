@@ -12,10 +12,9 @@ public class InventoryEntity {
     @Id
     @Column(name = "store_id")
     private Long storeId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "prod_id")
-    private Long prodId;
+    @Column(name = "prod_id", nullable = false)
+    private String prodId;
     @Basic
     @Column(name = "prize", nullable = false)
     private BigDecimal prize;
@@ -37,11 +36,11 @@ public class InventoryEntity {
         this.storeId = storeId;
     }
 
-    public Long getProdId() {
+    public String getProdId() {
         return prodId;
     }
 
-    public void setProdId(Long prodId) {
+    public void setProdId(String prodId) {
         this.prodId = prodId;
     }
 

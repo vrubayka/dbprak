@@ -8,10 +8,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "dvd", schema = "public", catalog = "dbprak")
 public class DvdEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "dvd_id", nullable = false)
-    private long dvdId;
+    private String dvdId;
     @Basic
     @Column(name = "movie_id", nullable = false)
     private int movieId;
@@ -31,11 +30,11 @@ public class DvdEntity {
                cascade = CascadeType.ALL)
     private Collection<DvdPersonEntity> dvdPeopleByDvdId;
 
-    public long getDvdId() {
+    public String getDvdId() {
         return dvdId;
     }
 
-    public void setDvdId(long dvdId) {
+    public void setDvdId(String dvdId) {
         this.dvdId = dvdId;
     }
 
@@ -76,7 +75,7 @@ public class DvdEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DvdEntity dvdEntity = (DvdEntity) o;
-        return dvdId == dvdEntity.dvdId && movieId == dvdEntity.movieId && termInSec == dvdEntity.termInSec &&
+        return dvdId.equals(dvdEntity.dvdId) && movieId == dvdEntity.movieId && termInSec == dvdEntity.termInSec &&
                regionCode == dvdEntity.regionCode && Objects.equals(format, dvdEntity.format);
     }
 

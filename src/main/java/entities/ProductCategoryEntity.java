@@ -8,10 +8,9 @@ import java.util.Objects;
 @Table(name = "product_category", schema = "public", catalog = "dbprak")
 @IdClass(ProductCategoryEntityPK.class)
 public class ProductCategoryEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "prod_id", nullable = false)
-    private long prodId;
+    private String prodId;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "category_id", nullable = false)
@@ -23,11 +22,11 @@ public class ProductCategoryEntity {
     @JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = false, insertable = false, updatable = false)
     private CategoryEntity categoryByCategoryId;
 
-    public long getProdId() {
+    public String getProdId() {
         return prodId;
     }
 
-    public void setProdId(long prodId) {
+    public void setProdId(String prodId) {
         this.prodId = prodId;
     }
 

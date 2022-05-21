@@ -11,18 +11,17 @@ import java.util.Objects;
 public class ProductCategoryEntityPK implements Serializable {
     @Column(name = "prod_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long prodId;
+    private String prodId;
     @Column(name = "category_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long categoryId;
 
-    public long getProdId() {
+    public String getProdId() {
         return prodId;
     }
 
-    public void setProdId(long prodId) {
+    public void setProdId(String prodId) {
         this.prodId = prodId;
     }
 
