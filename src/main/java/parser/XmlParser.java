@@ -25,18 +25,11 @@ public class XmlParser implements Reader{
         switch (rootElement) {
             case "shop":
                 System.out.println("Reading shop...");
-                ShopReader shopReader = new ShopReader(doc);
+                StoreReader storeReader = new StoreReader(doc);
+                storeReader.readStoreXml();
 
                 System.out.println("Finished reading.");
         }
-    }
-
-    private void readShopXml(Document doc) {
-        Element root = doc.getDocumentElement();
-        NamedNodeMap attributeMap = root.getAttributes();
-        AddressEntity shopAddress = new AddressEntity();
-        shopAddress.setCity(attributeMap.getNamedItem("name").getNodeValue());
-        shopAddress.setPostcode(attributeMap.getNamedItem(""));
     }
 
     private Document getNormalizedDocument(File inputFile) {

@@ -36,8 +36,6 @@ public class Main {
 
         try {
             session.beginTransaction();
-//            MutationQuery query = session.createMutationQuery("DELETE FROM Person WHERE lastName = 'Spirelle2'");
-//            query.executeUpdate();
             session.persist(product);
             session.getTransaction().commit();
         } catch (Exception e) {
