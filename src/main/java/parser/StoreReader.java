@@ -8,8 +8,8 @@ import org.w3c.dom.*;
 
 public class StoreReader {
 
-    private Document doc;
-    private SessionFactory sessionFactory;
+    private final Document doc;
+    private final SessionFactory sessionFactory;
 
     public StoreReader(Document doc, SessionFactory sessionFactory) {
         this.doc = doc;
@@ -23,6 +23,7 @@ public class StoreReader {
         AddressEntity storeAddress = readStoreAddress(storeAttributeMap);
         saveStore(storeAddress);
 
+        readItems(root);
     }
 
     private AddressEntity readStoreAddress(NamedNodeMap attributeMap) {
@@ -38,11 +39,26 @@ public class StoreReader {
         GenericDao<AddressEntity> addressEntityDao = new GenericDao<>(AddressEntity.class, sessionFactory);
         addressEntityDao.create(storeAddress);
 
-        Long addressId = storeAddress.getAddressId();
+        long addressId = storeAddress.getAddressId();
         StoreEntity storeEntity = new StoreEntity();
         storeEntity.setAddressId(addressId);
         storeEntity.setStoreName(storeAddress.getCity());
         GenericDao<StoreEntity> storeEntityDao= new GenericDao<>(StoreEntity.class, sessionFactory);
         storeEntityDao.create(storeEntity);
+    }
+
+    private void readItems(Element root) {
+
+        for(Node currentNode = root.getFirstChild(); currentNode != null; currentNode = currentNode.getNextSibling()) {
+            if(currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                if(currentNode.getNodeName().equals("item"))
+                    readItem(currentNode);
+                else
+                    System.err.println("Other elements than \"item\" in root scope.");
+            }
+        }
+    }
+
+    private void readItem(Node currentNode) {
     }
 }
