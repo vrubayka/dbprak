@@ -38,7 +38,7 @@ public class ReviewEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReviewEntityPK that = (ReviewEntityPK) o;
-        return prodId == that.prodId && Objects.equals(username, that.username);
+        return prodId.equals(that.prodId) && Objects.equals(username, that.username);
     }
 
     @Override

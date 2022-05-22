@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added GenericDao interface and Implementation">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="edited entities to map DB">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/daos/GenericDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/daos/GenericDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/daos/IGenericDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/daos/IGenericDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/Reader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/Reader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/AuthorEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/AuthorEntityPK.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/DvdPersonEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/DvdPersonEntityPK.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntityPK.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ReviewEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ReviewEntityPK.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +124,9 @@
       <workItem from="1652960007523" duration="2001000" />
       <workItem from="1653038391783" duration="5230000" />
       <workItem from="1653119979241" duration="16845000" />
-      <workItem from="1653142460241" duration="3910000" />
+      <workItem from="1653142460241" duration="8549000" />
+      <workItem from="1653151031133" duration="3281000" />
+      <workItem from="1653203198201" duration="837000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -150,7 +149,35 @@
       <option name="project" value="LOCAL" />
       <updated>1653128198891</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added Parser for shop part in XML">
+      <created>1653146657052</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1653146657052</updated>
+    </task>
+    <task id="LOCAL-00005" summary="added loop over item Elements in root Element">
+      <created>1653150530384</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1653150530384</updated>
+    </task>
+    <task id="LOCAL-00006" summary="edited SQL creation scripts to better map data">
+      <created>1653152305238</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1653152305238</updated>
+    </task>
+    <task id="LOCAL-00007" summary="edited entities to map DB">
+      <created>1653154268623</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1653154268623</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -173,6 +200,10 @@
     <MESSAGE value="changed DB table creation and added data files" />
     <MESSAGE value="changes in hibernate config and fixed typo in sql script" />
     <MESSAGE value="added GenericDao interface and Implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="added GenericDao interface and Implementation" />
+    <MESSAGE value="added Parser for shop part in XML" />
+    <MESSAGE value="added loop over item Elements in root Element" />
+    <MESSAGE value="edited SQL creation scripts to better map data" />
+    <MESSAGE value="edited entities to map DB" />
+    <option name="LAST_COMMIT_MESSAGE" value="edited entities to map DB" />
   </component>
 </project>

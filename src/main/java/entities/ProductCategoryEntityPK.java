@@ -38,7 +38,7 @@ public class ProductCategoryEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductCategoryEntityPK that = (ProductCategoryEntityPK) o;
-        return prodId == that.prodId && categoryId == that.categoryId;
+        return prodId.equals(that.prodId) && categoryId == that.categoryId;
     }
 
     @Override

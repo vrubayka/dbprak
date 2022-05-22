@@ -38,7 +38,7 @@ public class AuthorEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthorEntityPK that = (AuthorEntityPK) o;
-        return bookId == that.bookId && personId == that.personId;
+        return bookId.equals(that.bookId) && personId == that.personId;
     }
 
     @Override

@@ -50,7 +50,7 @@ public class DvdPersonEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DvdPersonEntityPK that = (DvdPersonEntityPK) o;
-        return dvdId == that.dvdId && personId == that.personId && Objects.equals(pRole, that.pRole);
+        return dvdId.equals(that.dvdId) && personId == that.personId && Objects.equals(pRole, that.pRole);
     }
 
     @Override
