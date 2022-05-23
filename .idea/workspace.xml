@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="fixed PK entities equals() method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/InventoryEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/InventoryEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,16 +212,5 @@
     <MESSAGE value="edited entities to map DB" />
     <MESSAGE value="fixed PK entities equals() method" />
     <option name="LAST_COMMIT_MESSAGE" value="fixed PK entities equals() method" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/parser/StoreReader.java</url>
-          <line>114</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
