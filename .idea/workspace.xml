@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="fixed PK entities equals() method">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="Error search">
+      <change afterPath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/Reader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/Reader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data-files/categories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data-files/categories.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +187,21 @@
       <option name="project" value="LOCAL" />
       <updated>1653204294016</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fixed ID datatype">
+      <created>1653299888117</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1653299888117</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Hibernate settings">
+      <created>1653299937436</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1653299937436</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,6 +229,9 @@
     <MESSAGE value="edited SQL creation scripts to better map data" />
     <MESSAGE value="edited entities to map DB" />
     <MESSAGE value="fixed PK entities equals() method" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed PK entities equals() method" />
+    <MESSAGE value="fixed ID datatype" />
+    <MESSAGE value="Hibernate settings" />
+    <MESSAGE value="Error search" />
+    <option name="LAST_COMMIT_MESSAGE" value="Error search" />
   </component>
 </project>

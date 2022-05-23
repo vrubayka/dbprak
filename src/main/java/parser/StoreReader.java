@@ -95,7 +95,7 @@ public class StoreReader {
         inventoryEntry.setProdId(product.getProdId());
         inventoryEntry.setStoreId(storeId);
         inventoryEntry.setCondition(priceAttributes.getNamedItem("state").getNodeValue());
-        System.out.println(product.getProdId());
+        //System.out.println(product.getProdId());
 
         // ToDo: exceptions other currencies
         if (priceAttributes.getNamedItem("currency").getNodeValue().equals("EUR")) {
@@ -115,7 +115,12 @@ public class StoreReader {
                         book.setIsbn(childNode.getAttributes().getNamedItem("val").getNodeValue());
                         break;
                     case "pages" :
-                        book.setPages(Integer.parseInt(childNode.getFirstChild().getNodeValue()));
+                        Node pageValue = childNode.getFirstChild();
+                        if (pageValue == null){
+                            book.setPages(0);
+                        }
+                        else
+                        book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;
                     case "publication" :
                         book.setReleaseDate(Date.valueOf(childNode.getAttributes().getNamedItem("date").getNodeValue()));

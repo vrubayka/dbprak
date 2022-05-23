@@ -32,7 +32,7 @@ public class Main {
         }
 
         XmlParser parser = new XmlParser();
-        parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
     }
 
     public static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException, IOException, URISyntaxException {
