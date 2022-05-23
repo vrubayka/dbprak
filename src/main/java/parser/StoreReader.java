@@ -73,6 +73,7 @@ public class StoreReader {
 
         InventoryEntity inventoryEntry = new InventoryEntity();
         BookEntity book = new BookEntity();
+        DvdEntity dvd = new DvdEntity();
 
 
         for (Node node = itemNode.getFirstChild(); node != null; node = node.getNextSibling()) {
@@ -84,6 +85,8 @@ public class StoreReader {
                     product.setProdName(node.getFirstChild().getNodeValue());
                 } else if ("bookspec".equals(scope) && "Book".equals(group)) {
                     readBook(node, product, book);
+                } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
+                    readDvd(node, product, dvd);
                 }
             }
         }
@@ -115,10 +118,35 @@ public class StoreReader {
                         book.setIsbn(childNode.getAttributes().getNamedItem("val").getNodeValue());
                         break;
                     case "pages" :
-                        book.setPages(Integer.parseInt(childNode.getFirstChild().getNodeValue()));
+                        // ToDo: exception if no value
+                        Node pageValue = childNode.getFirstChild();
+                        if(pageValue == null)
+                            book.setPages(0);
+                        else
+                            book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;
                     case "publication" :
                         book.setReleaseDate(Date.valueOf(childNode.getAttributes().getNamedItem("date").getNodeValue()));
+                        break;
+                }
+            }
+        }
+    }
+
+    private void readDvd(Node node, ProductEntity product, DvdEntity dvd) {
+        dvd.setDvdId(product.getProdId());
+
+        for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                String scope = childNode.getNodeName();
+                switch(scope) {
+                    case "format" :
+                        dvd.setFormat(childNode.getNodeValue());
+                        break;
+                    case "regioncode" :
+                        dvd.setRegionCode(Integer.parseInt(childNode.getNodeValue()));
+                        break;
+                    case "publication" :
                         break;
                 }
             }
