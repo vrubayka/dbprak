@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="edit console message">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="fixed PK entities equals() method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +102,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -124,8 +125,7 @@
       <workItem from="1653142460241" duration="8549000" />
       <workItem from="1653151031133" duration="3281000" />
       <workItem from="1653203198201" duration="8806000" />
-      <workItem from="1653290848868" duration="10933000" />
-      <workItem from="1653377304308" duration="1107000" />
+      <workItem from="1653290848868" duration="6156000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -183,28 +183,7 @@
       <option name="project" value="LOCAL" />
       <updated>1653204294016</updated>
     </task>
-    <task id="LOCAL-00009" summary="added readBook()">
-      <created>1653297521659</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1653297521659</updated>
-    </task>
-    <task id="LOCAL-00010" summary="finished readDVD() and readCD()">
-      <created>1653318115912</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1653318115912</updated>
-    </task>
-    <task id="LOCAL-00011" summary="edit console message">
-      <created>1653378305916</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1653378305917</updated>
-    </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -232,9 +211,6 @@
     <MESSAGE value="edited SQL creation scripts to better map data" />
     <MESSAGE value="edited entities to map DB" />
     <MESSAGE value="fixed PK entities equals() method" />
-    <MESSAGE value="added readBook()" />
-    <MESSAGE value="finished readDVD() and readCD()" />
-    <MESSAGE value="edit console message" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit console message" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed PK entities equals() method" />
   </component>
 </project>
