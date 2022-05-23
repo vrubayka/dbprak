@@ -19,10 +19,10 @@ public class ProductEntity {
     @Column(name = "rating", nullable = false, precision = 0)
     private double rating;
     @Basic
-    @Column(name = "sales_rank", nullable = false)
+    @Column(name = "sales_rank")
     private int salesRank;
     @Basic
-    @Column(name = "image", nullable = true)
+    @Column(name = "image")
     private String image;
     @OneToOne(mappedBy = "productByBookId",
               cascade = CascadeType.ALL)

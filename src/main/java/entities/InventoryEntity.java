@@ -16,7 +16,7 @@ public class InventoryEntity {
     @Column(name = "prod_id", nullable = false)
     private String prodId;
     @Basic
-    @Column(name = "prize", nullable = false)
+    @Column(name = "prize")
     private BigDecimal prize;
     @Basic
     @Column(name = "condition", length = 50)

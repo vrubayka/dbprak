@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="edited entities to map DB">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="fixed PK entities equals() method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/AuthorEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/AuthorEntityPK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/DvdPersonEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/DvdPersonEntityPK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntityPK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ReviewEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ReviewEntityPK.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/InventoryEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/InventoryEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +126,8 @@
       <workItem from="1653119979241" duration="16845000" />
       <workItem from="1653142460241" duration="8549000" />
       <workItem from="1653151031133" duration="3281000" />
-      <workItem from="1653203198201" duration="837000" />
+      <workItem from="1653203198201" duration="8806000" />
+      <workItem from="1653290848868" duration="6156000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -177,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653154268623</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fixed PK entities equals() method">
+      <created>1653204294016</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1653204294016</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -204,6 +212,18 @@
     <MESSAGE value="added loop over item Elements in root Element" />
     <MESSAGE value="edited SQL creation scripts to better map data" />
     <MESSAGE value="edited entities to map DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="edited entities to map DB" />
+    <MESSAGE value="fixed PK entities equals() method" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed PK entities equals() method" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/parser/StoreReader.java</url>
+          <line>114</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

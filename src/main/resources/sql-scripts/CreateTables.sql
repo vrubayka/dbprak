@@ -2,7 +2,7 @@ CREATE TABLE product (
     prod_id VARCHAR(255) PRIMARY KEY,
     prod_name VARCHAR(255) NOT NULL,
     rating FLOAT NOT NULL,
-    sales_rank INT NOT NULL,
+    sales_rank INT,
     image VARCHAR(255)
 );
 
@@ -95,7 +95,7 @@ CREATE TABLE store (                                                            
 CREATE TABLE inventory (
     store_id BIGINT REFERENCES store (store_id) ON DELETE CASCADE,
     prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
-    prize NUMERIC(32,2) NOT NULL,
+    prize NUMERIC(32,2),
     condition VARCHAR(50),
     PRIMARY KEY (store_id, prod_id)
 );
