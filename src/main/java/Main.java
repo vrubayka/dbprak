@@ -46,7 +46,9 @@ public class Main {
         }
 
         XmlParser parser = new XmlParser();
-        parser.readFile("src/main/resources/data-files/leipzig_transformed.xml");
+        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
+        //parser.readFile("src/main/resources/data-files/categories.xml");
+
     }
 
     public static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException, IOException, URISyntaxException {

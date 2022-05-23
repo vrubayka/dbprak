@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="changes in hibernate config and fixed typo in sql script">
-      <change afterPath="$PROJECT_DIR$/src/main/java/daos/GenericDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/daos/IGenericDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="Fixed image">
+      <change afterPath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/ShopReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/Reader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/Reader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data-files/categories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data-files/categories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data-files/dresden.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data-files/dresden.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +40,6 @@
     <setting file="file://$PROJECT_DIR$/pom.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/Main.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/entities/BookEntity.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/java/parser/StoreReader.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/parser/XmlParser.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/resources/data-files/leipzig_transformed.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" root0="FORCE_HIGHLIGHTING" />
@@ -126,6 +127,9 @@
       <workItem from="1652960007523" duration="2001000" />
       <workItem from="1653038391783" duration="5230000" />
       <workItem from="1653119979241" duration="6887000" />
+      <workItem from="1653234496876" duration="6494000" />
+      <workItem from="1653251804421" duration="285000" />
+      <workItem from="1653290308424" duration="5660000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -141,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652784882199</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fixed image">
+      <created>1653138694994</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1653138694994</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,6 +174,7 @@
     <MESSAGE value="lots of changes" />
     <MESSAGE value="changed DB table creation and added data files" />
     <MESSAGE value="changes in hibernate config and fixed typo in sql script" />
-    <option name="LAST_COMMIT_MESSAGE" value="changes in hibernate config and fixed typo in sql script" />
+    <MESSAGE value="Fixed image" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed image" />
   </component>
 </project>

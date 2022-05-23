@@ -9,7 +9,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "product", schema = "public", catalog = "dbprak")
 public class ProductEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "prod_id", nullable = false)
     private long prodId;
