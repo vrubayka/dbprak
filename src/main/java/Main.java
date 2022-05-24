@@ -38,8 +38,7 @@ public class Main {
 
         XmlParser parser = new XmlParser();
         parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
-        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
-        //parser.readFile("src/main/resources/data-files/categories.xml");
+//        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
 
     }
 

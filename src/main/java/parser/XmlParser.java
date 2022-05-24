@@ -34,7 +34,8 @@ public class XmlParser implements Reader {
 
             System.out.println("Finished reading shop Xml.");
 
-        } else if (rootElement.equals("Leipzig")) {
+            // ToDo: check for shop name instead of shop
+        } else if (rootElement.equals("shop")) {
 
             System.out.println("Reading the Leipzig shop...");
             StoreReader reader = new StoreReader(doc, sessionFactory);
