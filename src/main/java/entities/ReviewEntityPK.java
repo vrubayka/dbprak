@@ -11,18 +11,17 @@ import java.util.Objects;
 public class ReviewEntityPK implements Serializable {
     @Column(name = "prod_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long prodId;
+    private String prodId;
     @Column(name = "username", nullable = false, length = 50)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String username;
 
-    public long getProdId() {
+    public String getProdId() {
         return prodId;
     }
 
-    public void setProdId(long prodId) {
+    public void setProdId(String prodId) {
         this.prodId = prodId;
     }
 
@@ -39,7 +38,7 @@ public class ReviewEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReviewEntityPK that = (ReviewEntityPK) o;
-        return prodId == that.prodId && Objects.equals(username, that.username);
+        return prodId.equals(that.prodId) && Objects.equals(username, that.username);
     }
 
     @Override

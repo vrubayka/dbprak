@@ -1,8 +1,8 @@
 CREATE TABLE product (
-    prod_id BIGSERIAL PRIMARY KEY,
+    prod_id VARCHAR(255) PRIMARY KEY,
     prod_name VARCHAR(255) NOT NULL,
     rating FLOAT NOT NULL,
-    sales_rank INT NOT NULL,
+    sales_rank INT,
     image VARCHAR(255)
 );
 
@@ -12,7 +12,7 @@ CREATE TABLE person (
 );
 
 CREATE TABLE book (
-    book_id BIGINT PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                -- on DELETE CASCADE??
+    book_id VARCHAR(255) PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                -- on DELETE CASCADE??
     isbn VARCHAR(50) UNIQUE NOT NULL,
     publisher VARCHAR(255) NOT NULL,                                        -- id and own table??
     release_date DATE NOT NULL,
@@ -21,13 +21,13 @@ CREATE TABLE book (
 );
 
 CREATE TABLE author (
-    book_id BIGINT REFERENCES book (book_id) ON DELETE CASCADE,
+    book_id VARCHAR(255) REFERENCES book (book_id) ON DELETE CASCADE,
     person_id BIGINT REFERENCES person (person_id) ON DELETE RESTRICT,
     PRIMARY KEY (book_id, person_id)
 );
 
 CREATE TABLE dvd (
-    dvd_id BIGINT PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                 -- on DELETE CASCADE
+    dvd_id VARCHAR(255) PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                 -- on DELETE CASCADE
     movie_id INT UNIQUE NOT NULL,
     format VARCHAR(50) NOT NULL,
     term_in_sec INT NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE dvd (
 );
 
 CREATE TABLE dvd_person (
-    dvd_id BIGINT REFERENCES dvd (dvd_id) ON DELETE CASCADE,
+    dvd_id VARCHAR(255) REFERENCES dvd (dvd_id) ON DELETE CASCADE,
     person_id BIGINT REFERENCES person (person_id) ON DELETE RESTRICT,
     p_role VARCHAR(50),
     PRIMARY KEY (dvd_id, person_id, p_role),
@@ -43,7 +43,7 @@ CREATE TABLE dvd_person (
 );
 
 CREATE TABLE cd (
-    cd_id BIGINT PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                  -- on DELETE CASCADE?
+    cd_id VARCHAR(255) PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                  -- on DELETE CASCADE?
     label VARCHAR(255) NOT NULL,
     release_date DATE NOT NULL
 );
@@ -60,7 +60,7 @@ CREATE TABLE title (
 );
     
 CREATE TABLE cd_title (
-    cd_id BIGINT REFERENCES cd (cd_id) ON DELETE CASCADE,
+    cd_id VARCHAR(255) REFERENCES cd (cd_id) ON DELETE CASCADE,
     title_id BIGINT REFERENCES title (title_id) ON DELETE RESTRICT,
     PRIMARY KEY (cd_id, title_id)
 );
@@ -72,7 +72,7 @@ CREATE TABLE category (                                                         
 );
 
 CREATE TABLE product_category (
-    prod_id BIGINT REFERENCES product (prod_id) ON DELETE CASCADE,
+    prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
     category_id BIGINT REFERENCES category (category_id) ON DELETE RESTRICT,
     PRIMARY KEY (prod_id, category_id)
 );
@@ -94,8 +94,8 @@ CREATE TABLE store (                                                            
 
 CREATE TABLE inventory (
     store_id BIGINT REFERENCES store (store_id) ON DELETE CASCADE,
-    prod_id BIGINT REFERENCES product (prod_id) ON DELETE CASCADE,
-    prize NUMERIC(32,2) NOT NULL,
+    prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
+    prize NUMERIC(32,2),
     condition VARCHAR(50),
     PRIMARY KEY (store_id, prod_id)
 );
@@ -115,7 +115,7 @@ CREATE TABLE "order" (                                                          
 );
 
 CREATE TABLE review (
-    prod_id BIGINT REFERENCES product (prod_id) ON DELETE CASCADE,
+    prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
     username VARCHAR(50) NOT NULL,
     reviewdate DATE NOT NULL,
     rating INT NOT NULL,

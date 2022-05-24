@@ -9,10 +9,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "cd", schema = "public", catalog = "dbprak")
 public class CdEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "cd_id", nullable = false)
-    private long cdId;
+    private String cdId;
     @Basic
     @Column(name = "label", nullable = false)
     private String label;
@@ -26,11 +25,11 @@ public class CdEntity {
                cascade = CascadeType.ALL)
     private Collection<CdTitleEntity> cdTitlesByCdId;
 
-    public long getCdId() {
+    public String getCdId() {
         return cdId;
     }
 
-    public void setCdId(long cdId) {
+    public void setCdId(String cdId) {
         this.cdId = cdId;
     }
 
@@ -55,7 +54,7 @@ public class CdEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CdEntity cdEntity = (CdEntity) o;
-        return cdId == cdEntity.cdId && Objects.equals(label, cdEntity.label) &&
+        return cdId.equals(cdEntity.cdId) && Objects.equals(label, cdEntity.label) &&
                Objects.equals(releaseDate, cdEntity.releaseDate);
     }
 

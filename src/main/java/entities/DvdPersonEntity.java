@@ -8,10 +8,9 @@ import java.util.Objects;
 @Table(name = "dvd_person", schema = "public", catalog = "dbprak")
 @IdClass(DvdPersonEntityPK.class)
 public class DvdPersonEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "dvd_id", nullable = false)
-    private long dvdId;
+    private String dvdId;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "person_id", nullable = false)
@@ -27,11 +26,11 @@ public class DvdPersonEntity {
     @JoinColumn(name = "person_id", referencedColumnName = "person_id", nullable = false, insertable = false, updatable = false)
     private PersonEntity personByPersonId;
 
-    public long getDvdId() {
+    public String getDvdId() {
         return dvdId;
     }
 
-    public void setDvdId(long dvdId) {
+    public void setDvdId(String dvdId) {
         this.dvdId = dvdId;
     }
 
@@ -56,7 +55,7 @@ public class DvdPersonEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DvdPersonEntity that = (DvdPersonEntity) o;
-        return dvdId == that.dvdId && personId == that.personId && Objects.equals(pRole, that.pRole);
+        return dvdId.equals(that.dvdId) && personId == that.personId && Objects.equals(pRole, that.pRole);
     }
 
     @Override

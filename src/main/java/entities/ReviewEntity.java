@@ -9,10 +9,10 @@ import java.util.Objects;
 @Table(name = "review", schema = "public", catalog = "dbprak")
 @IdClass(ReviewEntityPK.class)
 public class ReviewEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "prod_id", nullable = false)
-    private long prodId;
+    private String prodId;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "username", nullable = false, length = 50)
@@ -36,11 +36,11 @@ public class ReviewEntity {
     @JoinColumn(name = "prod_id", referencedColumnName = "prod_id", nullable = false, insertable = false, updatable = false)
     private ProductEntity productByProdId;
 
-    public long getProdId() {
+    public String getProdId() {
         return prodId;
     }
 
-    public void setProdId(long prodId) {
+    public void setProdId(String prodId) {
         this.prodId = prodId;
     }
 

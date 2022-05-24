@@ -8,10 +8,9 @@ import java.util.Objects;
 @Table(name = "author", schema = "public", catalog = "dbprak")
 @IdClass(AuthorEntityPK.class)
 public class AuthorEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "book_id", nullable = false)
-    private long bookId;
+    private String bookId;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "person_id", nullable = false)
@@ -23,11 +22,11 @@ public class AuthorEntity {
     @JoinColumn(name = "person_id", referencedColumnName = "person_id", nullable = false, insertable = false, updatable = false)
     private PersonEntity personByPersonId;
 
-    public long getBookId() {
+    public String getBookId() {
         return bookId;
     }
 
-    public void setBookId(long bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 
@@ -44,7 +43,7 @@ public class AuthorEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthorEntity that = (AuthorEntity) o;
-        return bookId == that.bookId && personId == that.personId;
+        return bookId.equals(that.bookId) && personId == that.personId;
     }
 
     @Override

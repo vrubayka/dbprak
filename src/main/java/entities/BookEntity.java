@@ -9,10 +9,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "book", schema = "public", catalog = "dbprak")
 public class BookEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "book_id", nullable = false)
-    private long bookId;
+    private String bookId;
     @Basic
     @Column(name = "isbn", nullable = false, length = 50)
     private String isbn;
@@ -32,11 +32,11 @@ public class BookEntity {
     @JoinColumn(name = "book_id", referencedColumnName = "prod_id", nullable = false)
     private ProductEntity productByBookId;
 
-    public long getBookId() {
+    public String getBookId() {
         return bookId;
     }
 
-    public void setBookId(long bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 
@@ -77,7 +77,7 @@ public class BookEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookEntity that = (BookEntity) o;
-        return bookId == that.bookId && pages == that.pages && Objects.equals(isbn, that.isbn) &&
+        return bookId.equals(that.bookId) && pages == that.pages && Objects.equals(isbn, that.isbn) &&
                Objects.equals(publisher, that.publisher) &&
                Objects.equals(releaseDate, that.releaseDate);
     }
