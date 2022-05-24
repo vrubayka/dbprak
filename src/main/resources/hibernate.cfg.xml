@@ -5,10 +5,10 @@
 <hibernate-configuration>
     <session-factory>
 
-        <property name="connection.url">jdbc:postgresql://localhost/dbprak</property> <!-- BD Name -->
+        <property name="connection.url">jdbc:postgresql://localhost/dbprak</property> <!-- DB Name -->
         <property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
-        <property name="connection.username">chrispostgres</property> <!-- DB User -->
-        <property name="connection.password"></property> <!-- DB Password -->
+        <property name="connection.username">postgres</property> <!-- DB User -->
+        <property name="connection.password">admin</property> <!-- DB Password -->
 
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property> <!-- DB Dialect -->
         <property name="hbm2ddl.auto">validate</property> <!-- create / create-drop / update -->

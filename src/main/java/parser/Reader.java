@@ -6,5 +6,6 @@ public interface Reader {
 
     public void readFile(String filePath, SessionFactory sessionFactory);
 
-
 }
+
+
