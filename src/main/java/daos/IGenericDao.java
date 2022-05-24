@@ -15,4 +15,6 @@ public interface IGenericDao <T> {
 
     void deleteById(long entityId);
 
+    void deleteAll();
+
 }

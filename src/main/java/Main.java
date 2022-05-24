@@ -31,19 +31,6 @@ public class Main {
             throw new ExceptionInInitializerError(ex);
         }
 
-        Session session = sessionFactory.openSession();
-        ProductEntity product = new ProductEntity("Handy", 3.5, 3);
-
-        try {
-            session.beginTransaction();
-            session.persist(product);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            session.close();
-            sessionFactory.close();
-        }
 
         XmlParser parser = new XmlParser();
         parser.readFile("src/main/resources/data-files/leipzig_transformed.xml");

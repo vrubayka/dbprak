@@ -1,7 +1,10 @@
 package daos;
 
+import jakarta.persistence.Table;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.MutationQuery;
 
 import java.util.List;
 
@@ -58,6 +61,16 @@ public class GenericDao <T> implements IGenericDao <T>{
         Session session = sessionFactory.getCurrentSession();
         T entity = findOne(entityId);
         session.remove(entity);
+    }
+
+    @Override
+    public void deleteAll() {
+        Session session = sessionFactory.getCurrentSession();
+        Table table = daoClass.getAnnotation(Table.class);
+        String tableName = table.name();
+        MutationQuery query = session.createMutationQuery("DELETE FROM :tableName");
+        query.setParameter("tableName", tableName);
+        query.executeUpdate();
     }
 
 
