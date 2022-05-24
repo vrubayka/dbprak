@@ -88,8 +88,6 @@ public class StoreReader {
                         readDvd(node, product, dvd);
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
                         readCd(node, product, cd);
-                    } else if ("labels".equals(scope) && "Music".equals(group)) {
-                        readCdLabel(node, cd);
                     }
                 }
             }
@@ -199,13 +197,22 @@ public class StoreReader {
                 }
             }
         }
-    }
 
-    private void readCdLabel(Node node, CdEntity cd) {
-        if (node.hasChildNodes())
-            for (Node childNode = node.getFirstChild(); childNode.getNodeType() != Node.ELEMENT_NODE;
-                 childNode = childNode.getNextSibling()) {
-                cd.setLabel(childNode.getNodeValue());
+        for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
+
+            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("labels")) {
+
+                for (Node labelsNode = sibling.getFirstChild(); labelsNode != null; labelsNode  =
+                        labelsNode.getNextSibling()) {
+                    if(labelsNode.getNodeType() == Node.ELEMENT_NODE && labelsNode.getNodeName().equals("label")) {
+                        NamedNodeMap labelAttributes = labelsNode.getAttributes();
+                        cd.setLabel(labelAttributes.getNamedItem("name").getNodeValue());
+                        // set Node to last Node to break for-loop
+                        labelsNode = sibling.getLastChild();
+                        sibling = sibling.getLastChild();
+                    }
+                }
             }
+        }
     }
 }
