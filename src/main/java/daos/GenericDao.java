@@ -72,11 +72,11 @@ public class GenericDao <T> implements IGenericDao <T>{
     @Override
     public void deleteAll() {
         Session session = sessionFactory.getCurrentSession();
-        Table table = daoClass.getAnnotation(Table.class);
-        String tableName = table.name();
-        MutationQuery query = session.createMutationQuery("DELETE FROM :tableName");
-        query.setParameter("tableName", tableName);
+        Transaction tx = session.beginTransaction();
+        String tableName = daoClass.getName();
+        MutationQuery query = session.createMutationQuery("delete from " + tableName);
         query.executeUpdate();
+        tx.commit();
     }
 
 
