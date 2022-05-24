@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added Label setter in readCd()">
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added publisher setter in readBook() and studio setter to readDvd (see ToDo)">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/TitleEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/TitleEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653403296534</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="added publisher setter in readBook() and studio setter to readDvd (see ToDo)">
+      <created>1653404263547</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1653404263547</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,7 +226,8 @@
     <MESSAGE value="merge with master" />
     <MESSAGE value="XML Parser Clean up" />
     <MESSAGE value="added Label setter in readCd()" />
-    <option name="LAST_COMMIT_MESSAGE" value="added Label setter in readCd()" />
+    <MESSAGE value="added publisher setter in readBook() and studio setter to readDvd (see ToDo)" />
+    <option name="LAST_COMMIT_MESSAGE" value="added publisher setter in readBook() and studio setter to readDvd (see ToDo)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
