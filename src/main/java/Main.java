@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.MutationQuery;
 import parser.XmlParser;
+import queries.HibernateQueries;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,8 +32,15 @@ public class Main {
             throw new ExceptionInInitializerError(ex);
         }
 
+        HibernateQueries hibernateQueries = new HibernateQueries(sessionFactory);
+        hibernateQueries.cleanDb();
+
+
         XmlParser parser = new XmlParser();
+        parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
         parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
+        //parser.readFile("src/main/resources/data-files/categories.xml");
+
     }
 
     public static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException, IOException, URISyntaxException {

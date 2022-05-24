@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="edit console message">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="resort cleanDb deleteAll methods to match data relations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,10 +21,13 @@
       </list>
     </option>
   </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/master" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="ShopXMLParser" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,7 +55,7 @@
       <map>
         <entry key="com.haulmont.jpb.jpaInspector" value="true" />
         <entry key="com.haulmont.jpb.jpaPalette" value="true" />
-        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
       </map>
     </option>
   </component>
@@ -100,7 +104,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -120,12 +123,9 @@
       <workItem from="1652784756472" duration="3296000" />
       <workItem from="1652960007523" duration="2001000" />
       <workItem from="1653038391783" duration="5230000" />
-      <workItem from="1653119979241" duration="16845000" />
-      <workItem from="1653142460241" duration="8549000" />
-      <workItem from="1653151031133" duration="3281000" />
-      <workItem from="1653203198201" duration="8806000" />
-      <workItem from="1653290848868" duration="10933000" />
-      <workItem from="1653377304308" duration="1107000" />
+      <workItem from="1653119979241" duration="6887000" />
+      <workItem from="1653384145562" duration="1152000" />
+      <workItem from="1653388095313" duration="8724000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -141,70 +141,35 @@
       <option name="project" value="LOCAL" />
       <updated>1652784882199</updated>
     </task>
-    <task id="LOCAL-00003" summary="added GenericDao interface and Implementation">
-      <created>1653128198891</created>
+    <task id="LOCAL-00003" summary="edit deleteAll() in GenericDao">
+      <created>1653389590803</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1653128198891</updated>
+      <updated>1653389590803</updated>
     </task>
-    <task id="LOCAL-00004" summary="added Parser for shop part in XML">
-      <created>1653146657052</created>
+    <task id="LOCAL-00004" summary="edit deleteAll() in GenericDao">
+      <created>1653389730991</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1653146657052</updated>
+      <updated>1653389730991</updated>
     </task>
-    <task id="LOCAL-00005" summary="added loop over item Elements in root Element">
-      <created>1653150530384</created>
+    <task id="LOCAL-00005" summary="added HibernateQueries and delete all rows function">
+      <created>1653393809751</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1653150530384</updated>
+      <updated>1653393809751</updated>
     </task>
-    <task id="LOCAL-00006" summary="edited SQL creation scripts to better map data">
-      <created>1653152305238</created>
+    <task id="LOCAL-00006" summary="resort cleanDb deleteAll methods to match data relations">
+      <created>1653395358783</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1653152305238</updated>
+      <updated>1653395358783</updated>
     </task>
-    <task id="LOCAL-00007" summary="edited entities to map DB">
-      <created>1653154268623</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1653154268623</updated>
-    </task>
-    <task id="LOCAL-00008" summary="fixed PK entities equals() method">
-      <created>1653204294016</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1653204294016</updated>
-    </task>
-    <task id="LOCAL-00009" summary="added readBook()">
-      <created>1653297521659</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1653297521659</updated>
-    </task>
-    <task id="LOCAL-00010" summary="finished readDVD() and readCD()">
-      <created>1653318115912</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1653318115912</updated>
-    </task>
-    <task id="LOCAL-00011" summary="edit console message">
-      <created>1653378305916</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1653378305917</updated>
-    </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -226,15 +191,9 @@
     <MESSAGE value="lots of changes" />
     <MESSAGE value="changed DB table creation and added data files" />
     <MESSAGE value="changes in hibernate config and fixed typo in sql script" />
-    <MESSAGE value="added GenericDao interface and Implementation" />
-    <MESSAGE value="added Parser for shop part in XML" />
-    <MESSAGE value="added loop over item Elements in root Element" />
-    <MESSAGE value="edited SQL creation scripts to better map data" />
-    <MESSAGE value="edited entities to map DB" />
-    <MESSAGE value="fixed PK entities equals() method" />
-    <MESSAGE value="added readBook()" />
-    <MESSAGE value="finished readDVD() and readCD()" />
-    <MESSAGE value="edit console message" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit console message" />
+    <MESSAGE value="edit deleteAll() in GenericDao" />
+    <MESSAGE value="added HibernateQueries and delete all rows function" />
+    <MESSAGE value="resort cleanDb deleteAll methods to match data relations" />
+    <option name="LAST_COMMIT_MESSAGE" value="resort cleanDb deleteAll methods to match data relations" />
   </component>
 </project>
