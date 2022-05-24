@@ -23,38 +23,32 @@ public class XmlParser implements Reader {
         File inputFile = new File(filePath);
         Document doc = getNormalizedDocument(inputFile);
         String rootElement = doc.getDocumentElement().getNodeName();
-        switch (rootElement) {
-            case "shop":
-                System.out.println("Reading shop...");
-                StoreReader storeReader = new StoreReader(doc, sessionFactory);
-                storeReader.readStoreXml();
 
-                if (rootElement.equals("Dresden")) {
+        if (rootElement.equals("Dresden")) {
 
-                    System.out.println("Reading the Dresden shop...");
-                    StoreReader reader = new StoreReader(doc, sessionFactory);
-                    reader.readStoreXml();
+            System.out.println("Reading the Dresden shop...");
+            StoreReader reader = new StoreReader(doc, sessionFactory);
+            reader.readStoreXml();
 
-                    System.out.println("Finished reading the Dresden shop.");
+            System.out.println("Finished reading the Dresden shop.");
 
-                    System.out.println("Finished reading shop Xml.");
+            System.out.println("Finished reading shop Xml.");
 
-                } else if (rootElement.equals("Leipzig")) {
+        } else if (rootElement.equals("Leipzig")) {
 
-                    System.out.println("Reading the Leipzig shop...");
-                    StoreReader reader = new StoreReader(doc, sessionFactory);
-                    reader.readStoreXml();
+            System.out.println("Reading the Leipzig shop...");
+            StoreReader reader = new StoreReader(doc, sessionFactory);
+            reader.readStoreXml();
 
-                    System.out.println("Finished reading the Leipzig shop.");
+            System.out.println("Finished reading the Leipzig shop.");
 
-                } else {
-                    System.out.println("Reading the Categories...");
-                    CategoryReader categoryReader = new CategoryReader(doc, sessionFactory);
-                    categoryReader.parseCategories(doc.getDocumentElement().getChildNodes(),
-                                                   sessionFactory);
+        } else {
+            System.out.println("Reading the Categories...");
+            CategoryReader categoryReader = new CategoryReader(doc, sessionFactory);
+            categoryReader.parseCategories(doc.getDocumentElement().getChildNodes(),
+                                           sessionFactory);
 
-                    System.out.println("Finished reading the Categories XML.");
-                }
+            System.out.println("Finished reading the Categories XML.");
         }
     }
 
