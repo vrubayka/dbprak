@@ -52,6 +52,7 @@ public class XmlParser implements Reader {
         }
     }
 
+
     private Document getNormalizedDocument(File inputFile) {
 
         try {
