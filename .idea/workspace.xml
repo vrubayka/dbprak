@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="edit deleteAll() in GenericDao">
-      <change afterPath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" afterDir="false" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added HibernateQueries and delete all rows function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/daos/GenericDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/daos/GenericDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +22,7 @@
     </option>
   </component>
   <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="ShopXMLParser" />
+    <option name="BRANCH" value="origin/master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -127,7 +125,7 @@
       <workItem from="1653038391783" duration="5230000" />
       <workItem from="1653119979241" duration="6887000" />
       <workItem from="1653384145562" duration="1152000" />
-      <workItem from="1653388095313" duration="5642000" />
+      <workItem from="1653388095313" duration="7206000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -157,7 +155,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653389730991</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added HibernateQueries and delete all rows function">
+      <created>1653393809751</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1653393809751</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -180,6 +185,7 @@
     <MESSAGE value="changed DB table creation and added data files" />
     <MESSAGE value="changes in hibernate config and fixed typo in sql script" />
     <MESSAGE value="edit deleteAll() in GenericDao" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit deleteAll() in GenericDao" />
+    <MESSAGE value="added HibernateQueries and delete all rows function" />
+    <option name="LAST_COMMIT_MESSAGE" value="added HibernateQueries and delete all rows function" />
   </component>
 </project>

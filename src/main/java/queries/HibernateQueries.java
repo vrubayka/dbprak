@@ -33,23 +33,23 @@ public class HibernateQueries {
         GenericDao<StoreEntity> storeEntityDao = new GenericDao<>(StoreEntity.class, sessionFactory);
         GenericDao<TitleEntity> titleEntityDao = new GenericDao<>(TitleEntity.class, sessionFactory);
 
-        addressEntityDao.deleteAll();
+        cdTitleEntityDao.deleteAll();
+        titleEntityDao.deleteAll();
         artistEntityDao.deleteAll();
+        cdEntityDao.deleteAll();
         authorEntityDao.deleteAll();
         bookEntityDao.deleteAll();
-        categoryEntityDao.deleteAll();
-        cdEntityDao.deleteAll();
-        cdTitleEntityDao.deleteAll();
-        customerEntityDao.deleteAll();
-        dvdEntityDao.deleteAll();
         dvdPersonEntityDao.deleteAll();
-        inventoryEntityDao.deleteAll();
-        orderEntityDao.deleteAll();
         personEntityDao.deleteAll();
-        productCategoryEntityDao.deleteAll();
-        productEntityDao.deleteAll();
+        dvdEntityDao.deleteAll();
         reviewEntityDao.deleteAll();
+        inventoryEntityDao.deleteAll();
+        productCategoryEntityDao.deleteAll();
+        categoryEntityDao.deleteAll();
+        orderEntityDao.deleteAll();
+        customerEntityDao.deleteAll();
+        productEntityDao.deleteAll();
         storeEntityDao.deleteAll();
-        titleEntityDao.deleteAll();
+        addressEntityDao.deleteAll();
     }
 }
