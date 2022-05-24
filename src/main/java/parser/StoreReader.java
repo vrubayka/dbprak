@@ -152,6 +152,24 @@ public class StoreReader {
                 }
             }
         }
+
+        for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
+
+            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("publishers")) {
+
+                for (Node publishersNode = sibling.getFirstChild(); publishersNode != null; publishersNode  =
+                        publishersNode.getNextSibling()) {
+                    if(publishersNode.getNodeType() == Node.ELEMENT_NODE &&
+                       publishersNode.getNodeName().equals("publisher")) {
+                        NamedNodeMap publisherAttributes = publishersNode.getAttributes();
+                        book.setPublisher(publisherAttributes.getNamedItem("name").getNodeValue());
+                        // set Node to last Node to break for-loop
+                        publishersNode = sibling.getLastChild();
+                        sibling = sibling.getLastChild();
+                    }
+                }
+            }
+        }
     }
 
     private void readDvd(Node node, ProductEntity product, DvdEntity dvd) {
@@ -180,6 +198,26 @@ public class StoreReader {
                 }
             }
         }
+
+        // ToDo: DvdEntity has no studio, necessary?
+        /*
+        for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
+
+            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("labels")) {
+
+                for (Node studiosNode = sibling.getFirstChild(); studiosNode != null; studiosNode  =
+                        studiosNode.getNextSibling()) {
+                    if(studiosNode.getNodeType() == Node.ELEMENT_NODE && studiosNode.getNodeName().equals("studio")) {
+                        NamedNodeMap labelAttributes = studiosNode.getAttributes();
+                        dvd.set(labelAttributes.getNamedItem("name").getNodeValue());
+                        // set Node to last Node to break for-loop
+                        studiosNode = sibling.getLastChild();
+                        sibling = sibling.getLastChild();
+                    }
+                }
+            }
+        }
+        */
     }
 
     private void readCd(Node node, ProductEntity product, CdEntity cd) {
