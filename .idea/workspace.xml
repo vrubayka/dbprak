@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added HibernateQueries and delete all rows function">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="resort cleanDb deleteAll methods to match data relations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +125,7 @@
       <workItem from="1653038391783" duration="5230000" />
       <workItem from="1653119979241" duration="6887000" />
       <workItem from="1653384145562" duration="1152000" />
-      <workItem from="1653388095313" duration="7206000" />
+      <workItem from="1653388095313" duration="8724000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -162,7 +162,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653393809751</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="resort cleanDb deleteAll methods to match data relations">
+      <created>1653395358783</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1653395358783</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,6 +193,7 @@
     <MESSAGE value="changes in hibernate config and fixed typo in sql script" />
     <MESSAGE value="edit deleteAll() in GenericDao" />
     <MESSAGE value="added HibernateQueries and delete all rows function" />
-    <option name="LAST_COMMIT_MESSAGE" value="added HibernateQueries and delete all rows function" />
+    <MESSAGE value="resort cleanDb deleteAll methods to match data relations" />
+    <option name="LAST_COMMIT_MESSAGE" value="resort cleanDb deleteAll methods to match data relations" />
   </component>
 </project>
