@@ -26,7 +26,7 @@ public class XmlParser implements Reader{
                 StoreReader storeReader = new StoreReader(doc, sessionFactory);
                 storeReader.readStoreXml();
 
-                System.out.println("Finished reading.");
+                System.out.println("Finished reading shop Xml.");
             /*
             ToDo: uncomment
             case "categories":
