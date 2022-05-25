@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "inventory", schema = "public", catalog = "dbprak")
 public class InventoryEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "store_id")
     private Long storeId;
