@@ -13,16 +13,10 @@ public class TitleEntity {
     @Column(name = "title_id", nullable = false)
     private long titleId;
     @Basic
-    @Column(name = "artist_id", nullable = false)
-    private long artistId;
-    @Basic
     @Column(name = "title_name", nullable = false, length = 255)
     private String titleName;
     @OneToMany(mappedBy = "titleByTitleId")
     private Collection<CdTitleEntity> cdTitlesByTitleId;
-    @ManyToOne
-    @JoinColumn(name = "artist_id", referencedColumnName = "artist_id", nullable = false, insertable = false, updatable = false)
-    private ArtistEntity artistByArtistId;
 
     public long getTitleId() {
         return titleId;
@@ -30,14 +24,6 @@ public class TitleEntity {
 
     public void setTitleId(long titleId) {
         this.titleId = titleId;
-    }
-
-    public long getArtistId() {
-        return artistId;
-    }
-
-    public void setArtistId(long artistId) {
-        this.artistId = artistId;
     }
 
     public String getTitleName() {
@@ -53,12 +39,12 @@ public class TitleEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TitleEntity that = (TitleEntity) o;
-        return titleId == that.titleId && artistId == that.artistId && Objects.equals(titleName, that.titleName);
+        return titleId == that.titleId && Objects.equals(titleName, that.titleName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(titleId, artistId, titleName);
+        return Objects.hash(titleId, titleName);
     }
 
     public Collection<CdTitleEntity> getCdTitlesByTitleId() {
@@ -69,11 +55,4 @@ public class TitleEntity {
         this.cdTitlesByTitleId = cdTitlesByTitleId;
     }
 
-    public ArtistEntity getArtistByArtistId() {
-        return artistByArtistId;
-    }
-
-    public void setArtistByArtistId(ArtistEntity artistByArtistId) {
-        this.artistByArtistId = artistByArtistId;
-    }
 }

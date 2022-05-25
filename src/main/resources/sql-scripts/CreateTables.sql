@@ -17,7 +17,7 @@ CREATE TABLE book (
     publisher VARCHAR(255) NOT NULL,                                        -- id and own table??
     release_date DATE NOT NULL,
     pages INT NOT NULL
-    
+
 );
 
 CREATE TABLE author (
@@ -39,7 +39,7 @@ CREATE TABLE dvd_person (
     person_id BIGINT REFERENCES person (person_id) ON DELETE RESTRICT,
     p_role VARCHAR(50),
     PRIMARY KEY (dvd_id, person_id, p_role),
-    CONSTRAINT check_role CHECK (p_role::text = 'Director'::text OR p_role::text = 'Actor'::text OR p_role = 'Creator'::text) 
+    CONSTRAINT check_role CHECK (p_role::text = 'Director'::text OR p_role::text = 'Actor'::text OR p_role = 'Creator'::text)
 );
 
 CREATE TABLE cd (
@@ -55,14 +55,19 @@ CREATE TABLE artist (
 
 CREATE TABLE title (
     title_id BIGSERIAL PRIMARY KEY,
-    artist_id BIGINT NOT NULL REFERENCES artist (artist_id) ON DELETE CASCADE,
     title_name VARCHAR(255) NOT NULL
 );
-    
+
 CREATE TABLE cd_title (
     cd_id VARCHAR(255) REFERENCES cd (cd_id) ON DELETE CASCADE,
     title_id BIGINT REFERENCES title (title_id) ON DELETE RESTRICT,
     PRIMARY KEY (cd_id, title_id)
+);
+
+CREATE TABLE cd_artist (
+    cd_id VARCHAR(255) REFERENCES cd (cd_id) ON DELETE CASCADE,
+    artist_id BIGINT REFERENCES artist (artist_id) ON DELETE RESTRICT,
+    PRIMARY KEY (cd_id, artist_id)
 );
 
 CREATE TABLE category (                                                                     -- category key word???
