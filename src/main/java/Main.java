@@ -38,7 +38,7 @@ public class Main {
 
 
         XmlParser xmlParser = new XmlParser();
-        xmlParser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
+        //xmlParser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
         CSVParser csvParser = new CSVParser();
         csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
 

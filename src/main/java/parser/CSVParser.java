@@ -24,15 +24,17 @@ public class CSVParser {
                     .withType(CSVBean.class).build().parse();
 
             for (CSVBean csvBean : csvBeanList) {
-                try {
+                try { //TODO:
+                    String formatReviewSummary = formatSummary(csvBean);
+                    String formatReviewText = formatReview(csvBean);
                     ReviewEntity re = new ReviewEntity();
                     re.setProdId(csvBean.getProdId());
                     re.setRating(csvBean.getRating());
                     re.setHelpfulRating(csvBean.getHelpful_rating());
                     re.setReviewdate(csvBean.getReviewdate());
                     re.setUsername(csvBean.getUsername());
-                    re.setReviewSum(csvBean.getReviewSum());
-                    re.setReviewText(csvBean.getReview_text());
+                    re.setReviewSum(formatReviewSummary);
+                    re.setReviewText(formatReviewText);
                     ProductEntity product = new ProductEntity();
                     product.setProdId(csvBean.getProdId());
                     product.setProdName("platzhalter");
@@ -41,6 +43,7 @@ public class CSVParser {
                     GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
                     productEntityDao.create(product);
                     reviewEntityDao.create(re);
+                    System.out.println(formatReviewText);
                 } catch(jakarta.persistence.PersistenceException e){
                     System.out.println("Duplicate review entry " + csvBean.getProdId() + " declined");
                 }
@@ -52,23 +55,25 @@ public class CSVParser {
         }
 
         public String formatSummary(CSVBean csvBean){
+            String text = csvBean.getReviewSum();
             Map<String, String> mapFromFile = HashMapFromTextFile();
             for (String key : mapFromFile.keySet()){
-                if (csvBean.getReviewSum().contains(key)){
-                    return csvBean.getReviewSum().replace(key, mapFromFile.get(key));
+                if (text.contains(key)){
+                    text = text.replace(key, mapFromFile.get(key));
                 }
             }
-            return csvBean.getReviewSum();
+            return text;
         }
 
     public String formatReview(CSVBean csvBean){
-        Map<String, String> mapFromFile = HashMapFromTextFile();
-        for (String key : mapFromFile.keySet()){
-            if (csvBean.getReview_text().contains(key)){
-                return csvBean.getReview_text().replace(key, mapFromFile.get(key));
+            String text = csvBean.getReview_text();
+            Map<String, String> mapFromFile = HashMapFromTextFile();
+            for (String key : mapFromFile.keySet()){
+                if (text.contains(key)){
+                    text = text.replace(key, mapFromFile.get(key));
+                }
             }
-        }
-        return csvBean.getReview_text();
+            return text;
     }
 
         private Map<String, String> HashMapFromTextFile() {
