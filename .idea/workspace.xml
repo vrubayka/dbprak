@@ -104,6 +104,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -248,10 +249,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="&quot;B00005YH0L&quot;.equals(cd.cdId)" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/parser/StoreReader.java</url>
-          <line>246</line>
-          <option name="timeStamp" value="18" />
+          <line>285</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

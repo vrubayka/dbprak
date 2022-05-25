@@ -71,7 +71,7 @@ public class StoreReader {
         BookEntity book = new BookEntity();
         DvdEntity dvd = new DvdEntity();
         CdEntity cd = new CdEntity();
-        List<TitleEntity> titleList= new ArrayList<>();
+        List<TitleEntity> titleList = new ArrayList<>();
         List<ArtistEntity> artistList = new ArrayList<>();
 
 
@@ -161,15 +161,15 @@ public class StoreReader {
 
             if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("publishers")) {
 
-                for (Node publishersNode = sibling.getFirstChild(); publishersNode != null; publishersNode  =
+                for (Node publishersNode = sibling.getFirstChild(); publishersNode != null; publishersNode =
                         publishersNode.getNextSibling()) {
-                    if(publishersNode.getNodeType() == Node.ELEMENT_NODE &&
-                       publishersNode.getNodeName().equals("publisher")) {
+                    if (publishersNode.getNodeType() == Node.ELEMENT_NODE &&
+                        publishersNode.getNodeName().equals("publisher")) {
                         NamedNodeMap publisherAttributes = publishersNode.getAttributes();
                         book.setPublisher(publisherAttributes.getNamedItem("name").getNodeValue());
                         // set Node to last Node to break for-loop
                         publishersNode = sibling.getLastChild();
-                        sibling = sibling.getLastChild();
+                        sibling        = sibling.getLastChild();
                     }
                 }
             }
@@ -248,9 +248,9 @@ public class StoreReader {
 
             if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("labels")) {
 
-                for (Node labelsNode = sibling.getFirstChild(); labelsNode != null; labelsNode  =
+                for (Node labelsNode = sibling.getFirstChild(); labelsNode != null; labelsNode =
                         labelsNode.getNextSibling()) {
-                    if(labelsNode.getNodeType() == Node.ELEMENT_NODE && labelsNode.getNodeName().equals("label")) {
+                    if (labelsNode.getNodeType() == Node.ELEMENT_NODE && labelsNode.getNodeName().equals("label")) {
                         NamedNodeMap labelAttributes = labelsNode.getAttributes();
                         cd.setLabel(labelAttributes.getNamedItem("name").getNodeValue());
                         // set Node to last Node to break for-loop
@@ -260,21 +260,25 @@ public class StoreReader {
 
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("tracks")) {
 
-                for (Node tracksNode = sibling.getFirstChild(); tracksNode != null; tracksNode  =
+                for (Node tracksNode = sibling.getFirstChild(); tracksNode != null; tracksNode =
                         tracksNode.getNextSibling()) {
-                    if(tracksNode.getNodeType() == Node.ELEMENT_NODE && tracksNode.getNodeName().equals("title")) {
+                    if (tracksNode.getNodeType() == Node.ELEMENT_NODE && tracksNode.getNodeName().equals("title")) {
                         TitleEntity title = new TitleEntity();
                         title.setTitleName(tracksNode.getFirstChild().getNodeValue());
                         titleList.add(title);
                     }
                 }
 
-            } else if (sibling.getNodeType() == Node.ELEMENT_NODE && (sibling.getNodeName().equals("artists") &&
+            } else if (sibling.getNodeType() == Node.ELEMENT_NODE &&
+                       (sibling.getNodeName().equals("artists") || sibling.getNodeName().equals("creators")) &&
                        sibling.hasChildNodes()) {
 
-                for (Node artistsNode = sibling.getFirstChild(); artistsNode != null; artistsNode  =
+                for (Node artistsNode = sibling.getFirstChild(); artistsNode != null; artistsNode =
                         artistsNode.getNextSibling()) {
-                    if(artistsNode.getNodeType() == Node.ELEMENT_NODE && artistsNode.getNodeName().equals("artist")) {
+
+                    if (artistsNode.getNodeType() == Node.ELEMENT_NODE &&
+                        (artistsNode.getNodeName().equals("artist") || artistsNode.getNodeName().equals("creator"))) {
+
                         NamedNodeMap artistAttributes = artistsNode.getAttributes();
                         ArtistEntity artist = new ArtistEntity();
                         artist.setArtistName(artistAttributes.getNamedItem("name").getNodeValue());
