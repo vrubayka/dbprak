@@ -42,21 +42,26 @@ public class CategoryReader {
 
             }
             else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")){
+                try {
 
-                ProductEntity product = new ProductEntity();
-                product.setProdId(list.item(i).getFirstChild().getNodeValue());
-                product.setProdName("platzhalter");
-                product.setRating(2.342);
-                GenericDao<ProductEntity> productEntityDao = new GenericDao<>(sessionFactory);
-                GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
-                productEntityDao.create(product);
+
+                    ProductEntity product = new ProductEntity();
+                    product.setProdId(list.item(i).getFirstChild().getNodeValue());
+                    product.setProdName("platzhalter");
+                    product.setRating(2.342);
+                    GenericDao<ProductEntity> productEntityDao = new GenericDao<>(sessionFactory);
+                    GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
+                    productEntityDao.create(product);
+                    System.out.println("Product: " + list.item(i).getParentNode().getFirstChild().getNodeValue());
+                } catch (jakarta.persistence.PersistenceException e){
+                    System.out.println("Dublicate Item declined: " + list.item(i).getFirstChild().getNodeValue());
+                }
 
                 GenericDao<ProductCategoryEntity> productDao = new GenericDao(sessionFactory);
-                ProductCategoryEntity entityProduct = new ProductCategoryEntity();
-                productDao.create(entityProduct);
-                entityProduct.setProdId(list.item(i).getFirstChild().getNodeValue());
-
-                entityProduct.setCategoryId(categoryDaoMap.get((XmlParser.returnTextValueOfNode(list.item(i).getParentNode()))));
+                ProductCategoryEntity entityProductCategor = new ProductCategoryEntity();
+                entityProductCategor.setProdId(list.item(i).getFirstChild().getNodeValue());
+                entityProductCategor.setCategoryId(categoryDaoMap.get((XmlParser.returnTextValueOfNode(list.item(i).getParentNode()))));
+                productDao.create(entityProductCategor);
             }
         }
     }

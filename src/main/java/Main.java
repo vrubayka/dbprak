@@ -3,7 +3,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.MutationQuery;
+import parser.CSVParser;
 import parser.XmlParser;
+import queries.HibernateQueries;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,14 +37,11 @@ public class Main {
         hibernateQueries.cleanDb();
 
 
-        XmlParser parser = new XmlParser();
-<<<<<<<<< Temporary merge branch 1
-        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
-        //parser.readFile("src/main/resources/data-files/categories.xml");
+        XmlParser xmlParser = new XmlParser();
+        xmlParser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
+        CSVParser csvParser = new CSVParser();
+        csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
 
-=========
-        parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
->>>>>>>>> Temporary merge branch 2
     }
 
     public static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException, IOException, URISyntaxException {
