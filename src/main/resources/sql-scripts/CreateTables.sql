@@ -100,7 +100,7 @@ CREATE TABLE store (                                                            
 CREATE TABLE inventory (
     store_id BIGINT REFERENCES store (store_id) ON DELETE CASCADE,
     prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
-    prize NUMERIC(32,2),
+    price NUMERIC(32,2),
     condition VARCHAR(50),
     PRIMARY KEY (store_id, prod_id)
 );

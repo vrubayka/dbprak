@@ -67,34 +67,53 @@ public class StoreReader {
 
     private void readItem(Node itemNode, long storeId) {
         ProductEntity product = new ProductEntity();
-        InventoryEntity inventoryEntry = new InventoryEntity();
-        BookEntity book = new BookEntity();
-        DvdEntity dvd = new DvdEntity();
-        CdEntity cd = new CdEntity();
-        List<TitleEntity> titleList = new ArrayList<>();
-        List<ArtistEntity> artistList = new ArrayList<>();
-
 
         String group = readProdAndReturnGroup(itemNode, product);
         // ToDo: Exception asin/group == null
         System.out.println(product.getProdId());
         if (product.getProdId() != null && group != null) {
+
+            // read item data
             for (Node node = itemNode.getFirstChild(); node != null; node = node.getNextSibling()) {
+
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     String scope = node.getNodeName();
+
                     if ("price".equals(scope)) {
+                        InventoryEntity inventoryEntry = new InventoryEntity();
                         readPrice(node, product, inventoryEntry, storeId);
+
                     } else if ("title".equals(scope)) {
                         product.setProdName(node.getFirstChild().getNodeValue());
+
                     } else if ("bookspec".equals(scope) && "Book".equals(group)) {
-                        readBook(node, product, book);
+                        BookEntity book = new BookEntity();
+                        List<PersonEntity> authorList = new ArrayList<>();
+
+                        readBook(node, product, book, authorList);
+//                        insertBook(product, book, authorList);
+
                     } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
-                        readDvd(node, product, dvd);
+                        DvdEntity dvd = new DvdEntity();
+                        List<PersonEntity> actorList = new ArrayList<>();
+                        List<PersonEntity> creatorList = new ArrayList<>();
+                        List<PersonEntity> directorList = new ArrayList<>();
+
+                        readDvd(node, product, dvd, actorList, creatorList, directorList);
+//                        insertDvd(product, dvd, actorList, creatorList, directorList);
+
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
+                        CdEntity cd = new CdEntity();
+                        List<TitleEntity> titleList = new ArrayList<>();
+                        List<ArtistEntity> artistList = new ArrayList<>();
+
                         readCd(node, product, cd, titleList, artistList);
+//                        insertCd(product, cd, titleList, artistList);
                     }
                 }
             }
+
+
         }
     }
 
@@ -126,11 +145,11 @@ public class StoreReader {
         if (priceAttributes.getNamedItem("currency").getNodeValue().equals("EUR")) {
             double mult = Double.parseDouble(priceAttributes.getNamedItem("mult").getNodeValue());
             double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue());
-            inventoryEntry.setPrize(new BigDecimal(mult * price));
+            inventoryEntry.setPrice(new BigDecimal(mult * price));
         }
     }
 
-    private void readBook(Node node, ProductEntity product, BookEntity book) {
+    private void readBook(Node node, ProductEntity product, BookEntity book, List<PersonEntity> authorList) {
         book.setBookId(product.getProdId());
         for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -169,14 +188,33 @@ public class StoreReader {
                         book.setPublisher(publisherAttributes.getNamedItem("name").getNodeValue());
                         // set Node to last Node to break for-loop
                         publishersNode = sibling.getLastChild();
-                        sibling        = sibling.getLastChild();
                     }
+                }
+            } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("authors") &&
+                  sibling.hasChildNodes()) {
+
+                for (Node authorNode = sibling.getFirstChild(); authorNode != null;
+                     authorNode = authorNode.getNextSibling()) {
+
+                    if (authorNode.getNodeType() == Node.ELEMENT_NODE && authorNode.getNodeName().equals("author")) {
+                        NamedNodeMap authorAttributes = authorNode.getAttributes();
+                        PersonEntity author = new PersonEntity();
+                        author.setPersonName(authorAttributes.getNamedItem("name").getNodeValue());
+                        authorList.add(author);
+                    }
+                }
+
+                if(sibling.getNodeName().equals("authors")) {
+                    // set Node to last Node to break for-loop
+                    sibling = sibling.getLastChild();
                 }
             }
         }
     }
 
-    private void readDvd(Node node, ProductEntity product, DvdEntity dvd) {
+    private void readDvd(Node node, ProductEntity product, DvdEntity dvd, List<PersonEntity> actorList,
+                         List<PersonEntity> creatorList, List<PersonEntity> directorList) {
+
         dvd.setDvdId(product.getProdId());
         // ToDo: what is MovieId for, delete?
         dvd.setMovieId(1);
@@ -204,24 +242,61 @@ public class StoreReader {
         }
 
         // ToDo: DvdEntity has no studio, necessary?
-        /*
+
         for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
 
-            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("labels")) {
+            /*
+            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("studios")) {
 
                 for (Node studiosNode = sibling.getFirstChild(); studiosNode != null; studiosNode  =
                         studiosNode.getNextSibling()) {
                     if(studiosNode.getNodeType() == Node.ELEMENT_NODE && studiosNode.getNodeName().equals("studio")) {
-                        NamedNodeMap labelAttributes = studiosNode.getAttributes();
-                        dvd.set(labelAttributes.getNamedItem("name").getNodeValue());
+                        NamedNodeMap studioNode = studiosNode.getAttributes();
+                        dvd.set(studioNode.getNamedItem("name").getNodeValue());
                         // set Node to last Node to break for-loop
                         studiosNode = sibling.getLastChild();
                         sibling = sibling.getLastChild();
                     }
                 }
             }
+
+             */
+            if (sibling.getNodeType() == Node.ELEMENT_NODE &&
+                (sibling.getNodeName().equals("actors") || sibling.getNodeName().equals("creators") ||
+                 sibling.getNodeName().equals("directors")) &&
+                sibling.hasChildNodes()) {
+
+                for (Node roleNode = sibling.getFirstChild(); roleNode != null; roleNode =
+                        roleNode.getNextSibling()) {
+
+                    if (roleNode.getNodeType() == Node.ELEMENT_NODE && roleNode.getNodeName().equals("actor")) {
+                        NamedNodeMap actorAttributes = roleNode.getAttributes();
+                        PersonEntity actor = new PersonEntity();
+                        actor.setPersonName(actorAttributes.getNamedItem("name").getNodeValue());
+                        actorList.add(actor);
+                    } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
+                               roleNode.getNodeName().equals("creator")) {
+                        NamedNodeMap creatorAttributes = roleNode.getAttributes();
+                        PersonEntity creator = new PersonEntity();
+                        creator.setPersonName(creatorAttributes.getNamedItem("name").getNodeValue());
+                        creatorList.add(creator);
+                    } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
+                               roleNode.getNodeName().equals("directors")) {
+                        NamedNodeMap directorAttributes = roleNode.getAttributes();
+                        PersonEntity director = new PersonEntity();
+                        director.setPersonName(directorAttributes.getNamedItem("name").getNodeValue());
+                        directorList.add(director);
+                    }
+                }
+
+                if(sibling.getNodeName().equals("directors")) {
+                    // set Node to last Node to break for-loop
+                    sibling = sibling.getLastChild();
+                }
+            }
         }
-        */
+
+
     }
 
     private void readCd(Node node, ProductEntity product, CdEntity cd, List<TitleEntity> titleList,
@@ -268,7 +343,7 @@ public class StoreReader {
                         titleList.add(title);
                     }
                 }
-
+                // ToDo: creators = artist or error?
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE &&
                        (sibling.getNodeName().equals("artists") || sibling.getNodeName().equals("creators")) &&
                        sibling.hasChildNodes()) {
@@ -286,8 +361,10 @@ public class StoreReader {
                         artistList.add(artist);
                     }
                 }
-                // set Node to last Node to break for-loop
-                sibling = sibling.getLastChild();
+                if(sibling.getNodeName().equals("creators")) {
+                    // set Node to last Node to break for-loop
+                    sibling = sibling.getLastChild();
+                }
             }
         }
 

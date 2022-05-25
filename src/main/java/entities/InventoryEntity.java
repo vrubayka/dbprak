@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "inventory", schema = "public", catalog = "dbprak")
 public class InventoryEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "store_id")
     private Long storeId;
@@ -16,8 +16,8 @@ public class InventoryEntity {
     @Column(name = "prod_id", nullable = false)
     private String prodId;
     @Basic
-    @Column(name = "prize")
-    private BigDecimal prize;
+    @Column(name = "price")
+    private BigDecimal price;
     @Basic
     @Column(name = "condition", length = 50)
     private String condition;
@@ -44,12 +44,12 @@ public class InventoryEntity {
         this.prodId = prodId;
     }
 
-    public BigDecimal getPrize() {
-        return prize;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setPrize(BigDecimal prize) {
-        this.prize = prize;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getCondition() {
@@ -66,12 +66,12 @@ public class InventoryEntity {
         if (o == null || getClass() != o.getClass()) return false;
         InventoryEntity that = (InventoryEntity) o;
         return Objects.equals(storeId, that.storeId) && Objects.equals(prodId, that.prodId) &&
-               Objects.equals(prize, that.prize) && Objects.equals(condition, that.condition);
+               Objects.equals(price, that.price) && Objects.equals(condition, that.condition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(storeId, prodId, prize, condition);
+        return Objects.hash(storeId, prodId, price, condition);
     }
 
     public StoreEntity getStoreByStoreId() {
