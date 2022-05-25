@@ -12,8 +12,7 @@ public class PersonEntity {
     @Id
     @Column(name = "person_id", nullable = false)
     private long personId;
-    @Basic
-    @Column(name = "person_name", nullable = true, length = 50)
+    @Column(name = "person_name", unique = true, length = 50)
     private String personName;
     @OneToMany(mappedBy = "personByPersonId")
     private Collection<AuthorEntity> authorsByPersonId;

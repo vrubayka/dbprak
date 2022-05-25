@@ -8,12 +8,12 @@ CREATE TABLE product (
 
 CREATE TABLE person (
     person_id BIGSERIAL PRIMARY KEY,
-    person_name VARCHAR(50)
+    person_name VARCHAR(50) UNIQUE
 );
 
 CREATE TABLE book (
     book_id VARCHAR(255) PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                -- on DELETE CASCADE??
-    isbn VARCHAR(50) UNIQUE NOT NULL,
+    isbn VARCHAR(50) NOT NULL,
     publisher VARCHAR(255) NOT NULL,                                        -- id and own table??
     release_date DATE NOT NULL,
     pages INT NOT NULL
@@ -28,7 +28,6 @@ CREATE TABLE author (
 
 CREATE TABLE dvd (
     dvd_id VARCHAR(255) PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                 -- on DELETE CASCADE
-    movie_id INT UNIQUE NOT NULL,
     format VARCHAR(50) NOT NULL,
     term_in_sec INT NOT NULL,
     region_code INT NOT NULL

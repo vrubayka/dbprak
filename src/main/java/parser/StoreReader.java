@@ -1,14 +1,20 @@
 package parser;
 
 import daos.GenericDao;
+import daos.PersonDao;
 import entities.*;
 import org.hibernate.SessionFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
 
 public class StoreReader {
 
@@ -91,7 +97,7 @@ public class StoreReader {
                         List<PersonEntity> authorList = new ArrayList<>();
 
                         readBook(node, product, book, authorList);
-//                        insertBook(product, book, authorList);
+                        insertBook(sessionFactory, product, book, authorList);
 
                     } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
                         DvdEntity dvd = new DvdEntity();
@@ -156,6 +162,7 @@ public class StoreReader {
                 String scope = childNode.getNodeName();
                 switch (scope) {
                     case "isbn":
+                        // ToDo: ISBN sometimes empty string, problem?
                         book.setIsbn(childNode.getAttributes().getNamedItem("val").getNodeValue());
                         break;
                     case "pages":
@@ -168,9 +175,11 @@ public class StoreReader {
                         break;
                     case "publication":
                         String dateAsString = childNode.getAttributes().getNamedItem("date").getNodeValue();
-                        // ToDo: empty date String or verify with regular expression
+                        // ToDo: empty date String or verify with regular expression and remove else!!!
                         if (!dateAsString.equals(""))
                             book.setReleaseDate(Date.valueOf(dateAsString));
+                        else
+                            book.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
                         break;
                 }
             }
@@ -216,8 +225,6 @@ public class StoreReader {
                          List<PersonEntity> creatorList, List<PersonEntity> directorList) {
 
         dvd.setDvdId(product.getProdId());
-        // ToDo: what is MovieId for, delete?
-        dvd.setMovieId(1);
 
         for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -370,7 +377,30 @@ public class StoreReader {
 
     }
 
-//    private void insertBook(ProductEntity product, BookEntity book, List<PersonEntity> authorList) {
-//        GenericDao<ProductEntity>
-//    }
+    private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
+                            List<PersonEntity> authorList) {
+
+        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
+        productDao.create(product);
+
+        GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
+        bookDao.create(book);
+
+        PersonDao personDao = new PersonDao(sessionFactory);
+        GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
+        AuthorEntity author = new AuthorEntity();
+        for(PersonEntity person : authorList) {
+
+            // check for existing person
+            if(personDao.findByName(person.getPersonName()) == null) {
+                personDao.create(person);
+            } else {
+                person = personDao.findByName(person.getPersonName());
+            }
+
+            author.setPersonId(person.getPersonId());
+            author.setBookId(book.getBookId());
+            authorDao.create(author);
+        }
+    }
 }
