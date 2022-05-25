@@ -1,7 +1,8 @@
+import entities.*;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import parser.CSVParser;
-import parser.StoreReader;
+import org.hibernate.query.MutationQuery;
 import parser.XmlParser;
 
 import java.io.File;
@@ -30,12 +31,18 @@ public class Main {
             throw new ExceptionInInitializerError(ex);
         }
 
-        XmlParser parser = new XmlParser();
-        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
-        //parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
-        CSVParser csvParser = new CSVParser();
-        csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
+        HibernateQueries hibernateQueries = new HibernateQueries(sessionFactory);
+        hibernateQueries.cleanDb();
 
+
+        XmlParser parser = new XmlParser();
+<<<<<<<<< Temporary merge branch 1
+        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
+        //parser.readFile("src/main/resources/data-files/categories.xml");
+
+=========
+        parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+>>>>>>>>> Temporary merge branch 2
     }
 
     public static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException, IOException, URISyntaxException {
