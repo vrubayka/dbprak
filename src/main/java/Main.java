@@ -30,8 +30,8 @@ public class Main {
             throw new ExceptionInInitializerError(ex);
         }
 
-        //XmlParser parser = new XmlParser();
-        //parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
+        XmlParser parser = new XmlParser();
+        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
         //parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
         CSVParser csvParser = new CSVParser();
         csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);

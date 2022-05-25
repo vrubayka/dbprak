@@ -3,6 +3,8 @@ package parser;
 import daos.GenericDao;
 import entities.CategoryEntity;
 import entities.ProductCategoryEntity;
+import entities.ProductEntity;
+import entities.ReviewEntity;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -23,6 +25,7 @@ public class CategoryReader {
 
     public void parseCategories(NodeList list, SessionFactory sessionFactory) {
         for (int i = 0; i < list.getLength(); i++) {
+
             if ((XmlParser.returnTagOfNode(list.item(i))).equals("category")) {
 
                 GenericDao<CategoryEntity> daoCat = new GenericDao<>(sessionFactory);
@@ -39,6 +42,15 @@ public class CategoryReader {
 
             }
             else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")){
+
+                ProductEntity product = new ProductEntity();
+                product.setProdId(list.item(i).getFirstChild().getNodeValue());
+                product.setProdName("platzhalter");
+                product.setRating(2.342);
+                GenericDao<ProductEntity> productEntityDao = new GenericDao<>(sessionFactory);
+                GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
+                productEntityDao.create(product);
+
                 GenericDao<ProductCategoryEntity> productDao = new GenericDao(sessionFactory);
                 ProductCategoryEntity entityProduct = new ProductCategoryEntity();
                 productDao.create(entityProduct);
