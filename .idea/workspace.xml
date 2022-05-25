@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="Error search">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProductCategoryEntityPK.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" afterDir="false" />
-    </list>
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="CSV Parser + Category Parser" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -208,7 +202,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653471333985</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="CSV Parser + Category Parser">
+      <created>1653475233266</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1653475233266</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,6 +258,7 @@
     <MESSAGE value="Hibernate settings" />
     <MESSAGE value="Error search" />
     <MESSAGE value="CSV Parser complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="CSV Parser complete" />
+    <MESSAGE value="CSV Parser + Category Parser" />
+    <option name="LAST_COMMIT_MESSAGE" value="CSV Parser + Category Parser" />
   </component>
 </project>
