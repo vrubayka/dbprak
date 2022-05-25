@@ -20,6 +20,7 @@ public class XmlParser implements Reader{
         File inputFile = new File(filePath);
         Document doc = getNormalizedDocument(inputFile);
         String rootElement = doc.getDocumentElement().getNodeName();
+
         switch (rootElement) {
             case "shop":
                 System.out.println("Reading shop...");
@@ -27,14 +28,16 @@ public class XmlParser implements Reader{
                 storeReader.readStoreXml();
 
                 System.out.println("Finished reading shop Xml.");
-            /*
-            ToDo: uncomment
+
+            //ToDo: uncomment
             case "categories":
                 System.out.println("Reading categories...");
                 CategoryReader categoryReader = new CategoryReader(doc, sessionFactory);
                 categoryReader.parseCategories(doc.getDocumentElement().getChildNodes(), sessionFactory);
 
-             */
+                System.out.println("Finished reading categories Xml.");
+
+
         }
     }
 
@@ -52,51 +55,21 @@ public class XmlParser implements Reader{
         return null;
     }
 
-    public void parseCategories(NodeList list, SessionFactory sessionFactory) {
-
-        for (int i = 0; i < list.getLength(); i++) {
-            if (returnTagOfNode(list.item(i)).equals("category")) {
-
-                GenericDao<CategoryEntity> daoCat = new GenericDao<>(sessionFactory);
-                CategoryEntity entityCat = new CategoryEntity();
-
-                entityCat.setCategoryName(returnTextValueOfNode(list.item(i)));
-                daoCat.create(entityCat);
-                categoryDaoMap.put(returnTextValueOfNode(list.item(i)), entityCat.getCategoryId());
-
-                if (returnTagOfNode(list.item(i).getParentNode()).equals("category")){
-                    entityCat.setSuperCategory(categoryDaoMap.get(returnTextValueOfNode(list.item(i))));
-                }
-                parseCategories(list.item(i).getChildNodes(), sessionFactory);
-
-            }
-            else if ((returnTagOfNode(list.item(i))).equals("item")){
-                GenericDao<ProductCategoryEntity> productDao = new GenericDao(sessionFactory);
-                ProductCategoryEntity entityProduct = new ProductCategoryEntity();
-                productDao.create(entityProduct);
-                entityProduct.setProdId(list.item(i).getFirstChild().getNodeValue());
-
-                entityProduct.setCategoryId(categoryDaoMap.get((returnTextValueOfNode(list.item(i).getParentNode()))));
-            }
-        }
-
-    }
-
-    String returnTextValueOfNode(Node node){
+    static String returnTextValueOfNode(Node node){
         String value;
         if (node == null){
-            value = "none";
+            value = "";
             return value;
         }
         else if (node.getFirstChild() == null){
-            value = "none";
+            value = "";
             return value;
         }
         else value = node.getFirstChild().getNodeValue().trim();
         return value;
     }
 
-    String returnTagOfNode(Node node){
+    static String returnTagOfNode(Node node){
         String value;
         if (node == null){
             value = "";

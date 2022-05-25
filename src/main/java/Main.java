@@ -1,8 +1,7 @@
-import entities.*;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.MutationQuery;
+import parser.CSVParser;
+import parser.StoreReader;
 import parser.XmlParser;
 
 import java.io.File;
@@ -32,7 +31,11 @@ public class Main {
         }
 
         XmlParser parser = new XmlParser();
-        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
+        //parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
+        //parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+        CSVParser csvParser = new CSVParser();
+        csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
+
     }
 
     public static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException, IOException, URISyntaxException {

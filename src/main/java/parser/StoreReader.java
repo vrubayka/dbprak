@@ -88,9 +88,9 @@ public class StoreReader {
                         readDvd(node, product, dvd);
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
                         readCd(node, product, cd);
-                    } else if ("labels".equals(scope) && "Music".equals(group)) {
+                    } /*else if ("labels".equals(scope) && "Music".equals(group)) {
                         readCdLabel(node, cd);
-                    }
+                    }*/
                 }
             }
         }
@@ -154,7 +154,21 @@ public class StoreReader {
                 }
             }
         }
+        //node = <bookspec>
+        for (Node loopNode = node; loopNode != null; loopNode = loopNode.getNextSibling()){
+            if (loopNode.getNodeName().equals("publishers")){
+                NodeList publisherNodeList = loopNode.getChildNodes();
+                for (Node loopNodePub = loopNode.getFirstChild(); loopNodePub == loopNode.getLastChild();
+                     loopNodePub = loopNodePub.getNextSibling() ){
+                    if (loopNodePub.getNodeName().equals("publisher")){
+                        System.out.println("Publisher is " + loopNodePub.getNodeValue());
+                    }
+                }
+            }
+
+        }
     }
+
 
     private void readDvd(Node node, ProductEntity product, DvdEntity dvd) {
         dvd.setDvdId(product.getProdId());
