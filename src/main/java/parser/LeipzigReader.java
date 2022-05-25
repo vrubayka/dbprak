@@ -10,12 +10,12 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreReader {
+public class LeipzigReader {
 
     private final Document doc;
     private final SessionFactory sessionFactory;
 
-    public StoreReader(Document doc, SessionFactory sessionFactory) {
+    public LeipzigReader(Document doc, SessionFactory sessionFactory) {
         this.doc            = doc;
         this.sessionFactory = sessionFactory;
     }
@@ -126,7 +126,7 @@ public class StoreReader {
         if (priceAttributes.getNamedItem("currency").getNodeValue().equals("EUR")) {
             double mult = Double.parseDouble(priceAttributes.getNamedItem("mult").getNodeValue());
             double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue());
-            inventoryEntry.setPrize(new BigDecimal(mult * price));
+            inventoryEntry.setPrice(new BigDecimal(mult * price));
         }
     }
 

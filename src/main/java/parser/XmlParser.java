@@ -1,9 +1,5 @@
 package parser;
 
-import daos.GenericDao;
-import entities.AddressEntity;
-import entities.CategoryEntity;
-import entities.ProductCategoryEntity;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.*;
 ;
@@ -24,8 +20,8 @@ public class XmlParser implements Reader{
         switch (rootElement) {
             case "shop":
                 System.out.println("Reading shop...");
-                StoreReader storeReader = new StoreReader(doc, sessionFactory);
-                storeReader.readStoreXml();
+                LeipzigReader leipzigReader = new LeipzigReader(doc, sessionFactory);
+                leipzigReader.readStoreXml();
 
                 System.out.println("Finished reading shop Xml.");
 
