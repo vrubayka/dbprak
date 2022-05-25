@@ -369,4 +369,8 @@ public class StoreReader {
         }
 
     }
+
+//    private void insertBook(ProductEntity product, BookEntity book, List<PersonEntity> authorList) {
+//        GenericDao<ProductEntity>
+//    }
 }
