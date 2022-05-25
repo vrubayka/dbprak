@@ -14,7 +14,6 @@ public class ReviewEntityPK implements Serializable {
     private String prodId;
     @Column(name = "username", nullable = false, length = 50)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String username;
 
     public String getProdId() {

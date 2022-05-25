@@ -2,14 +2,21 @@ package parser;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import daos.GenericDao;
+import entities.ProductEntity;
 import entities.ReviewEntity;
 import org.hibernate.SessionFactory;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CSVParser {
+
+        final static String formatFilePath = "src/main/resources/data-files/format.txt";
         public void createReviewEntity(String file, SessionFactory sessionFactory){
 
         try {
@@ -17,22 +24,98 @@ public class CSVParser {
                     .withType(CSVBean.class).build().parse();
 
             for (CSVBean csvBean : csvBeanList) {
-                System.out.println(csvBean.getProdId() + "   " + csvBean.getRating() + "   " + csvBean.getUsername());
-                ReviewEntity re = new ReviewEntity();
-                re.setProdId(csvBean.getProdId());
-                re.setRating(csvBean.getRating());
-                re.setHelpfulRating(csvBean.getHelpful_rating());
-                re.setReviewdate(csvBean.getReviewdate());
-                re.setUsername(csvBean.getUsername());
-                re.setReviewSum(csvBean.getReviewSum());
-                re.setReviewText(csvBean.getReview_text());
-                GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
-                reviewEntityDao.create(re);
+                try {
+                    ReviewEntity re = new ReviewEntity();
+                    re.setProdId(csvBean.getProdId());
+                    re.setRating(csvBean.getRating());
+                    re.setHelpfulRating(csvBean.getHelpful_rating());
+                    re.setReviewdate(csvBean.getReviewdate());
+                    re.setUsername(csvBean.getUsername());
+                    re.setReviewSum(csvBean.getReviewSum());
+                    re.setReviewText(csvBean.getReview_text());
+                    ProductEntity product = new ProductEntity();
+                    product.setProdId(csvBean.getProdId());
+                    product.setProdName("platzhalter");
+                    product.setRating(2.342);
+                    GenericDao<ProductEntity> productEntityDao = new GenericDao<>(sessionFactory);
+                    GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
+                    productEntityDao.create(product);
+                    reviewEntityDao.create(re);
+                } catch(jakarta.persistence.PersistenceException e){
+                    System.out.println("Duplicate review entry " + csvBean.getProdId() + " declined");
+                }
             }
 
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
               }
+        }
+
+        public String formatSummary(CSVBean csvBean){
+            Map<String, String> mapFromFile = HashMapFromTextFile();
+            for (String key : mapFromFile.keySet()){
+                if (csvBean.getReviewSum().contains(key)){
+                    return csvBean.getReviewSum().replace(key, mapFromFile.get(key));
+                }
+            }
+            return csvBean.getReviewSum();
+        }
+
+    public String formatReview(CSVBean csvBean){
+        Map<String, String> mapFromFile = HashMapFromTextFile();
+        for (String key : mapFromFile.keySet()){
+            if (csvBean.getReview_text().contains(key)){
+                return csvBean.getReview_text().replace(key, mapFromFile.get(key));
+            }
+        }
+        return csvBean.getReview_text();
+    }
+
+        private Map<String, String> HashMapFromTextFile() {
+            Map<String, String> map = new HashMap<String, String>();
+            BufferedReader br = null;
+            try {
+
+                // create file object
+                File file = new File(formatFilePath);
+
+                // create BufferedReader object from the File
+                br = new BufferedReader(new FileReader(file));
+
+                String line = null;
+
+                // read file line by line
+                while ((line = br.readLine()) != null) {
+
+                    // split the line by :
+                    String[] parts = line.split(":");
+
+                    // first part is name, second is number
+                    String code = parts[0].trim();
+                    String zeichen = parts[1].trim();
+
+                    // put name, number in HashMap if they are
+                    // not empty
+                    if (!code.equals("") && !zeichen.equals(""))
+                        map.put(code, zeichen);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+
+                // Always close the BufferedReader
+                if (br != null) {
+                    try {
+                        br.close();
+                    }
+                    catch (Exception e) {
+                    };
+                }
+            }
+
+            return map;
         }
 }
 

@@ -13,7 +13,6 @@ public class ReviewEntity {
     @Id
     @Column(name = "prod_id", nullable = false)
     private String prodId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "username", nullable = false, length = 50)
     private String username;
