@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added publisher setter in readBook() and studio setter to readDvd (see ToDo)">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="edit Artist to Title relation to match data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/TitleEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/TitleEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ArtistEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ArtistEntity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,6 +126,7 @@
       <workItem from="1653119979241" duration="6887000" />
       <workItem from="1653384145562" duration="1152000" />
       <workItem from="1653388095313" duration="8724000" />
+      <workItem from="1653464857066" duration="896000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -198,7 +198,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653404263547</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="edit Artist to Title relation to match data">
+      <created>1653405343679</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1653405343679</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,7 +234,8 @@
     <MESSAGE value="XML Parser Clean up" />
     <MESSAGE value="added Label setter in readCd()" />
     <MESSAGE value="added publisher setter in readBook() and studio setter to readDvd (see ToDo)" />
-    <option name="LAST_COMMIT_MESSAGE" value="added publisher setter in readBook() and studio setter to readDvd (see ToDo)" />
+    <MESSAGE value="edit Artist to Title relation to match data" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit Artist to Title relation to match data" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

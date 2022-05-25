@@ -15,9 +15,6 @@ public class ArtistEntity {
     @Basic
     @Column(name = "artist_name", nullable = false)
     private String artistName;
-    @OneToMany(mappedBy = "artistByArtistId",
-               cascade = CascadeType.ALL)
-    private Collection<TitleEntity> titlesByArtistId;
 
     public long getArtistId() {
         return artistId;
@@ -48,11 +45,4 @@ public class ArtistEntity {
         return Objects.hash(artistId, artistName);
     }
 
-    public Collection<TitleEntity> getTitlesByArtistId() {
-        return titlesByArtistId;
-    }
-
-    public void setTitlesByArtistId(Collection<TitleEntity> titlesByArtistId) {
-        this.titlesByArtistId = titlesByArtistId;
-    }
 }
