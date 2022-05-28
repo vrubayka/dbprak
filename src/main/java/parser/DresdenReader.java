@@ -1,20 +1,25 @@
 package parser;
 
 import daos.GenericDao;
-import entities.AddressEntity;
-import entities.StoreEntity;
+import entities.*;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DresdenReader {
     private final Document doc;
     private final SessionFactory sessionFactory;
 
     public DresdenReader(Document doc, SessionFactory sessionFactory) {
-        this.doc            = doc;
+        this.doc = doc;
         this.sessionFactory = sessionFactory;
     }
 
@@ -64,7 +69,325 @@ public class DresdenReader {
         }
     }
 
-    private void readItem(Node currentNode, long storeId) {
+    private void readItem(Node itemNode, long storeId) {
+        ProductEntity product = new ProductEntity();
 
+        String group = readProdAndReturnGroup(itemNode, product);
+        // ToDo: Exception asin/group == null
+        System.out.println(product.getProdId());
+        if (product.getProdId() != null && group != null) {
+            // read item data
+            for (Node node = itemNode.getFirstChild(); node != null; node = node.getNextSibling()) {
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    String scope = node.getNodeName();
+
+                    if ("price".equals(scope)) {
+                        InventoryEntity inventoryEntry = new InventoryEntity();
+                        readPrice(node, product, inventoryEntry, storeId);
+
+                    } else if ("title".equals(scope)) {
+                        product.setProdName(node.getFirstChild().getNodeValue());
+
+                    } else if ("bookspec".equals(scope) && "Book".equals(group)) {
+                        BookEntity book = new BookEntity();
+                        List<PersonEntity> authorList = new ArrayList<>();
+
+                        readBook(node, product, book, authorList);
+//                        insertBook(product, book, authorList);
+
+                    } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
+                        DvdEntity dvd = new DvdEntity();
+                        List<PersonEntity> actorList = new ArrayList<>();
+                        List<PersonEntity> creatorList = new ArrayList<>();
+                        List<PersonEntity> directorList = new ArrayList<>();
+
+                        readDvd(node, product, dvd, actorList, creatorList, directorList);
+//                        insertDvd(product, dvd, actorList, creatorList, directorList);
+
+                    } else if ("musicspec".equals(scope) && "Music".equals(group)) {
+                        CdEntity cd = new CdEntity();
+                        List<TitleEntity> titleList = new ArrayList<>();
+                        List<ArtistEntity> artistList = new ArrayList<>();
+
+                        readCd(node, product, cd, titleList, artistList);
+//                        insertCd(product, cd, titleList, artistList);
+                    } else if ("details".equals(scope)) {
+                        readDetails(node, product);
+                    }
+                }
+            }
+        } else {
+            try {
+                throw new IOException("Error");
+            } catch (IOException ioe){
+                System.out.println("Item skipped");
+            }
+        }
+    }
+
+    private String readProdAndReturnGroup(Node itemNode, ProductEntity product) {
+        NamedNodeMap itemAttributes = itemNode.getAttributes();
+        if (itemAttributes.getNamedItem("asin") != null && itemAttributes.getNamedItem("pgroup") != null) {
+            String asin = itemAttributes.getNamedItem("asin").getNodeValue();
+            String pgroup = itemAttributes.getNamedItem("pgroup").getNodeValue();
+            if (asin != "")
+                product.setProdId(asin);
+            return pgroup;
+        }
+        return null;
+    }
+
+    private void readPrice(Node priceNode, ProductEntity product, InventoryEntity inventoryEntry, long storeId) {
+        NamedNodeMap priceAttributes = priceNode.getAttributes();
+        inventoryEntry.setProdId(product.getProdId());
+        inventoryEntry.setStoreId(storeId);
+        inventoryEntry.setCondition(priceAttributes.getNamedItem("state").getNodeValue());
+
+
+        // ToDo: exceptions other currencies
+        if (priceAttributes.getNamedItem("currency").getNodeValue().equals("EUR")) {
+            double mult = Double.parseDouble(priceAttributes.getNamedItem("mult").getNodeValue());
+            double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue());
+            inventoryEntry.setPrice(new BigDecimal(mult * price));
+        } else {
+            try {
+                throw new IOException("Error");
+            } catch (IOException ioe) {
+                System.out.println("False currency for " + priceNode.getParentNode().
+                        getAttributes().getNamedItem("asin"));
+            }
+        }
+    }
+
+    //Audiobook in Book gespeichert?
+    //Vielleicht statt in CdEntity speichern oder CdEntity in MusicCdEntity umbenennen?
+    private void readBook(Node node, ProductEntity product, BookEntity book, List<PersonEntity> authorList) {
+        book.setBookId(product.getProdId());
+        for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                String scope = childNode.getNodeName();
+                switch (scope) {
+                    case "isbn":
+                        book.setIsbn(childNode.getAttributes().getNamedItem("val").getNodeValue());
+                        break;
+                    case "pages":
+                        // ToDo: exception if no value
+                        Node pageValue = childNode.getFirstChild();
+                        if (pageValue == null)
+                            book.setPages(0);
+                        else
+                            book.setPages(Integer.parseInt(pageValue.getNodeValue()));
+                        break;
+                    case "publication":
+                        String dateAsString = childNode.getAttributes().getNamedItem("date").getNodeValue();
+                        // ToDo: empty date String or verify with regular expression
+                        if (!dateAsString.equals(""))
+                            book.setReleaseDate(Date.valueOf(dateAsString));
+                        break;
+                }
+            }
+        }
+
+        for (Node sibling = node.getPreviousSibling(); sibling != null; sibling = sibling.getPreviousSibling()) {
+
+            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("publishers")) {
+
+                for (Node publishersNode = sibling.getFirstChild(); publishersNode != null; publishersNode =
+                        publishersNode.getNextSibling()) {
+                    if (publishersNode.getNodeType() == Node.ELEMENT_NODE &&
+                            publishersNode.getNodeName().equals("publisher")) {
+                        String publisher = publishersNode.getFirstChild().getNodeValue();
+                        book.setPublisher(publisher);
+                        // set Node to last Node to break for-loop
+                        publishersNode = sibling.getLastChild();
+                    }
+                }
+            } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("authors") &&
+                    sibling.hasChildNodes()) {
+
+                for (Node authorNode = sibling.getFirstChild(); authorNode != null;
+                     authorNode = authorNode.getNextSibling()) {
+
+                    if (authorNode.getNodeType() == Node.ELEMENT_NODE && authorNode.getNodeName().equals("author")) {
+                        String authorName = authorNode.getFirstChild().getNodeValue();
+                        PersonEntity author = new PersonEntity();
+                        author.setPersonName(authorName);
+                        authorList.add(author);
+                    }
+                }
+
+                if (sibling.getNodeName().equals("musicspec")) {
+                    // set Node to last Node to break for-loop
+                    //einfacher mit null-Zuweisung?
+                    sibling = null;
+                }
+            }
+        }
+    }
+
+    private void readDvd(Node node, ProductEntity product, DvdEntity dvd, List<PersonEntity> actorList,
+                         List<PersonEntity> creatorList, List<PersonEntity> directorList) {
+
+        dvd.setDvdId(product.getProdId());
+        // ToDo: what is MovieId for, delete?
+        dvd.setMovieId(1);
+
+        for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                String scope = childNode.getNodeName();
+                switch (scope) {
+                    //aspect ratio, release date, theatr release, upc?
+                    case "format":
+                        dvd.setFormat(childNode.getFirstChild().getNodeValue());
+                        break;
+                    case "regioncode":
+                        // ToDo: regionCode null ok?
+                        if (childNode.hasChildNodes())
+                            dvd.setRegionCode(Integer.parseInt(childNode.getFirstChild().getNodeValue()));
+                        break;
+                    case "runningtime":
+                        // ToDo: change timeInSec to minutes
+                        // ToDo: Term null ok?
+                        if (childNode.hasChildNodes())
+                            dvd.setTermInSec(Integer.parseInt(childNode.getFirstChild().getNodeValue()) * 60);
+                        break;
+                }
+            }
+        }
+
+        // ToDo: DvdEntity has no studio, necessary?
+        //warum nicht?
+
+        for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
+
+            /*
+            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("studios")) {
+
+                for (Node studiosNode = sibling.getFirstChild(); studiosNode != null; studiosNode  =
+                        studiosNode.getNextSibling()) {
+                    if(studiosNode.getNodeType() == Node.ELEMENT_NODE && studiosNode.getNodeName().equals("studio")) {
+                        NamedNodeMap studioNode = studiosNode.getAttributes();
+                        dvd.set(studioNode.getNamedItem("name").getNodeValue());
+                        // set Node to last Node to break for-loop
+                        studiosNode = sibling.getLastChild();
+                        sibling = sibling.getLastChild();
+                    }
+                }
+            }*/
+
+
+            if (sibling.getNodeType() == Node.ELEMENT_NODE &&
+                    (sibling.getNodeName().equals("actors") || sibling.getNodeName().equals("creators") ||
+                            sibling.getNodeName().equals("directors")) &&
+                    sibling.hasChildNodes()) {
+
+                for (Node roleNode = sibling.getFirstChild(); roleNode != null; roleNode =
+                        roleNode.getNextSibling()) {
+
+                    if (roleNode.getNodeType() == Node.ELEMENT_NODE && roleNode.getNodeName().equals("actor")) {
+                        NamedNodeMap actorAttributes = roleNode.getAttributes();
+                        PersonEntity actor = new PersonEntity();
+                        actor.setPersonName(actorAttributes.getNamedItem("name").getNodeValue());
+                        actorList.add(actor);
+                    } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
+                            roleNode.getNodeName().equals("creator")) {
+                        NamedNodeMap creatorAttributes = roleNode.getAttributes();
+                        PersonEntity creator = new PersonEntity();
+                        creator.setPersonName(creatorAttributes.getNamedItem("name").getNodeValue());
+                        creatorList.add(creator);
+                    } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
+                            roleNode.getNodeName().equals("directors")) {
+                        NamedNodeMap directorAttributes = roleNode.getAttributes();
+                        PersonEntity director = new PersonEntity();
+                        director.setPersonName(directorAttributes.getNamedItem("name").getNodeValue());
+                        directorList.add(director);
+                    }
+                }
+                //nicht noetig
+                if(sibling.getNodeName().equals("directors")) {
+                    // set Node to last Node to break for-loop
+                    sibling = sibling.getLastChild();
+                }
+            }
+        }
+
+
+    }
+
+    private void readCd(Node node, ProductEntity product, CdEntity cd, List<TitleEntity> titleList,
+                        List<ArtistEntity> artistList) {
+
+        cd.setCdId(product.getProdId());
+
+        // read musicspec scope and set values (releasedate)
+        for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
+            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                String scope = childNode.getNodeName();
+                switch (scope) {
+                    case "releasedate":
+                        // ToDo: releaseDate null value ok?
+                        if (childNode.hasChildNodes())
+                            cd.setReleaseDate(Date.valueOf(childNode.getFirstChild().getNodeValue()));
+                        break;
+                }
+            }
+        }
+
+        // set CD Label, get Titles and Artists
+        for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
+
+            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("labels")) {
+
+                for (Node labelsNode = sibling.getFirstChild(); labelsNode != null; labelsNode =
+                        labelsNode.getNextSibling()) {
+                    if (labelsNode.getNodeType() == Node.ELEMENT_NODE && labelsNode.getNodeName().equals("label")) {
+                        NamedNodeMap labelAttributes = labelsNode.getAttributes();
+                        cd.setLabel(labelAttributes.getNamedItem("name").getNodeValue());
+                        // set Node to last Node to break for-loop
+                        labelsNode = sibling.getLastChild();
+                    }
+                }
+
+            } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("tracks")) {
+
+                for (Node tracksNode = sibling.getFirstChild(); tracksNode != null; tracksNode =
+                        tracksNode.getNextSibling()) {
+                    if (tracksNode.getNodeType() == Node.ELEMENT_NODE && tracksNode.getNodeName().equals("title")) {
+                        TitleEntity title = new TitleEntity();
+                        title.setTitleName(tracksNode.getFirstChild().getNodeValue());
+                        titleList.add(title);
+                    }
+                }
+                // ToDo: creators = artist or error?
+            } else if (sibling.getNodeType() == Node.ELEMENT_NODE &&
+                    (sibling.getNodeName().equals("artists") || sibling.getNodeName().equals("creators")) &&
+                    sibling.hasChildNodes()) {
+
+                for (Node artistsNode = sibling.getFirstChild(); artistsNode != null; artistsNode =
+                        artistsNode.getNextSibling()) {
+
+                    if (artistsNode.getNodeType() == Node.ELEMENT_NODE &&
+                            (artistsNode.getNodeName().equals("artist") || artistsNode.getNodeName().equals("creator"))) {
+
+                        NamedNodeMap artistAttributes = artistsNode.getAttributes();
+                        ArtistEntity artist = new ArtistEntity();
+                        artist.setArtistName(artistAttributes.getNamedItem("name").getNodeValue());
+
+                        artistList.add(artist);
+                    }
+                }
+                //das befindet sich außer der Loop
+                if(sibling.getNodeName().equals("creators")) {
+                    // set Node to last Node to break for-loop
+                    sibling = sibling.getLastChild();
+                }
+            }
+        }
+    }
+
+    public void readDetails(Node node, ProductEntity product){
+        String image = node.getAttributes().getNamedItem("img").getNodeValue();
+        product.setImage(image);
     }
 }

@@ -5,6 +5,7 @@ import entities.*;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -146,6 +147,8 @@ public class LeipzigReader {
             double mult = Double.parseDouble(priceAttributes.getNamedItem("mult").getNodeValue());
             double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue());
             inventoryEntry.setPrice(new BigDecimal(mult * price));
+        } else {
+            System.out.println("false currency");
         }
     }
 

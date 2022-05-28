@@ -31,9 +31,9 @@ public class CategoryReader {
                 GenericDao<CategoryEntity> daoCat = new GenericDao<>(sessionFactory);
                 CategoryEntity entityCat = new CategoryEntity();
 
-                entityCat.setCategoryName(XmlParser.returnTextValueOfNode(list.item(i)));
+                entityCat.setCategoryName(XmlParser.returnTextValueOfNode(list.item(i)).trim());
                 daoCat.create(entityCat);
-                categoryDaoMap.put(XmlParser.returnTextValueOfNode(list.item(i)), entityCat.getCategoryId());
+                categoryDaoMap.put(XmlParser.returnTextValueOfNode(list.item(i)).trim(), entityCat.getCategoryId());
 
                 if (XmlParser.returnTagOfNode(list.item(i).getParentNode()).equals("category")){
                     entityCat.setSuperCategory(categoryDaoMap.get(XmlParser.returnTextValueOfNode(list.item(i))));
@@ -58,10 +58,10 @@ public class CategoryReader {
                 }
 
                 GenericDao<ProductCategoryEntity> productDao = new GenericDao(sessionFactory);
-                ProductCategoryEntity entityProductCategor = new ProductCategoryEntity();
-                entityProductCategor.setProdId(list.item(i).getFirstChild().getNodeValue());
-                entityProductCategor.setCategoryId(categoryDaoMap.get((XmlParser.returnTextValueOfNode(list.item(i).getParentNode()))));
-                productDao.create(entityProductCategor);
+                ProductCategoryEntity entityProductCategory = new ProductCategoryEntity();
+                entityProductCategory.setProdId(list.item(i).getFirstChild().getNodeValue());
+                entityProductCategory.setCategoryId(categoryDaoMap.get((XmlParser.returnTextValueOfNode(list.item(i).getParentNode()))));
+                productDao.create(entityProductCategory);
             }
         }
     }
