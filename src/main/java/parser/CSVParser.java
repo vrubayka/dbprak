@@ -43,6 +43,7 @@ public class CSVParser {
                     GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
                     productEntityDao.create(product);
                     reviewEntityDao.create(re);
+                    System.out.println(re.getProdId() + " " + re.getUsername() + " "+ re.getReviewText());
                 } catch(jakarta.persistence.PersistenceException e){
                     System.out.println("Duplicate review entry " + csvBean.getProdId() + " declined");
                 }
