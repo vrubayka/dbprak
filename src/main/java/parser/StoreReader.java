@@ -106,7 +106,7 @@ public class StoreReader {
                         List<PersonEntity> directorList = new ArrayList<>();
 
                         readDvd(node, product, dvd, actorList, creatorList, directorList);
-//                        insertDvd(product, dvd, actorList, creatorList, directorList);
+//                        insertDvd(sessionFactory, product, dvd, actorList, creatorList, directorList);
 
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
                         CdEntity cd = new CdEntity();
@@ -114,7 +114,7 @@ public class StoreReader {
                         List<ArtistEntity> artistList = new ArrayList<>();
 
                         readCd(node, product, cd, titleList, artistList);
-//                        insertCd(product, cd, titleList, artistList);
+//                        insertCd(sessionFactory, product, cd, titleList, artistList);
                     }
                 }
             }
@@ -403,4 +403,7 @@ public class StoreReader {
             authorDao.create(author);
         }
     }
+
+//    private void insertDvd(SessionFactory sessionFactory, ProductEntity product, DvdEntity dvd,
+//                           List<PersonEntity> actorList, List<PersonEntity>)
 }
