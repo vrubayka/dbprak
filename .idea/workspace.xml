@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="CSV Parser + Category Parser" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="CategoryParser completed, Main and StoreReader temporarily changed">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,10 +20,13 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="ShopXMLParser" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -30,8 +40,10 @@
     <setting file="file://$PROJECT_DIR$/pom.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/Main.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/entities/BookEntity.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/parser/StoreReader.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/parser/XmlParser.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/resources/data-files/dresden.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/resources/data-files/leipzig_transformed.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateDB.sql" root0="FORCE_HIGHLIGHTING" />
@@ -67,7 +79,6 @@
     &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;8b7f7931-ad41-4af5-b3e9-3481c839f644&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/chris/Downloads/db_prak_16&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
@@ -99,6 +110,7 @@
       <list>
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -118,12 +130,12 @@
       <workItem from="1652784756472" duration="3296000" />
       <workItem from="1652960007523" duration="2001000" />
       <workItem from="1653038391783" duration="5230000" />
-      <workItem from="1653119979241" duration="16845000" />
-      <workItem from="1653142460241" duration="8549000" />
-      <workItem from="1653151031133" duration="3281000" />
-      <workItem from="1653203198201" duration="8806000" />
-      <workItem from="1653290848868" duration="6156000" />
-      <workItem from="1653465020440" duration="6613000" />
+      <workItem from="1653119979241" duration="6887000" />
+      <workItem from="1653384145562" duration="1152000" />
+      <workItem from="1653388095313" duration="8724000" />
+      <workItem from="1653464857066" duration="6907000" />
+      <workItem from="1653910291946" duration="13000" />
+      <workItem from="1653915927865" duration="2440000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -139,77 +151,98 @@
       <option name="project" value="LOCAL" />
       <updated>1652784882199</updated>
     </task>
-    <task id="LOCAL-00003" summary="added GenericDao interface and Implementation">
-      <created>1653128198891</created>
+    <task id="LOCAL-00003" summary="edit deleteAll() in GenericDao">
+      <created>1653389590803</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1653128198891</updated>
+      <updated>1653389590803</updated>
     </task>
-    <task id="LOCAL-00004" summary="added Parser for shop part in XML">
-      <created>1653146657052</created>
+    <task id="LOCAL-00004" summary="edit deleteAll() in GenericDao">
+      <created>1653389730991</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1653146657052</updated>
+      <updated>1653389730991</updated>
     </task>
-    <task id="LOCAL-00005" summary="added loop over item Elements in root Element">
-      <created>1653150530384</created>
+    <task id="LOCAL-00005" summary="added HibernateQueries and delete all rows function">
+      <created>1653393809751</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1653150530384</updated>
+      <updated>1653393809751</updated>
     </task>
-    <task id="LOCAL-00006" summary="edited SQL creation scripts to better map data">
-      <created>1653152305238</created>
+    <task id="LOCAL-00006" summary="resort cleanDb deleteAll methods to match data relations">
+      <created>1653395358783</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1653152305238</updated>
+      <updated>1653395358783</updated>
     </task>
-    <task id="LOCAL-00007" summary="edited entities to map DB">
-      <created>1653154268623</created>
+    <task id="LOCAL-00007" summary="merge with master">
+      <created>1653397169726</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1653154268623</updated>
+      <updated>1653397169726</updated>
     </task>
-    <task id="LOCAL-00008" summary="fixed PK entities equals() method">
-      <created>1653204294016</created>
+    <task id="LOCAL-00008" summary="XML Parser Clean up">
+      <created>1653397237979</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1653204294016</updated>
+      <updated>1653397237979</updated>
     </task>
-    <task id="LOCAL-00009" summary="fixed ID datatype">
-      <created>1653299888117</created>
+    <task id="LOCAL-00009" summary="added Label setter in readCd()">
+      <created>1653403296534</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1653299888117</updated>
+      <updated>1653403296534</updated>
     </task>
-    <task id="LOCAL-00010" summary="Hibernate settings">
-      <created>1653299937436</created>
+    <task id="LOCAL-00010" summary="added publisher setter in readBook() and studio setter to readDvd (see ToDo)">
+      <created>1653404263547</created>
       <option name="number" value="00010" />
       <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
-      <updated>1653299937436</updated>
+      <updated>1653404263547</updated>
     </task>
-    <task id="LOCAL-00011" summary="CSV Parser complete">
-      <created>1653471333985</created>
+    <task id="LOCAL-00011" summary="edit Artist to Title relation to match data">
+      <created>1653405343679</created>
       <option name="number" value="00011" />
       <option name="presentableId" value="LOCAL-00011" />
       <option name="project" value="LOCAL" />
-      <updated>1653471333985</updated>
+      <updated>1653405343679</updated>
     </task>
-    <task id="LOCAL-00012" summary="CSV Parser + Category Parser">
-      <created>1653475233266</created>
+    <task id="LOCAL-00012" summary="edit Artist to Title relation to match data">
+      <created>1653465917347</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1653475233266</updated>
+      <updated>1653465917347</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="changed typo in price">
+      <created>1653484051784</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1653484051785</updated>
+    </task>
+    <task id="LOCAL-00014" summary="small changes">
+      <created>1653485153503</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1653485153503</updated>
+    </task>
+    <task id="LOCAL-00015" summary="CategoryParser completed, Main and StoreReader temporarily changed">
+      <created>1653908454736</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1653908454736</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,24 +253,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="CUSTOM_BOOLEAN_PROPERTIES">
-                <map>
-                  <entry key="Show.Git.Branches" value="true" />
-                </map>
-              </option>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="master" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -248,17 +264,32 @@
     <MESSAGE value="lots of changes" />
     <MESSAGE value="changed DB table creation and added data files" />
     <MESSAGE value="changes in hibernate config and fixed typo in sql script" />
-    <MESSAGE value="added GenericDao interface and Implementation" />
-    <MESSAGE value="added Parser for shop part in XML" />
-    <MESSAGE value="added loop over item Elements in root Element" />
-    <MESSAGE value="edited SQL creation scripts to better map data" />
-    <MESSAGE value="edited entities to map DB" />
-    <MESSAGE value="fixed PK entities equals() method" />
-    <MESSAGE value="fixed ID datatype" />
-    <MESSAGE value="Hibernate settings" />
-    <MESSAGE value="Error search" />
-    <MESSAGE value="CSV Parser complete" />
-    <MESSAGE value="CSV Parser + Category Parser" />
-    <option name="LAST_COMMIT_MESSAGE" value="CSV Parser + Category Parser" />
+    <MESSAGE value="edit deleteAll() in GenericDao" />
+    <MESSAGE value="added HibernateQueries and delete all rows function" />
+    <MESSAGE value="resort cleanDb deleteAll methods to match data relations" />
+    <MESSAGE value="merge with master" />
+    <MESSAGE value="XML Parser Clean up" />
+    <MESSAGE value="added Label setter in readCd()" />
+    <MESSAGE value="added publisher setter in readBook() and studio setter to readDvd (see ToDo)" />
+    <MESSAGE value="edit Artist to Title relation to match data" />
+    <MESSAGE value="read Leipzig data finished, but not inserted yet" />
+    <MESSAGE value="changed typo in price" />
+    <MESSAGE value="small changes" />
+    <MESSAGE value="CategoryParser completed, Main and StoreReader temporarily changed" />
+    <option name="LAST_COMMIT_MESSAGE" value="CategoryParser completed, Main and StoreReader temporarily changed" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/parser/XmlParser.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/dbpraktikum$Main.ic" NAME="Main Coverage Results" MODIFIED="1653402293039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
