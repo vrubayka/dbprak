@@ -38,6 +38,7 @@ public class GenericDao <T> implements IGenericDao <T>{
         return session.createQuery(s, daoClass).getResultList();
     }
 
+    //TODO: Exception wenn Product bereits existiert
     @Override
     public void create(T entity) {
         Session session = sessionFactory.getCurrentSession();

@@ -99,7 +99,7 @@ public class DresdenReader {
                         readPrice(node, product, inventoryEntry, storeId);
 
                     } else if ("title".equals(scope)) {
-                        product.setProdName(node.getFirstChild().getNodeValue());
+                        product.setProdName(node.getFirstChild().getNodeValue().trim());
 
                     } else if ("bookspec".equals(scope) && "Book".equals(group)) {
                         BookEntity book = new BookEntity();
@@ -205,6 +205,8 @@ public class DresdenReader {
                         // ToDo: empty date String or verify with regular expression
                         if (!dateAsString.equals(""))
                             book.setReleaseDate(Date.valueOf(dateAsString));
+                        else
+                            book.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
                         break;
                 }
             }
@@ -245,6 +247,8 @@ public class DresdenReader {
                 }
             }
         }
+        if (book.getPublisher() == null)
+            book.setPublisher("");
     }
 
     private void readDvd(Node node, ProductEntity product, DvdEntity dvd, List<PersonEntity> actorList,
@@ -357,7 +361,7 @@ public class DresdenReader {
         }
 
         // set CD Label, get Titles and Artists
-        for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
+        for (Node sibling = node.getPreviousSibling(); sibling != null; sibling = sibling.getPreviousSibling()) {
 
             if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("labels")) {
 
@@ -370,6 +374,8 @@ public class DresdenReader {
                         labelsNode = sibling.getLastChild();
                     }
                 }
+                if (cd.getLabel() == null)
+                    cd.setLabel("");
 
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("tracks")) {
 
@@ -391,10 +397,8 @@ public class DresdenReader {
 
                     if (artistsNode.getNodeType() == Node.ELEMENT_NODE &&
                             (artistsNode.getNodeName().equals("artist") || artistsNode.getNodeName().equals("creator"))) {
-
-                        NamedNodeMap artistAttributes = artistsNode.getAttributes();
                         ArtistEntity artist = new ArtistEntity();
-                        artist.setArtistName(artistAttributes.getNamedItem("name").getNodeValue());
+                        artist.setArtistName(artistsNode.getFirstChild().getNodeValue());
 
                         artistList.add(artist);
                     }
