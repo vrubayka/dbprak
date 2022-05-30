@@ -19,6 +19,7 @@ public class HibernateQueries {
         GenericDao<BookEntity> bookEntityDao = new GenericDao<>(BookEntity.class, sessionFactory);
         GenericDao<CategoryEntity> categoryEntityDao = new GenericDao<>(CategoryEntity.class, sessionFactory);
         GenericDao<CdEntity> cdEntityDao = new GenericDao<>(CdEntity.class, sessionFactory);
+        GenericDao<CdArtistEntity> cdArtistEntityDao = new GenericDao<>(CdArtistEntity.class, sessionFactory);
         GenericDao<CdTitleEntity> cdTitleEntityDao = new GenericDao<>(CdTitleEntity.class, sessionFactory);
         GenericDao<CustomerEntity> customerEntityDao = new GenericDao<>(CustomerEntity.class, sessionFactory);
         GenericDao<DvdEntity> dvdEntityDao = new GenericDao<>(DvdEntity.class, sessionFactory);
@@ -35,6 +36,7 @@ public class HibernateQueries {
 
         cdTitleEntityDao.deleteAll();
         titleEntityDao.deleteAll();
+        cdArtistEntityDao.deleteAll();
         artistEntityDao.deleteAll();
         cdEntityDao.deleteAll();
         authorEntityDao.deleteAll();
