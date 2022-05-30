@@ -62,7 +62,6 @@ public class StoreReader {
     }
 
     private void readItems(Element root, long storeId) {
-
         for (Node currentNode = root.getFirstChild(); currentNode != null; currentNode = currentNode.getNextSibling()) {
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (currentNode.getNodeName().equals("item"))

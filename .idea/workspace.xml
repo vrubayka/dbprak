@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="CategoryParser completed, Main and StoreReader temporarily changed">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="misc commit before merge with ShopXMLReader">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,7 +240,21 @@
       <option name="project" value="LOCAL" />
       <updated>1653908454736</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="misc commit before merge with ShopXMLReader">
+      <created>1653920059803</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1653920059803</updated>
+    </task>
+    <task id="LOCAL-00017" summary="misc commit before merge with ShopXMLReader">
+      <created>1653920137386</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1653920137386</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,7 +288,8 @@
     <MESSAGE value="changed typo in price" />
     <MESSAGE value="small changes" />
     <MESSAGE value="CategoryParser completed, Main and StoreReader temporarily changed" />
-    <option name="LAST_COMMIT_MESSAGE" value="CategoryParser completed, Main and StoreReader temporarily changed" />
+    <MESSAGE value="misc commit before merge with ShopXMLReader" />
+    <option name="LAST_COMMIT_MESSAGE" value="misc commit before merge with ShopXMLReader" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -285,6 +298,20 @@
           <url>file://$PROJECT_DIR$/src/main/java/parser/XmlParser.java</url>
           <line>24</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/parser/DresdenReader.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/parser/DresdenReader.java</url>
+          <line>143</line>
+          <properties class="parser.DresdenReader" method="readProdAndReturnGroup">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
