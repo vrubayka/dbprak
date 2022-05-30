@@ -11,7 +11,6 @@ public class AuthorEntity {
     @Id
     @Column(name = "book_id", nullable = false)
     private String bookId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "person_id", nullable = false)
     private long personId;
