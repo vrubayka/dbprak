@@ -1,5 +1,6 @@
 package parser;
 
+import daos.ArtistDao;
 import daos.GenericDao;
 import daos.PersonDao;
 import entities.*;
@@ -458,7 +459,15 @@ public class StoreReader {
         cdDao.create(cd);
 
 
+
+        for(ArtistEntity artist : artistList) {
+            artist = artistPersistent(artist);
+
+
+        }
     }
+
+
     private PersonEntity personPersistent(PersonEntity person) {
 
         PersonDao personDao = new PersonDao(sessionFactory);
@@ -470,5 +479,18 @@ public class StoreReader {
         }
 
         return person;
+    }
+
+    private ArtistEntity artistPersistent(ArtistEntity artist) {
+
+        ArtistDao artistDao = new ArtistDao(sessionFactory);
+        // check for existing artist
+        if(artistDao.findByName(artist.getArtistName()) == null) {
+            artistDao.create(artist);
+        } else {
+            artist = artistDao.findByName(artist.getArtistName());
+        }
+
+        return artist;
     }
 }
