@@ -120,7 +120,7 @@ public class StoreReader {
 
                         readCd(node, product, cd, titleList, artistList);
                         // ToDo: check product/cd values for not null and throw Exception
-//                        insertCd(sessionFactory, product, cd, titleList, artistList);
+                        insertCd(sessionFactory, product, cd, titleList, artistList);
                     }
                 }
             }
@@ -448,6 +448,17 @@ public class StoreReader {
         }
     }
 
+    private void insertCd(SessionFactory sessionFactory, ProductEntity product, CdEntity cd,
+                          List<TitleEntity> titleList, List<ArtistEntity> artistList) {
+
+        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
+        productDao.create(product);
+
+        GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
+        cdDao.create(cd);
+
+
+    }
     private PersonEntity personPersistent(PersonEntity person) {
 
         PersonDao personDao = new PersonDao(sessionFactory);
