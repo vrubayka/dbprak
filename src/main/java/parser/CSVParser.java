@@ -25,25 +25,25 @@ public class CSVParser {
 
             for (CSVBean csvBean : csvBeanList) {
                 try { //TODO:
-                    String formatReviewSummary = formatSummary(csvBean);
-                    String formatReviewText = formatReview(csvBean);
+                    //String formatReviewSummary = formatSummary(csvBean);
+                    //String formatReviewText = formatReview(csvBean);
                     ReviewEntity re = new ReviewEntity();
                     re.setProdId(csvBean.getProdId());
                     re.setRating(csvBean.getRating());
                     re.setHelpfulRating(csvBean.getHelpful_rating());
                     re.setReviewdate(csvBean.getReviewdate());
                     re.setUsername(csvBean.getUsername());
-                    re.setReviewSum(formatReviewSummary);
-                    re.setReviewText(formatReviewText);
-                    ProductEntity product = new ProductEntity();
+                    re.setReviewSum(csvBean.getReviewSum());
+                    re.setReviewText(csvBean.getReview_text());
+                    /*ProductEntity product = new ProductEntity();
                     product.setProdId(csvBean.getProdId());
                     product.setProdName("platzhalter");
                     product.setRating(2.342);
                     GenericDao<ProductEntity> productEntityDao = new GenericDao<>(sessionFactory);
+                    //productEntityDao.create(product);*/
                     GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
-                    productEntityDao.create(product);
                     reviewEntityDao.create(re);
-                    System.out.println(re.getProdId() + " " + re.getUsername() + " "+ re.getReviewText());
+                    //System.out.println(re.getProdId() + " " + re.getUsername() + " "+ re.getReviewText());
                 } catch(jakarta.persistence.PersistenceException e){
                     System.out.println("Duplicate review entry " + csvBean.getProdId() + " declined");
                 }

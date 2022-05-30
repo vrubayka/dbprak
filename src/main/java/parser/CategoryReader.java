@@ -31,44 +31,30 @@ public class CategoryReader {
 
                 GenericDao<CategoryEntity> daoCat = new GenericDao<>(sessionFactory);
                 CategoryEntity entityCat = new CategoryEntity();
-                entityCat.setCategoryName(list.item(i).getFirstChild().getNodeValue().trim());
+                entityCat.setCategoryName(XmlParser.returnTextValueOfNode(list.item(i)));
 
-                if (list.item(i).getParentNode().getNodeName().equals("category")) {
-                    entityCat.setSuperCategory(categoryDaoMap.get(list.item(i).getParentNode().getFirstChild().getNodeValue().trim()));
+                if (XmlParser.returnTagOfNode(list.item(i).getParentNode()).equals("category")) {
+                    entityCat.setSuperCategory(categoryDaoMap.get(XmlParser.returnTextValueOfNode(list.item(i).getParentNode())));
                 }
                 daoCat.create(entityCat);
-                categoryDaoMap.put(list.item(i).getFirstChild().getNodeValue().trim(), entityCat.getCategoryId());
+                categoryDaoMap.put(XmlParser.returnTextValueOfNode(list.item(i)), entityCat.getCategoryId());
                 //System.out.println("MAP INHALT: " + categoryDaoMap);
                 parseCategories(list.item(i).getChildNodes(), sessionFactory);
 
             }
             else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")){
-                /*try {
-
-
-                    ProductEntity product = new ProductEntity();
-                    product.setProdId(list.item(i).getFirstChild().getNodeValue());
-                    product.setProdName("platzhalter");
-                    product.setRating(2.342);
-                    GenericDao<ProductEntity> productEntityDao = new GenericDao<>(sessionFactory);
-                    GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
-                    productEntityDao.create(product);
-                    System.out.println("Product: " + list.item(i).getParentNode().getFirstChild().getNodeValue());
-                } catch (jakarta.persistence.PersistenceException e){
-                    System.out.println("Dublicate Item declined: " + list.item(i).getFirstChild().getNodeValue());
-                }*/
                 try {
                     GenericDao<ProductCategoryEntity> productDao = new GenericDao(sessionFactory);
                     ProductCategoryEntity entityProductCategory = new ProductCategoryEntity();
-                    entityProductCategory.setProdId(list.item(i).getFirstChild().getNodeValue());
-                    entityProductCategory.setCategoryId(categoryDaoMap.get(list.item(i).getParentNode().getFirstChild().getNodeValue().trim()));
+                    entityProductCategory.setProdId(XmlParser.returnTextValueOfNode(list.item(i)));
+                    entityProductCategory.setCategoryId(categoryDaoMap.
+                            get(XmlParser.returnTextValueOfNode(list.item(i).getParentNode())));
                     productDao.create(entityProductCategory);
                 } catch (jakarta.persistence.PersistenceException e){
-                    System.out.println("Item " + list.item(i).getFirstChild().getNodeValue() + " missing");
+                    System.out.println("Item " + XmlParser.returnTextValueOfNode(list.item(i)) + " missing");
 
                 }
             }
         }
-        System.out.println("Finished reading categories");
     }
 }

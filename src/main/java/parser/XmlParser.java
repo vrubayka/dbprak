@@ -50,6 +50,7 @@ public class XmlParser implements Reader{
         Document doc = getNormalizedDocument(inputFile);
         CategoryReader cr = new CategoryReader(doc, sessionFactory);
         cr.parseCategories(doc.getDocumentElement().getChildNodes(), sessionFactory);
+        System.out.println("Finished reading categories");
     }
 
     private Document getNormalizedDocument(File inputFile) {
@@ -86,7 +87,7 @@ public class XmlParser implements Reader{
             value = "";
             return  value;
         }
-        else value = node.getNodeName().trim();
+        else value = node.getNodeName();
         return value;
     }
 
