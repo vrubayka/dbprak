@@ -14,11 +14,9 @@ public class DvdPersonEntityPK implements Serializable {
     private String dvdId;
     @Column(name = "person_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long personId;
     @Column(name = "p_role", nullable = false, length = 50)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String pRole;
 
     public String getDvdId() {

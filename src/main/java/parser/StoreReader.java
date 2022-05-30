@@ -97,6 +97,7 @@ public class StoreReader {
                         List<PersonEntity> authorList = new ArrayList<>();
 
                         readBook(node, product, book, authorList);
+                        // ToDo: check product/book values for not null and throw Exception
                         insertBook(sessionFactory, product, book, authorList);
 
                     } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
@@ -106,7 +107,11 @@ public class StoreReader {
                         List<PersonEntity> directorList = new ArrayList<>();
 
                         readDvd(node, product, dvd, actorList, creatorList, directorList);
-//                        insertDvd(sessionFactory, product, dvd, actorList, creatorList, directorList);
+                        // ToDo: check product/dvd values for not null and throw Exception
+                        if(product.getProdName() == null) {
+                            product.setProdName("");
+                        }
+                        insertDvd(sessionFactory, product, dvd, actorList, creatorList, directorList);
 
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
                         CdEntity cd = new CdEntity();
@@ -114,7 +119,8 @@ public class StoreReader {
                         List<ArtistEntity> artistList = new ArrayList<>();
 
                         readCd(node, product, cd, titleList, artistList);
-//                        insertCd(sessionFactory, product, cd, titleList, artistList);
+                        // ToDo: check product/cd values for not null and throw Exception
+                        insertCd(sessionFactory, product, cd, titleList, artistList);
                     }
                 }
             }
@@ -288,7 +294,7 @@ public class StoreReader {
                         creator.setPersonName(creatorAttributes.getNamedItem("name").getNodeValue());
                         creatorList.add(creator);
                     } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
-                               roleNode.getNodeName().equals("directors")) {
+                               roleNode.getNodeName().equals("director")) {
                         NamedNodeMap directorAttributes = roleNode.getAttributes();
                         PersonEntity director = new PersonEntity();
                         director.setPersonName(directorAttributes.getNamedItem("name").getNodeValue());
@@ -386,17 +392,11 @@ public class StoreReader {
         GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
         bookDao.create(book);
 
-        PersonDao personDao = new PersonDao(sessionFactory);
         GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
         AuthorEntity author = new AuthorEntity();
         for(PersonEntity person : authorList) {
 
-            // check for existing person
-            if(personDao.findByName(person.getPersonName()) == null) {
-                personDao.create(person);
-            } else {
-                person = personDao.findByName(person.getPersonName());
-            }
+            person = personPersistent(person);
 
             author.setPersonId(person.getPersonId());
             author.setBookId(book.getBookId());
@@ -404,6 +404,71 @@ public class StoreReader {
         }
     }
 
-//    private void insertDvd(SessionFactory sessionFactory, ProductEntity product, DvdEntity dvd,
-//                           List<PersonEntity> actorList, List<PersonEntity>)
+    private void insertDvd(SessionFactory sessionFactory, ProductEntity product, DvdEntity dvd,
+                           List<PersonEntity> actorList, List<PersonEntity> creatorList,
+                           List<PersonEntity> directorList) {
+
+        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
+        productDao.create(product);
+
+        GenericDao<DvdEntity> dvdDao = new GenericDao<>(sessionFactory);
+        dvdDao.create(dvd);
+
+        GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
+        DvdPersonEntity dvdPerson = new DvdPersonEntity();
+
+        for(PersonEntity actor : actorList) {
+
+            actor = personPersistent(actor);
+
+            dvdPerson.setPersonId(actor.getPersonId());
+            dvdPerson.setDvdId(dvd.getDvdId());
+            dvdPerson.setpRole("Actor");
+            dvdPersonDao.create(dvdPerson);
+        }
+
+        for(PersonEntity creator : creatorList) {
+
+            creator = personPersistent(creator);
+
+            dvdPerson.setPersonId(creator.getPersonId());
+            dvdPerson.setDvdId(dvd.getDvdId());
+            dvdPerson.setpRole("Creator");
+            dvdPersonDao.create(dvdPerson);
+        }
+
+        for(PersonEntity director : directorList) {
+
+            director = personPersistent(director);
+
+            dvdPerson.setPersonId(director.getPersonId());
+            dvdPerson.setDvdId(dvd.getDvdId());
+            dvdPerson.setpRole("Director");
+            dvdPersonDao.create(dvdPerson);
+        }
+    }
+
+    private void insertCd(SessionFactory sessionFactory, ProductEntity product, CdEntity cd,
+                          List<TitleEntity> titleList, List<ArtistEntity> artistList) {
+
+        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
+        productDao.create(product);
+
+        GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
+        cdDao.create(cd);
+
+
+    }
+    private PersonEntity personPersistent(PersonEntity person) {
+
+        PersonDao personDao = new PersonDao(sessionFactory);
+        // check for existing person
+        if(personDao.findByName(person.getPersonName()) == null) {
+            personDao.create(person);
+        } else {
+            person = personDao.findByName(person.getPersonName());
+        }
+
+        return person;
+    }
 }
