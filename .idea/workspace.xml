@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added ArtistDao">
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CdArtistEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CdArtistEntityPK.java" afterDir="false" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="finished Leipzig reader (ToDos unfinished)">
+      <change afterPath="$PROJECT_DIR$/src/main/java/logging/ProductException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/daos/ArtistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/daos/ArtistDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ArtistEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ArtistEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CdEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/CdEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
