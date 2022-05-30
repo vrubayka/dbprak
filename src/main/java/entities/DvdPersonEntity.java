@@ -11,11 +11,9 @@ public class DvdPersonEntity {
     @Id
     @Column(name = "dvd_id", nullable = false)
     private String dvdId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "person_id", nullable = false)
     private long personId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "p_role", nullable = false, length = 50)
     private String pRole;

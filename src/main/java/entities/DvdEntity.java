@@ -12,7 +12,7 @@ public class DvdEntity {
     @Column(name = "dvd_id", nullable = false)
     private String dvdId;
     @Basic
-    @Column(name = "format", nullable = false, length = 50)
+    @Column(name = "format", nullable = false)
     private String format;
     @Basic
     @Column(name = "term_in_sec", nullable = false)

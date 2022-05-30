@@ -24,9 +24,6 @@ public class AddressEntity {
     @Basic
     @Column(name = "postcode", nullable = false, length = 50)
     private String postcode;
-    @Basic
-    @Column(name = "country", length = 50)
-    private String country;
     @OneToMany(mappedBy = "addressByAddressId")
     private Collection<CustomerEntity> customersByAddressId;
     @OneToMany(mappedBy = "addressByAddressId")
@@ -72,14 +69,6 @@ public class AddressEntity {
         this.postcode = postcode;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,12 +76,12 @@ public class AddressEntity {
         AddressEntity that = (AddressEntity) o;
         return addressId == that.addressId && streetNumber == that.streetNumber &&
                Objects.equals(streetName, that.streetName) && Objects.equals(city, that.city) &&
-               Objects.equals(postcode, that.postcode) && Objects.equals(country, that.country);
+               Objects.equals(postcode, that.postcode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(addressId, streetName, streetNumber, city, postcode, country);
+        return Objects.hash(addressId, streetName, streetNumber, city, postcode);
     }
 
     public Collection<CustomerEntity> getCustomersByAddressId() {

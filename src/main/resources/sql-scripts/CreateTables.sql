@@ -28,7 +28,7 @@ CREATE TABLE author (
 
 CREATE TABLE dvd (
     dvd_id VARCHAR(255) PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                 -- on DELETE CASCADE
-    format VARCHAR(50) NOT NULL,
+    format VARCHAR(255) NOT NULL,
     term_in_sec INT NOT NULL,
     region_code INT NOT NULL
 );
@@ -86,8 +86,7 @@ CREATE TABLE address (
     street_name VARCHAR(50) NOT NULL,
     street_number INT NOT NULL,
     city VARCHAR(50) NOT NULL,
-    postcode VARCHAR(50) NOT NULL,
-    country VARCHAR(50)
+    postcode VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE store (                                                                        -- store key word??
