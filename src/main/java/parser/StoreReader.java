@@ -4,6 +4,7 @@ import daos.ArtistDao;
 import daos.GenericDao;
 import daos.PersonDao;
 import entities.*;
+import jakarta.persistence.PersistenceException;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -109,7 +110,7 @@ public class StoreReader {
 
                         readDvd(node, product, dvd, actorList, creatorList, directorList);
                         // ToDo: check product/dvd values for not null and throw Exception
-                        if(product.getProdName() == null) {
+                        if (product.getProdName() == null) {
                             product.setProdName("");
                         }
                         insertDvd(sessionFactory, product, dvd, actorList, creatorList, directorList);
@@ -121,6 +122,9 @@ public class StoreReader {
 
                         readCd(node, product, cd, titleList, artistList);
                         // ToDo: check product/cd values for not null and throw Exception
+                        if (product.getProdName() == null) {
+                            product.setProdName("");
+                        }
                         insertCd(sessionFactory, product, cd, titleList, artistList);
                     }
                 }
@@ -139,7 +143,9 @@ public class StoreReader {
             String pgroup = itemAttributes.getNamedItem("pgroup").getNodeValue();
             if (asin != "")
                 product.setProdId(asin);
-            product.setImage(picture);
+            // ToDo: check for link length
+            if (picture.length() < 256)
+                product.setImage(picture);
 
             return pgroup;
         }
@@ -207,7 +213,7 @@ public class StoreReader {
                     }
                 }
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("authors") &&
-                  sibling.hasChildNodes()) {
+                       sibling.hasChildNodes()) {
 
                 for (Node authorNode = sibling.getFirstChild(); authorNode != null;
                      authorNode = authorNode.getNextSibling()) {
@@ -220,7 +226,7 @@ public class StoreReader {
                     }
                 }
 
-                if(sibling.getNodeName().equals("authors")) {
+                if (sibling.getNodeName().equals("authors")) {
                     // set Node to last Node to break for-loop
                     sibling = sibling.getLastChild();
                 }
@@ -303,7 +309,7 @@ public class StoreReader {
                     }
                 }
 
-                if(sibling.getNodeName().equals("directors")) {
+                if (sibling.getNodeName().equals("directors")) {
                     // set Node to last Node to break for-loop
                     sibling = sibling.getLastChild();
                 }
@@ -324,9 +330,11 @@ public class StoreReader {
                 String scope = childNode.getNodeName();
                 switch (scope) {
                     case "releasedate":
-                        // ToDo: releaseDate null value ok?
+                        // ToDo: releaseDate null value ok? currently current date inserted
                         if (childNode.hasChildNodes())
                             cd.setReleaseDate(Date.valueOf(childNode.getFirstChild().getNodeValue()));
+                        else
+                            cd.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
                         break;
                 }
             }
@@ -346,6 +354,10 @@ public class StoreReader {
                         labelsNode = sibling.getLastChild();
                     }
                 }
+                // ToDo: label null value accepted?
+                if (cd.getLabel() == null)
+                    cd.setLabel("");
+
 
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("tracks")) {
 
@@ -375,7 +387,7 @@ public class StoreReader {
                         artistList.add(artist);
                     }
                 }
-                if(sibling.getNodeName().equals("creators")) {
+                if (sibling.getNodeName().equals("creators")) {
                     // set Node to last Node to break for-loop
                     sibling = sibling.getLastChild();
                 }
@@ -395,7 +407,7 @@ public class StoreReader {
 
         GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
         AuthorEntity author = new AuthorEntity();
-        for(PersonEntity person : authorList) {
+        for (PersonEntity person : authorList) {
 
             person = personPersistent(person);
 
@@ -418,7 +430,7 @@ public class StoreReader {
         GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
         DvdPersonEntity dvdPerson = new DvdPersonEntity();
 
-        for(PersonEntity actor : actorList) {
+        for (PersonEntity actor : actorList) {
 
             actor = personPersistent(actor);
 
@@ -428,7 +440,7 @@ public class StoreReader {
             dvdPersonDao.create(dvdPerson);
         }
 
-        for(PersonEntity creator : creatorList) {
+        for (PersonEntity creator : creatorList) {
 
             creator = personPersistent(creator);
 
@@ -438,7 +450,7 @@ public class StoreReader {
             dvdPersonDao.create(dvdPerson);
         }
 
-        for(PersonEntity director : directorList) {
+        for (PersonEntity director : directorList) {
 
             director = personPersistent(director);
 
@@ -458,12 +470,19 @@ public class StoreReader {
         GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
         cdDao.create(cd);
 
+        GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(sessionFactory);
+        CdArtistEntity cdArtist = new CdArtistEntity();
 
-
-        for(ArtistEntity artist : artistList) {
+        for (ArtistEntity artist : artistList) {
             artist = artistPersistent(artist);
 
-
+            cdArtist.setArtistId(artist.getArtistId());
+            cdArtist.setCdId(cd.getCdId());
+            try {
+                cdArtistDao.create(cdArtist);
+            } catch (PersistenceException e) {
+                System.err.println("Dublicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
+            }
         }
     }
 
@@ -472,7 +491,7 @@ public class StoreReader {
 
         PersonDao personDao = new PersonDao(sessionFactory);
         // check for existing person
-        if(personDao.findByName(person.getPersonName()) == null) {
+        if (personDao.findByName(person.getPersonName()) == null) {
             personDao.create(person);
         } else {
             person = personDao.findByName(person.getPersonName());
@@ -485,7 +504,7 @@ public class StoreReader {
 
         ArtistDao artistDao = new ArtistDao(sessionFactory);
         // check for existing artist
-        if(artistDao.findByName(artist.getArtistName()) == null) {
+        if (artistDao.findByName(artist.getArtistName()) == null) {
             artistDao.create(artist);
         } else {
             artist = artistDao.findByName(artist.getArtistName());

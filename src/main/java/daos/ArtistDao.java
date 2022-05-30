@@ -19,7 +19,7 @@ public class ArtistDao extends GenericDao<ArtistEntity> implements IArtistDao {
         SelectionQuery<ArtistEntity> query = session.createSelectionQuery(
                 "SELECT a FROM ArtistEntity a WHERE a.artistName = :artistName", ArtistEntity.class);
 
-        query.setParameter("personName", name);
+        query.setParameter("artistName", name);
         ArtistEntity artist = query.getSingleResultOrNull();
         tx.commit();
 
