@@ -17,15 +17,15 @@ public class XmlParser implements Reader{
         Document doc = getNormalizedDocument(inputFile);
         String rootElement = doc.getDocumentElement().getNodeName();
 
-        switch (rootElement) {
-            case "shop":
+
+        if (rootElement.equals("shop")){
                 System.out.println("Reading shop...");
                 if (doc.getDocumentElement().getAttribute("name").equals("Dresden")){
                     DresdenReader dresdenReader = new DresdenReader(doc, sessionFactory);
                     dresdenReader.readStoreXml();
                 }
                 else {
-                    LeipzigReader leipzigReader = new LeipzigReader(doc, sessionFactory);
+                    StoreReader leipzigReader = new StoreReader(doc, sessionFactory);
                     leipzigReader.readStoreXml();
                 }
 
@@ -42,6 +42,14 @@ public class XmlParser implements Reader{
             */
 
         }
+
+    }
+
+    public void readCategories(String pathfile, SessionFactory sessionFactory){
+        File inputFile = new File(pathfile);
+        Document doc = getNormalizedDocument(inputFile);
+        CategoryReader cr = new CategoryReader(doc, sessionFactory);
+        cr.parseCategories(doc.getDocumentElement().getChildNodes(), sessionFactory);
     }
 
     private Document getNormalizedDocument(File inputFile) {
@@ -68,7 +76,7 @@ public class XmlParser implements Reader{
             value = "";
             return value;
         }
-        else value = node.getFirstChild().getNodeValue().trim();
+        else value = node.getFirstChild().getNodeValue();
         return value;
     }
 

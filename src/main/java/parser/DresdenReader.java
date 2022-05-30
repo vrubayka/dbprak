@@ -231,7 +231,7 @@ public class DresdenReader {
 
         dvd.setDvdId(product.getProdId());
         // ToDo: what is MovieId for, delete?
-        dvd.setMovieId(1);
+        //dvd.setMovieId(1);
 
         for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
