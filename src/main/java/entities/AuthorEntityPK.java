@@ -14,7 +14,6 @@ public class AuthorEntityPK implements Serializable {
     private String bookId;
     @Column(name = "person_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long personId;
 
     public String getBookId() {

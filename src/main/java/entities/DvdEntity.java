@@ -12,10 +12,7 @@ public class DvdEntity {
     @Column(name = "dvd_id", nullable = false)
     private String dvdId;
     @Basic
-    @Column(name = "movie_id", nullable = false)
-    private int movieId;
-    @Basic
-    @Column(name = "format", nullable = false, length = 50)
+    @Column(name = "format", nullable = false)
     private String format;
     @Basic
     @Column(name = "term_in_sec", nullable = false)
@@ -36,14 +33,6 @@ public class DvdEntity {
 
     public void setDvdId(String dvdId) {
         this.dvdId = dvdId;
-    }
-
-    public int getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
     }
 
     public String getFormat() {
@@ -75,13 +64,13 @@ public class DvdEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DvdEntity dvdEntity = (DvdEntity) o;
-        return dvdId.equals(dvdEntity.dvdId) && movieId == dvdEntity.movieId && termInSec == dvdEntity.termInSec &&
+        return dvdId.equals(dvdEntity.dvdId) && termInSec == dvdEntity.termInSec &&
                regionCode == dvdEntity.regionCode && Objects.equals(format, dvdEntity.format);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dvdId, movieId, format, termInSec, regionCode);
+        return Objects.hash(dvdId, format, termInSec, regionCode);
     }
 
     public ProductEntity getProductByDvdId() {

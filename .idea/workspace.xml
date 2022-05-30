@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="edit Artist to Title relation to match data">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added ArtistDao">
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CdArtistEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/CdArtistEntityPK.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/daos/ArtistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/daos/ArtistDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ArtistEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ArtistEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CdEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/CdEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +79,6 @@
     &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;8b7f7931-ad41-4af5-b3e9-3481c839f644&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/chris/Downloads/db_prak_16&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
@@ -89,8 +94,8 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
     <key name="ImportMappingsDialog.RecentPackages">
-      <recent name="" />
       <recent name="entities" />
+      <recent name="" />
     </key>
   </component>
   <component name="RunManager">
@@ -128,6 +133,9 @@
       <workItem from="1653384145562" duration="1152000" />
       <workItem from="1653388095313" duration="8724000" />
       <workItem from="1653464857066" duration="6907000" />
+      <workItem from="1653898019536" duration="9697000" />
+      <workItem from="1653908911624" duration="1878000" />
+      <workItem from="1653916102139" duration="3449000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -213,7 +221,56 @@
       <option name="project" value="LOCAL" />
       <updated>1653465917347</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="changed typo in price">
+      <created>1653484051784</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1653484051785</updated>
+    </task>
+    <task id="LOCAL-00014" summary="small changes">
+      <created>1653485153503</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1653485153503</updated>
+    </task>
+    <task id="LOCAL-00015" summary="finished book insertation">
+      <created>1653498363158</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1653498363158</updated>
+    </task>
+    <task id="LOCAL-00016" summary="finished book insertation">
+      <created>1653900379360</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1653900379360</updated>
+    </task>
+    <task id="LOCAL-00017" summary="finished dvd inserts">
+      <created>1653906088305</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1653906088305</updated>
+    </task>
+    <task id="LOCAL-00018" summary="started CD insert">
+      <created>1653908436185</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1653908436185</updated>
+    </task>
+    <task id="LOCAL-00019" summary="added ArtistDao">
+      <created>1653916488436</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1653916488436</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -243,18 +300,14 @@
     <MESSAGE value="added Label setter in readCd()" />
     <MESSAGE value="added publisher setter in readBook() and studio setter to readDvd (see ToDo)" />
     <MESSAGE value="edit Artist to Title relation to match data" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit Artist to Title relation to match data" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/parser/StoreReader.java</url>
-          <line>285</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="read Leipzig data finished, but not inserted yet" />
+    <MESSAGE value="changed typo in price" />
+    <MESSAGE value="small changes" />
+    <MESSAGE value="finished book insertation" />
+    <MESSAGE value="finished dvd inserts" />
+    <MESSAGE value="started CD insert" />
+    <MESSAGE value="added ArtistDao" />
+    <option name="LAST_COMMIT_MESSAGE" value="added ArtistDao" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dbpraktikum$Main.ic" NAME="Main Coverage Results" MODIFIED="1653402293039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

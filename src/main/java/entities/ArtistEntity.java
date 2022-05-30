@@ -13,8 +13,10 @@ public class ArtistEntity {
     @Column(name = "artist_id", nullable = false)
     private long artistId;
     @Basic
-    @Column(name = "artist_name", nullable = false)
+    @Column(name = "artist_name", nullable = false, length = 255)
     private String artistName;
+    @OneToMany(mappedBy = "artistByArtistId")
+    private Collection<CdArtistEntity> cdArtistsByArtistId;
 
     public long getArtistId() {
         return artistId;
@@ -45,4 +47,11 @@ public class ArtistEntity {
         return Objects.hash(artistId, artistName);
     }
 
+    public Collection<CdArtistEntity> getCdArtistsByArtistId() {
+        return cdArtistsByArtistId;
+    }
+
+    public void setCdArtistsByArtistId(Collection<CdArtistEntity> cdArtistsByArtistId) {
+        this.cdArtistsByArtistId = cdArtistsByArtistId;
+    }
 }

@@ -8,12 +8,12 @@ CREATE TABLE product (
 
 CREATE TABLE person (
     person_id BIGSERIAL PRIMARY KEY,
-    person_name VARCHAR(50)
+    person_name VARCHAR(50) UNIQUE
 );
 
 CREATE TABLE book (
     book_id VARCHAR(255) PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                -- on DELETE CASCADE??
-    isbn VARCHAR(50) UNIQUE NOT NULL,
+    isbn VARCHAR(50) NOT NULL,
     publisher VARCHAR(255) NOT NULL,                                        -- id and own table??
     release_date DATE NOT NULL,
     pages INT NOT NULL
@@ -28,8 +28,7 @@ CREATE TABLE author (
 
 CREATE TABLE dvd (
     dvd_id VARCHAR(255) PRIMARY KEY REFERENCES product (prod_id) ON DELETE CASCADE,                 -- on DELETE CASCADE
-    movie_id INT UNIQUE NOT NULL,
-    format VARCHAR(50) NOT NULL,
+    format VARCHAR(255) NOT NULL,
     term_in_sec INT NOT NULL,
     region_code INT NOT NULL
 );
@@ -87,8 +86,7 @@ CREATE TABLE address (
     street_name VARCHAR(50) NOT NULL,
     street_number INT NOT NULL,
     city VARCHAR(50) NOT NULL,
-    postcode VARCHAR(50) NOT NULL,
-    country VARCHAR(50)
+    postcode VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE store (                                                                        -- store key word??
@@ -100,7 +98,7 @@ CREATE TABLE store (                                                            
 CREATE TABLE inventory (
     store_id BIGINT REFERENCES store (store_id) ON DELETE CASCADE,
     prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
-    prize NUMERIC(32,2),
+    price NUMERIC(32,2),
     condition VARCHAR(50),
     PRIMARY KEY (store_id, prod_id)
 );

@@ -14,7 +14,7 @@ public class BookEntity {
     @Column(name = "book_id", nullable = false)
     private String bookId;
     @Basic
-    @Column(name = "isbn", nullable = false, length = 50)
+    @Column(name = "isbn", length = 50)
     private String isbn;
     @Basic
     @Column(name = "publisher", nullable = false)

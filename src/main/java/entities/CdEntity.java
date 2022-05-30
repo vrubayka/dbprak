@@ -9,11 +9,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "cd", schema = "public", catalog = "dbprak")
 public class CdEntity {
+
     @Id
-    @Column(name = "cd_id", nullable = false)
+    @Column(name = "cd_id", nullable = false, length = 255)
     private String cdId;
     @Basic
-    @Column(name = "label", nullable = false)
+    @Column(name = "label", nullable = false, length = 255)
     private String label;
     @Basic
     @Column(name = "release_date", nullable = false)
@@ -24,6 +25,8 @@ public class CdEntity {
     @OneToMany(mappedBy = "cdByCdId",
                cascade = CascadeType.ALL)
     private Collection<CdTitleEntity> cdTitlesByCdId;
+    @OneToMany(mappedBy = "cdByCdId")
+    private Collection<CdArtistEntity> cdArtistsByCdId;
 
     public String getCdId() {
         return cdId;
@@ -77,5 +80,13 @@ public class CdEntity {
 
     public void setCdTitlesByCdId(Collection<CdTitleEntity> cdTitlesByCdId) {
         this.cdTitlesByCdId = cdTitlesByCdId;
+    }
+
+    public Collection<CdArtistEntity> getCdArtistsByCdId() {
+        return cdArtistsByCdId;
+    }
+
+    public void setCdArtistsByCdId(Collection<CdArtistEntity> cdArtistsByCdId) {
+        this.cdArtistsByCdId = cdArtistsByCdId;
     }
 }
