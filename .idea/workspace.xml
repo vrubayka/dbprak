@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="DresdenReader ready, requires duplicate exceptions, etc.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/daos/IProductDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/daos/ProductDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/daos/GenericDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/daos/GenericDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/daos/IGenericDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/daos/IGenericDao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>

@@ -23,6 +23,9 @@ public class GenericDao <T> implements IGenericDao <T>{
         this.sessionFactory = sessionFactory;
     }
 
+    public Class<T> getDaoClass() {
+        return daoClass;
+    }
 
     @Override
     public T findOne(long id) {
