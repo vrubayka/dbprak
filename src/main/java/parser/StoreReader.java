@@ -79,7 +79,8 @@ public class StoreReader {
         ProductEntity product = new ProductEntity();
 
         String group = readProdAndReturnGroup(itemNode, product);
-        // ToDo: Exception asin/group == null
+
+        // read price, name and product info by pgroup
         System.out.println(product.getProdId());
         if (product.getProdId() != null && group != null) {
 
@@ -138,21 +139,23 @@ public class StoreReader {
 
     private String readProdAndReturnGroup(Node itemNode, ProductEntity product) {
         NamedNodeMap itemAttributes = itemNode.getAttributes();
-        // ToDo: check existens of these attributes
+
+        // check asin existence and set as prodId (primary key)
         if (itemAttributes.getNamedItem("asin") == null ||
             itemAttributes.getNamedItem("asin").getNodeValue().equals("")) {
 
-            ReadLog.addError(new ReadingError("Product",  null,   "asin", "Missing or empty asin attribute."));
+            ReadLog.addError(new ReadingError("Product", null, "asin", "Missing or empty asin attribute."));
 
-        } else  {
+        } else {
             product.setProdId(itemAttributes.getNamedItem("asin").getNodeValue());
         }
 
-        String pgroup;
-        if(itemAttributes.getNamedItem("pgroup") == null ||
-           itemAttributes.getNamedItem("pgroup").getNodeValue().equals("")) {
+        // check pgroup existence
+        String pgroup = null;
+        if (itemAttributes.getNamedItem("pgroup") == null ||
+            itemAttributes.getNamedItem("pgroup").getNodeValue().equals("")) {
 
-            ReadLog.addError(new ReadingError("Product", product.getProdId(), "asin",
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "pgroup",
                                               "Missing or empty pgroup attribute."));
 
         } else {
@@ -161,13 +164,15 @@ public class StoreReader {
 
         String picture = itemAttributes.getNamedItem("picture").getNodeValue();
 
-            // ToDo: check for link length
-            if (picture.length() < 256)
-                product.setImage(picture);
+        // check for link length
+        if (picture.length() < 256)
+            product.setImage(picture);
+        else
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "picture",
+                                              "Link is too long."));
 
-            return pgroup;
-        }
-        return null;
+        return pgroup;
+
     }
 
 
@@ -183,7 +188,12 @@ public class StoreReader {
             double mult = Double.parseDouble(priceAttributes.getNamedItem("mult").getNodeValue());
             double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue());
             inventoryEntry.setPrice(new BigDecimal(mult * price));
+
+        } else if (priceAttributes.getNamedItem("currency").getNodeValue().length() > 0) {
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "price",
+                                              "Unknown currency."));
         }
+
     }
 
     private void readBook(Node node, ProductEntity product, BookEntity book, List<PersonEntity> authorList) {

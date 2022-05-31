@@ -1,4 +1,5 @@
 import entities.*;
+import logging.ReadLog;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -35,6 +36,7 @@ public class Main {
         HibernateQueries hibernateQueries = new HibernateQueries(sessionFactory);
         hibernateQueries.cleanDb();
 
+        ReadLog log = new ReadLog();
 
         XmlParser parser = new XmlParser();
         parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
