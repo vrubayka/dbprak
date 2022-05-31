@@ -18,7 +18,7 @@ public class CSVParser {
 
     final static String formatFilePath = "src/main/resources/data-files/format.txt";
 
-    public void createReviewEntity(String file, SessionFactory sessionFactory) {
+    public void createReviewEntities(String file, SessionFactory sessionFactory) {
         ArrayList<String> reviewList = new ArrayList<>();
         Set<String> reviewSet = new LinkedHashSet<>();
         try {

@@ -51,7 +51,8 @@ public class StoreReader {
     }
 
     private long saveStore(AddressEntity storeAddress) {
-        GenericDao<AddressEntity> addressEntityDao = new GenericDao<>(AddressEntity.class, sessionFactory);
+        GenericDao<AddressEntity> addressEntityDao = new GenericDao<>(AddressEntity.class,
+                sessionFactory);
         addressEntityDao.create(storeAddress);
 
         long addressId = storeAddress.getAddressId();
@@ -81,7 +82,7 @@ public class StoreReader {
         String group = readProdAndReturnGroup(itemNode, product);
 
         // read price, name and product info by pgroup
-        System.out.println(product.getProdId());
+        //System.out.println(product.getProdId());
         if (product.getProdId() != null && group != null) {
 
             InventoryEntity inventoryEntry = new InventoryEntity();
@@ -353,8 +354,6 @@ public class StoreReader {
                 }
             }
         }
-
-
     }
 
     private void readCd(Node node, ProductEntity product, CdEntity cd, List<TitleEntity> titleList,
