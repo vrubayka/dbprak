@@ -5,6 +5,8 @@ import daos.GenericDao;
 import daos.PersonDao;
 import entities.*;
 import jakarta.persistence.PersistenceException;
+import logging.ReadLog;
+import logging.ReadingError;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -137,12 +139,28 @@ public class StoreReader {
     private String readProdAndReturnGroup(Node itemNode, ProductEntity product) {
         NamedNodeMap itemAttributes = itemNode.getAttributes();
         // ToDo: check existens of these attributes
-        if (itemAttributes.getNamedItem("asin") != null && itemAttributes.getNamedItem("pgroup") != null) {
-            String asin = itemAttributes.getNamedItem("asin").getNodeValue();
-            String picture = itemAttributes.getNamedItem("picture").getNodeValue();
-            String pgroup = itemAttributes.getNamedItem("pgroup").getNodeValue();
-            if (asin != "")
-                product.setProdId(asin);
+        if (itemAttributes.getNamedItem("asin") == null ||
+            itemAttributes.getNamedItem("asin").getNodeValue().equals("")) {
+
+            ReadLog.addError(new ReadingError("Product",  null,   "asin", "Missing or empty asin attribute."));
+
+        } else  {
+            product.setProdId(itemAttributes.getNamedItem("asin").getNodeValue());
+        }
+
+        String pgroup;
+        if(itemAttributes.getNamedItem("pgroup") == null ||
+           itemAttributes.getNamedItem("pgroup").getNodeValue().equals("")) {
+
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "asin",
+                                              "Missing or empty pgroup attribute."));
+
+        } else {
+            pgroup = itemAttributes.getNamedItem("pgroup").getNodeValue();
+        }
+
+        String picture = itemAttributes.getNamedItem("picture").getNodeValue();
+
             // ToDo: check for link length
             if (picture.length() < 256)
                 product.setImage(picture);
