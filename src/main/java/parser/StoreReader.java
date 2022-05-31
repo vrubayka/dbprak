@@ -3,8 +3,11 @@ package parser;
 import daos.ArtistDao;
 import daos.GenericDao;
 import daos.PersonDao;
+import daos.TitleDao;
 import entities.*;
 import jakarta.persistence.PersistenceException;
+import logging.ReadLog;
+import logging.ReadingError;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -76,10 +79,12 @@ public class StoreReader {
         ProductEntity product = new ProductEntity();
 
         String group = readProdAndReturnGroup(itemNode, product);
-        // ToDo: Exception asin/group == null
+
+        // read price, name and product info by pgroup
         System.out.println(product.getProdId());
         if (product.getProdId() != null && group != null) {
 
+            InventoryEntity inventoryEntry = new InventoryEntity();
             // read item data
             for (Node node = itemNode.getFirstChild(); node != null; node = node.getNextSibling()) {
 
@@ -87,10 +92,10 @@ public class StoreReader {
                     String scope = node.getNodeName();
 
                     if ("price".equals(scope)) {
-                        InventoryEntity inventoryEntry = new InventoryEntity();
                         readPrice(node, product, inventoryEntry, storeId);
 
                     } else if ("title".equals(scope)) {
+                        // ToDo: check for empty title
                         product.setProdName(node.getFirstChild().getNodeValue());
 
                     } else if ("bookspec".equals(scope) && "Book".equals(group)) {
@@ -100,6 +105,7 @@ public class StoreReader {
                         readBook(node, product, book, authorList);
                         // ToDo: check product/book values for not null and throw Exception
                         insertBook(sessionFactory, product, book, authorList);
+                        insertInventory(sessionFactory, inventoryEntry);
 
                     } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
                         DvdEntity dvd = new DvdEntity();
@@ -113,6 +119,7 @@ public class StoreReader {
                             product.setProdName("");
                         }
                         insertDvd(sessionFactory, product, dvd, actorList, creatorList, directorList);
+                        insertInventory(sessionFactory, inventoryEntry);
 
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
                         CdEntity cd = new CdEntity();
@@ -125,6 +132,7 @@ public class StoreReader {
                             product.setProdName("");
                         }
                         insertCd(sessionFactory, product, cd, titleList, artistList);
+                        insertInventory(sessionFactory, inventoryEntry);
                     }
                 }
             }
@@ -133,22 +141,43 @@ public class StoreReader {
         }
     }
 
+
     private String readProdAndReturnGroup(Node itemNode, ProductEntity product) {
         NamedNodeMap itemAttributes = itemNode.getAttributes();
-        // ToDo: check existens of these attributes
-        if (itemAttributes.getNamedItem("asin") != null && itemAttributes.getNamedItem("pgroup") != null) {
-            String asin = itemAttributes.getNamedItem("asin").getNodeValue();
-            String picture = itemAttributes.getNamedItem("picture").getNodeValue();
-            String pgroup = itemAttributes.getNamedItem("pgroup").getNodeValue();
-            if (asin != "")
-                product.setProdId(asin);
-            // ToDo: check for link length
-            if (picture.length() < 256)
-                product.setImage(picture);
 
-            return pgroup;
+        // check asin existence and set as prodId (primary key)
+        if (itemAttributes.getNamedItem("asin") == null ||
+            itemAttributes.getNamedItem("asin").getNodeValue().equals("")) {
+
+            ReadLog.addError(new ReadingError("Product", null, "asin", "Missing or empty asin attribute."));
+
+        } else {
+            product.setProdId(itemAttributes.getNamedItem("asin").getNodeValue());
         }
-        return null;
+
+        // check pgroup existence
+        String pgroup = null;
+        if (itemAttributes.getNamedItem("pgroup") == null ||
+            itemAttributes.getNamedItem("pgroup").getNodeValue().equals("")) {
+
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "pgroup",
+                                              "Missing or empty pgroup attribute."));
+
+        } else {
+            pgroup = itemAttributes.getNamedItem("pgroup").getNodeValue();
+        }
+
+        String picture = itemAttributes.getNamedItem("picture").getNodeValue();
+
+        // check for link length
+        if (picture.length() < 256)
+            product.setImage(picture);
+        else
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "picture",
+                                              "Link is too long."));
+
+        return pgroup;
+
     }
 
 
@@ -164,7 +193,12 @@ public class StoreReader {
             double mult = Double.parseDouble(priceAttributes.getNamedItem("mult").getNodeValue());
             double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue());
             inventoryEntry.setPrice(new BigDecimal(mult * price));
+
+        } else if (priceAttributes.getNamedItem("currency").getNodeValue().length() > 0) {
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "price",
+                                              "Unknown currency."));
         }
+
     }
 
     private void readBook(Node node, ProductEntity product, BookEntity book, List<PersonEntity> authorList) {
@@ -174,8 +208,13 @@ public class StoreReader {
                 String scope = childNode.getNodeName();
                 switch (scope) {
                     case "isbn":
-                        // ToDo: ISBN sometimes empty string, problem?
-                        book.setIsbn(childNode.getAttributes().getNamedItem("val").getNodeValue());
+                        // ToDo: ISBN sometimes empty string, problem? currently inserted with empty string
+                        String isbn = childNode.getAttributes().getNamedItem("val").getNodeValue();
+                        if(isbn != null) {
+                            book.setIsbn(isbn);
+                        } else {
+
+                        }
                         break;
                     case "pages":
                         // ToDo: exception if no value
@@ -395,6 +434,7 @@ public class StoreReader {
 
     }
 
+
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
 
@@ -477,14 +517,31 @@ public class StoreReader {
 
             cdArtist.setArtistId(artist.getArtistId());
             cdArtist.setCdId(cd.getCdId());
+            // ToDo: custom exception
             try {
                 cdArtistDao.create(cdArtist);
             } catch (PersistenceException e) {
                 System.err.println("Duplicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
             }
         }
+
+        GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(sessionFactory);
+        CdTitleEntity cdTitle = new CdTitleEntity();
+
+        for (TitleEntity title : titleList) {
+            title = titlePersistent(title);
+
+            cdTitle.setTitleId(title.getTitleId());
+            cdTitle.setCdId(cd.getCdId());
+            // ToDo: custom exception
+            cdTitleDao.create(cdTitle);
+        }
     }
 
+    private void insertInventory(SessionFactory sessionFactory, InventoryEntity inventoryEntry) {
+        GenericDao<InventoryEntity> inventoryDao = new GenericDao<>(sessionFactory);
+        inventoryDao.create(inventoryEntry);
+    }
 
     private PersonEntity personPersistent(PersonEntity person) {
 
@@ -510,5 +567,18 @@ public class StoreReader {
         }
 
         return artist;
+    }
+
+    private TitleEntity titlePersistent(TitleEntity title) {
+
+        TitleDao titleDao = new TitleDao(sessionFactory);
+        // check for existing title
+        if (titleDao.findByName(title.getTitleName()) == null) {
+            titleDao.create(title);
+        } else {
+            title = titleDao.findByName(title.getTitleName());
+        }
+
+        return title;
     }
 }

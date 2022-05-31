@@ -7,11 +7,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "inventory", schema = "public", catalog = "dbprak")
+@IdClass(InventoryEntityPK.class)
 public class InventoryEntity {
 
     @Id
-    @Column(name = "store_id")
-    private Long storeId;
+    @Column(name = "store_id", nullable = false)
+    private long storeId;
     @Id
     @Column(name = "prod_id", nullable = false)
     private String prodId;
@@ -22,10 +23,10 @@ public class InventoryEntity {
     @Column(name = "condition", length = 50)
     private String condition;
     @ManyToOne
-    @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(name = "store_id", referencedColumnName = "store_id", insertable = false, updatable = false)
     private StoreEntity storeByStoreId;
     @ManyToOne
-    @JoinColumn(name = "prod_id", referencedColumnName = "prod_id")
+    @JoinColumn(name = "prod_id", referencedColumnName = "prod_id", insertable = false, updatable = false)
     private ProductEntity productByProdId;
 
     public Long getStoreId() {

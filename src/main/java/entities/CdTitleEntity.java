@@ -11,7 +11,7 @@ public class CdTitleEntity {
     @Id
     @Column(name = "cd_id", nullable = false)
     private String cdId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "title_id", nullable = false)
     private long titleId;
