@@ -45,14 +45,10 @@ public class GenericDao <T> implements IGenericDao <T>{
     //TODO: Exception wenn Product bereits existiert
     // @Override
     public void create(T entity) {
-        try {
             Session session = sessionFactory.getCurrentSession();
             Transaction tx = session.beginTransaction();
             session.persist(entity);
             tx.commit();
-        } catch (PersistenceException e){
-            System.out.println("Duplicate not accepted");
-        }
     }
 
     @Override

@@ -15,6 +15,8 @@ public class AddressEntity {
     @Basic
     @Column(name = "street_name", nullable = false, length = 50)
     private String streetName;
+
+    //street_number necessary??
     @Basic
     @Column(name = "street_number", nullable = false)
     private int streetNumber;

@@ -2,7 +2,6 @@ package parser;
 
 import org.hibernate.SessionFactory;
 import org.w3c.dom.*;
-;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -32,7 +31,7 @@ public class XmlParser implements Reader{
 
                 System.out.println("Finished reading shop Xml.");
 
-            //ToDo: uncomment
+            //ToDo: delete
             /*case "categories":
                 System.out.println("Reading categories...");
                 CategoryReader categoryReader = new CategoryReader(doc, sessionFactory);
@@ -49,6 +48,8 @@ public class XmlParser implements Reader{
         File inputFile = new File(pathfile);
         Document doc = getNormalizedDocument(inputFile);
         CategoryReader cr = new CategoryReader(doc, sessionFactory);
+        System.out.println("Parsing categories:");
+        //cr.createRootCategory(sessionFactory);
         cr.parseCategories(doc.getDocumentElement().getChildNodes(), sessionFactory);
         System.out.println("Finished reading categories");
     }

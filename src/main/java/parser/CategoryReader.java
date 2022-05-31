@@ -19,12 +19,18 @@ public class CategoryReader {
     HashMap<String, Long> categoryDaoMap = new HashMap<>();
 
     public CategoryReader(Document doc, SessionFactory sessionFactory) {
-        this.doc            = doc;
+        this.doc = doc;
         this.sessionFactory = sessionFactory;
     }
 
+    public void createRootCategory(SessionFactory sessionFactory){
+        GenericDao<CategoryEntity> rootCatDao = new GenericDao<>(sessionFactory);
+        CategoryEntity rootEntity = new CategoryEntity();
+        rootEntity.setCategoryName("Root");
+        rootCatDao.create(rootEntity);
+        categoryDaoMap.put(rootEntity.getCategoryName(), rootEntity.getCategoryId());
+    }
     public void parseCategories(NodeList list, SessionFactory sessionFactory) {
-        System.out.println("Reading categories");
         for (int i = 0; i < list.getLength(); i++) {
 
             if ((XmlParser.returnTagOfNode(list.item(i))).equals("category")) {
@@ -35,14 +41,15 @@ public class CategoryReader {
 
                 if (XmlParser.returnTagOfNode(list.item(i).getParentNode()).equals("category")) {
                     entityCat.setSuperCategory(categoryDaoMap.get(XmlParser.returnTextValueOfNode(list.item(i).getParentNode())));
-                }
+
+                } /*else if (XmlParser.returnTagOfNode(list.item(i).getParentNode()).equals("categories")){
+                    entityCat.setSuperCategory(categoryDaoMap.get("Root"));
+                }*/
                 daoCat.create(entityCat);
                 categoryDaoMap.put(XmlParser.returnTextValueOfNode(list.item(i)), entityCat.getCategoryId());
-                //System.out.println("MAP INHALT: " + categoryDaoMap);
                 parseCategories(list.item(i).getChildNodes(), sessionFactory);
 
-            }
-            else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")){
+            } else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")) {
                 try {
                     GenericDao<ProductCategoryEntity> productDao = new GenericDao(sessionFactory);
                     ProductCategoryEntity entityProductCategory = new ProductCategoryEntity();
@@ -50,11 +57,12 @@ public class CategoryReader {
                     entityProductCategory.setCategoryId(categoryDaoMap.
                             get(XmlParser.returnTextValueOfNode(list.item(i).getParentNode())));
                     productDao.create(entityProductCategory);
-                } catch (jakarta.persistence.PersistenceException e){
+                } catch (jakarta.persistence.PersistenceException e) {
                     System.out.println("Item " + XmlParser.returnTextValueOfNode(list.item(i)) + " missing");
 
                 }
             }
+
         }
     }
 }

@@ -2,6 +2,7 @@ package parser;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import daos.GenericDao;
+import daos.ProductDao;
 import daos.ReviewDao;
 import entities.ProductEntity;
 import entities.ReviewEntity;
@@ -38,31 +39,36 @@ public class CSVParser {
                     re.setReviewText(formatReviewText);
                     GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
                     reviewEntityDao.create(re);
-                    //Set or ArrayList
                     reviewList.add(csvBean.getProdId());
-                    //reviewSet.add(csvBean.getProdId());
                 } catch (jakarta.persistence.PersistenceException e) {
                     System.out.println("Duplicate review entry " + csvBean.getProdId() + " declined");
                 }
             }
+
+            findAggregateReviews(reviewList, sessionFactory);
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void findAggregateReviews(ArrayList<String> reviewList, SessionFactory sessionFactory){
         Collections.sort(reviewList);
         ArrayList<String> nonDuplicateList = removeDuplicateReviewList(reviewList);
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
         ProductEntity productEntity = new ProductEntity();
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productEntity = productDao.findOne();
+        ProductDao productDao = new ProductDao(sessionFactory);
         for (String id : nonDuplicateList) {
             List<ReviewEntity> entitiesList = reviewDao.findByProdId(id);
+            productEntity = productDao.findOne(id);
             double rating = 0.0;
             int aggr = 0;
             for (ReviewEntity entity : entitiesList) {
                 rating = entity.getRating() + rating;
                 aggr++;
             }
-            rating = rating / aggr;
+            //TODO: 2 decimals after comma?
+            rating = Math.round(rating / aggr * 100.0) / 100.0;
             productEntity.setRating(rating);
             productDao.update(productEntity);
         }

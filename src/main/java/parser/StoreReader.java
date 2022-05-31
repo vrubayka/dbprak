@@ -480,7 +480,7 @@ public class StoreReader {
             try {
                 cdArtistDao.create(cdArtist);
             } catch (PersistenceException e) {
-                System.err.println("Dublicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
+                System.err.println("Duplicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
             }
         }
     }
