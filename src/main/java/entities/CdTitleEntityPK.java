@@ -14,7 +14,6 @@ public class CdTitleEntityPK implements Serializable {
     private String cdId;
     @Column(name = "title_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long titleId;
 
     public String getCdId() {

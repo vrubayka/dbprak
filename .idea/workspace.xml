@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added ReviewDao">
+      <change afterPath="$PROJECT_DIR$/src/main/java/daos/ITitleDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/daos/TitleDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CdTitleEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/CdTitleEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CdTitleEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/CdTitleEntityPK.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ToDo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ToDo.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -331,7 +335,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/parser/StoreReader.java</url>
-          <line>75</line>
+          <line>76</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>

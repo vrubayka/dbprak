@@ -3,6 +3,7 @@ package parser;
 import daos.ArtistDao;
 import daos.GenericDao;
 import daos.PersonDao;
+import daos.TitleDao;
 import entities.*;
 import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
@@ -95,6 +96,7 @@ public class StoreReader {
                         readPrice(node, product, inventoryEntry, storeId);
 
                     } else if ("title".equals(scope)) {
+                        // ToDo: check for empty title
                         product.setProdName(node.getFirstChild().getNodeValue());
 
                     } else if ("bookspec".equals(scope) && "Book".equals(group)) {
@@ -203,8 +205,13 @@ public class StoreReader {
                 String scope = childNode.getNodeName();
                 switch (scope) {
                     case "isbn":
-                        // ToDo: ISBN sometimes empty string, problem?
-                        book.setIsbn(childNode.getAttributes().getNamedItem("val").getNodeValue());
+                        // ToDo: ISBN sometimes empty string, problem? currently inserted with empty string
+                        String isbn = childNode.getAttributes().getNamedItem("val").getNodeValue();
+                        if(isbn != null) {
+                            book.setIsbn(isbn);
+                        } else {
+
+                        }
                         break;
                     case "pages":
                         // ToDo: exception if no value
@@ -506,13 +513,27 @@ public class StoreReader {
 
             cdArtist.setArtistId(artist.getArtistId());
             cdArtist.setCdId(cd.getCdId());
+            // ToDo: custom exception
             try {
                 cdArtistDao.create(cdArtist);
             } catch (PersistenceException e) {
                 System.err.println("Dublicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
             }
         }
+
+        GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(sessionFactory);
+        CdTitleEntity cdTitle = new CdTitleEntity();
+
+        for (TitleEntity title : titleList) {
+            title = titlePersistent(title);
+
+            cdTitle.setTitleId(title.getTitleId());
+            cdTitle.setCdId(cd.getCdId());
+            // ToDo: custom exception
+            cdTitleDao.create(cdTitle);
+        }
     }
+
 
 
     private PersonEntity personPersistent(PersonEntity person) {
@@ -539,5 +560,18 @@ public class StoreReader {
         }
 
         return artist;
+    }
+
+    private TitleEntity titlePersistent(TitleEntity title) {
+
+        TitleDao titleDao = new TitleDao(sessionFactory);
+        // check for existing title
+        if (titleDao.findByName(title.getTitleName()) == null) {
+            titleDao.create(title);
+        } else {
+            title = titleDao.findByName(title.getTitleName());
+        }
+
+        return title;
     }
 }
