@@ -81,6 +81,12 @@ CREATE TABLE product_category (
     PRIMARY KEY (prod_id, category_id)
 );
 
+CREATE TABLE similar_products (
+    prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
+    similar_prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
+    PRIMARY KEY (prod_id, similar_prod_id)
+);
+
 CREATE TABLE address (
     address_id BIGSERIAL PRIMARY KEY,
     street_name VARCHAR(50) NOT NULL,

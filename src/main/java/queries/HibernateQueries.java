@@ -21,16 +21,16 @@ public class HibernateQueries {
         GenericDao<CdEntity> cdEntityDao = new GenericDao<>(CdEntity.class, sessionFactory);
         GenericDao<CdArtistEntity> cdArtistEntityDao = new GenericDao<>(CdArtistEntity.class, sessionFactory);
         GenericDao<CdTitleEntity> cdTitleEntityDao = new GenericDao<>(CdTitleEntity.class, sessionFactory);
-        GenericDao<CustomerEntity> customerEntityDao = new GenericDao<>(CustomerEntity.class, sessionFactory);
         GenericDao<DvdEntity> dvdEntityDao = new GenericDao<>(DvdEntity.class, sessionFactory);
         GenericDao<DvdPersonEntity> dvdPersonEntityDao = new GenericDao<>(DvdPersonEntity.class, sessionFactory);
-        GenericDao<InventoryEntity> inventoryEntityDao = new GenericDao<>(InventoryEntity.class, sessionFactory);
-        GenericDao<OrderEntity> orderEntityDao = new GenericDao<>(OrderEntity.class, sessionFactory);
+        GenericDao<InventoryEntity> inventoryEntityDao = new GenericDao<>(InventoryEntity.class, sessionFactory);;
         GenericDao<PersonEntity> personEntityDao = new GenericDao<>(PersonEntity.class, sessionFactory);
         GenericDao<ProductCategoryEntity> productCategoryEntityDao = new GenericDao<>(ProductCategoryEntity.class,
                                                                                      sessionFactory);
         GenericDao<ProductEntity> productEntityDao = new GenericDao<>(ProductEntity.class, sessionFactory);
         GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(ReviewEntity.class, sessionFactory);
+        GenericDao<SimilarProductsEntity> similarProductsEntityDao = new GenericDao<>(SimilarProductsEntity.class,
+                                                                                      sessionFactory);
         GenericDao<StoreEntity> storeEntityDao = new GenericDao<>(StoreEntity.class, sessionFactory);
         GenericDao<TitleEntity> titleEntityDao = new GenericDao<>(TitleEntity.class, sessionFactory);
 
@@ -48,8 +48,7 @@ public class HibernateQueries {
         inventoryEntityDao.deleteAll();
         productCategoryEntityDao.deleteAll();
         categoryEntityDao.deleteAll();
-        orderEntityDao.deleteAll();
-        customerEntityDao.deleteAll();
+        similarProductsEntityDao.deleteAll();
         productEntityDao.deleteAll();
         storeEntityDao.deleteAll();
         addressEntityDao.deleteAll();

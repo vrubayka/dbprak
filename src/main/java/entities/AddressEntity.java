@@ -26,8 +26,7 @@ public class AddressEntity {
     @Basic
     @Column(name = "postcode", nullable = false, length = 50)
     private String postcode;
-    @OneToMany(mappedBy = "addressByAddressId")
-    private Collection<CustomerEntity> customersByAddressId;
+
     @OneToMany(mappedBy = "addressByAddressId")
     private Collection<StoreEntity> storesByAddressId;
 
@@ -86,13 +85,6 @@ public class AddressEntity {
         return Objects.hash(addressId, streetName, streetNumber, city, postcode);
     }
 
-    public Collection<CustomerEntity> getCustomersByAddressId() {
-        return customersByAddressId;
-    }
-
-    public void setCustomersByAddressId(Collection<CustomerEntity> customersByAddressId) {
-        this.customersByAddressId = customersByAddressId;
-    }
 
     public Collection<StoreEntity> getStoresByAddressId() {
         return storesByAddressId;

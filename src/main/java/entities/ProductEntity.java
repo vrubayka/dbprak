@@ -9,11 +9,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "product", schema = "public", catalog = "dbprak")
 public class ProductEntity {
+
     @Id
     @Column(name = "prod_id", nullable = false)
     private String prodId;
     @Basic
-    @Column(name = "prod_name", nullable = false, length = 255)
+    @Column(name = "prod_name", nullable = false)
     private String prodName;
     @Basic
     @Column(name = "rating", nullable = false, precision = 0)
@@ -42,6 +43,10 @@ public class ProductEntity {
     @OneToMany(mappedBy = "productByProdId",
                cascade = CascadeType.ALL)
     private Collection<ReviewEntity> reviewsByProdId;
+    @OneToMany(mappedBy = "productByProdId")
+    private Collection<SimilarProductsEntity> similarProductsByProdId;
+    @OneToMany(mappedBy = "productBySimilarProdId")
+    private Collection<SimilarProductsEntity> similarProductsByProdId_0;
 
     public ProductEntity() {
     }
@@ -50,7 +55,6 @@ public class ProductEntity {
         this.prodName  = prodName;
         this.rating    = rating;
         this.salesRank = salesRank;
-        this.image     = image;
     }
 
     public String getProdId() {
@@ -81,6 +85,10 @@ public class ProductEntity {
         return salesRank;
     }
 
+    public void setSalesRank(Integer salesRank) {
+        this.salesRank = salesRank;
+    }
+
     public void setSalesRank(int salesRank) {
         this.salesRank = salesRank;
     }
@@ -98,7 +106,7 @@ public class ProductEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductEntity that = (ProductEntity) o;
-        return prodId == that.prodId && Double.compare(that.rating, rating) == 0 && salesRank == that.salesRank &&
+        return prodId.equals(that.prodId) && Double.compare(that.rating, rating) == 0 && salesRank == that.salesRank &&
                Objects.equals(prodName, that.prodName) && image.equals(that.image);
     }
 
@@ -154,5 +162,21 @@ public class ProductEntity {
 
     public void setReviewsByProdId(Collection<ReviewEntity> reviewsByProdId) {
         this.reviewsByProdId = reviewsByProdId;
+    }
+
+    public Collection<SimilarProductsEntity> getSimilarProductsByProdId() {
+        return similarProductsByProdId;
+    }
+
+    public void setSimilarProductsByProdId(Collection<SimilarProductsEntity> similarProductsByProdId) {
+        this.similarProductsByProdId = similarProductsByProdId;
+    }
+
+    public Collection<SimilarProductsEntity> getSimilarProductsByProdId_0() {
+        return similarProductsByProdId_0;
+    }
+
+    public void setSimilarProductsByProdId_0(Collection<SimilarProductsEntity> similarProductsByProdId_0) {
+        this.similarProductsByProdId_0 = similarProductsByProdId_0;
     }
 }

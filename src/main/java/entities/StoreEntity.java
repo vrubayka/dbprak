@@ -21,8 +21,6 @@ public class StoreEntity {
     @OneToMany(mappedBy = "storeByStoreId",
                cascade = CascadeType.ALL)
     private Collection<InventoryEntity> inventoriesByStoreId;
-    @OneToMany(mappedBy = "storeByStoreId")
-    private Collection<OrderEntity> ordersByStoreId;
     @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, insertable = false, updatable = false)
     private AddressEntity addressByAddressId;
@@ -71,14 +69,6 @@ public class StoreEntity {
 
     public void setInventoriesByStoreId(Collection<InventoryEntity> inventoriesByStoreId) {
         this.inventoriesByStoreId = inventoriesByStoreId;
-    }
-
-    public Collection<OrderEntity> getOrdersByStoreId() {
-        return ordersByStoreId;
-    }
-
-    public void setOrdersByStoreId(Collection<OrderEntity> ordersByStoreId) {
-        this.ordersByStoreId = ordersByStoreId;
     }
 
     public AddressEntity getAddressByAddressId() {
