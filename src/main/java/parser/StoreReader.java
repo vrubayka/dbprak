@@ -85,6 +85,7 @@ public class StoreReader {
         System.out.println(product.getProdId());
         if (product.getProdId() != null && group != null) {
 
+            InventoryEntity inventoryEntry = new InventoryEntity();
             // read item data
             for (Node node = itemNode.getFirstChild(); node != null; node = node.getNextSibling()) {
 
@@ -92,7 +93,6 @@ public class StoreReader {
                     String scope = node.getNodeName();
 
                     if ("price".equals(scope)) {
-                        InventoryEntity inventoryEntry = new InventoryEntity();
                         readPrice(node, product, inventoryEntry, storeId);
 
                     } else if ("title".equals(scope)) {
@@ -106,6 +106,7 @@ public class StoreReader {
                         readBook(node, product, book, authorList);
                         // ToDo: check product/book values for not null and throw Exception
                         insertBook(sessionFactory, product, book, authorList);
+                        insertInventory(sessionFactory, inventoryEntry);
 
                     } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
                         DvdEntity dvd = new DvdEntity();
@@ -119,6 +120,7 @@ public class StoreReader {
                             product.setProdName("");
                         }
                         insertDvd(sessionFactory, product, dvd, actorList, creatorList, directorList);
+                        insertInventory(sessionFactory, inventoryEntry);
 
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
                         CdEntity cd = new CdEntity();
@@ -131,6 +133,7 @@ public class StoreReader {
                             product.setProdName("");
                         }
                         insertCd(sessionFactory, product, cd, titleList, artistList);
+                        insertInventory(sessionFactory, inventoryEntry);
                     }
                 }
             }
@@ -138,6 +141,7 @@ public class StoreReader {
 
         }
     }
+
 
     private String readProdAndReturnGroup(Node itemNode, ProductEntity product) {
         NamedNodeMap itemAttributes = itemNode.getAttributes();
@@ -431,6 +435,7 @@ public class StoreReader {
 
     }
 
+
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
 
@@ -534,7 +539,10 @@ public class StoreReader {
         }
     }
 
-
+    private void insertInventory(SessionFactory sessionFactory, InventoryEntity inventoryEntry) {
+        GenericDao<InventoryEntity> inventoryDao = new GenericDao<>(sessionFactory);
+        inventoryDao.create(inventoryEntry);
+    }
 
     private PersonEntity personPersistent(PersonEntity person) {
 

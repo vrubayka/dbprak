@@ -1,2 +1,4 @@
 exception for ERROR: duplicate key value violates unique constraint "xyz" not thrown
+title inserts dresden
+inventory inserts dresden
 
