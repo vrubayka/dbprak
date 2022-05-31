@@ -103,19 +103,6 @@ CREATE TABLE inventory (
     PRIMARY KEY (store_id, prod_id)
 );
 
-CREATE TABLE customer (
-    customer_id BIGSERIAL PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    address_id BIGINT NOT NULL REFERENCES address (address_id) ON DELETE RESTRICT,
-    bankaccount VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE "order" (                                                                        -- order key word??
-    order_id BIGSERIAL PRIMARY KEY,
-    store_id BIGINT NOT NULL REFERENCES store (store_id) ON DELETE RESTRICT,
-    customer_id BIGINT NOT NULL REFERENCES customer (customer_id) ON DELETE RESTRICT
-);
 
 CREATE TABLE review (
     prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
