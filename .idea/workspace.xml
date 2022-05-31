@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="test">
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/AddressEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/AddressEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/CustomerEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/OrderEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/StoreEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/StoreEntity.java" afterDir="false" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="added similar products to sql-script">
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/SimilarProductsEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/SimilarProductsEntityPK.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/ProductEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,8 +93,8 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
     <key name="ImportMappingsDialog.RecentPackages">
-      <recent name="" />
       <recent name="entities" />
+      <recent name="" />
     </key>
   </component>
   <component name="RunManager">
@@ -316,7 +315,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654005568271</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="added similar products to sql-script">
+      <created>1654006989731</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1654006989731</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -358,7 +364,8 @@
     <MESSAGE value="added inventory inserts" />
     <MESSAGE value="removed customer and order from sql script" />
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="added similar products to sql-script" />
+    <option name="LAST_COMMIT_MESSAGE" value="added similar products to sql-script" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

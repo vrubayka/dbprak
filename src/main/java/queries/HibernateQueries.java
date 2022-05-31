@@ -29,6 +29,8 @@ public class HibernateQueries {
                                                                                      sessionFactory);
         GenericDao<ProductEntity> productEntityDao = new GenericDao<>(ProductEntity.class, sessionFactory);
         GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(ReviewEntity.class, sessionFactory);
+        GenericDao<SimilarProductsEntity> similarProductsEntityDao = new GenericDao<>(SimilarProductsEntity.class,
+                                                                                      sessionFactory);
         GenericDao<StoreEntity> storeEntityDao = new GenericDao<>(StoreEntity.class, sessionFactory);
         GenericDao<TitleEntity> titleEntityDao = new GenericDao<>(TitleEntity.class, sessionFactory);
 
@@ -46,6 +48,7 @@ public class HibernateQueries {
         inventoryEntityDao.deleteAll();
         productCategoryEntityDao.deleteAll();
         categoryEntityDao.deleteAll();
+        similarProductsEntityDao.deleteAll();
         productEntityDao.deleteAll();
         storeEntityDao.deleteAll();
         addressEntityDao.deleteAll();
