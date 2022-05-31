@@ -17,10 +17,10 @@ public class SimilarProductsEntity {
     @Column(name = "similar_prod_id", nullable = false, length = 255)
     private String similarProdId;
     @ManyToOne
-    @JoinColumn(name = "prod_id", referencedColumnName = "prod_id", nullable = false)
+    @JoinColumn(name = "prod_id", referencedColumnName = "prod_id", nullable = false, insertable = false, updatable = false)
     private ProductEntity productByProdId;
     @ManyToOne
-    @JoinColumn(name = "similar_prod_id", referencedColumnName = "prod_id", nullable = false)
+    @JoinColumn(name = "similar_prod_id", referencedColumnName = "prod_id", nullable = false, insertable = false, updatable = false)
     private ProductEntity productBySimilarProdId;
 
     public String getProdId() {
