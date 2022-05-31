@@ -36,8 +36,8 @@ public class Main {
         HibernateQueries hibernateQueries = new HibernateQueries(sessionFactory);
         hibernateQueries.cleanDb();
 
-        ReadLog log = new ReadLog();
 
+        ReadLog log = new ReadLog();
         XmlParser parser = new XmlParser();
         parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
 //        parser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
