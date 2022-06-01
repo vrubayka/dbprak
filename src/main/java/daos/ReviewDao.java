@@ -1,13 +1,10 @@
 package daos;
 
-import entities.PersonEntity;
 import entities.ReviewEntity;
+import entities.ReviewEntityPK;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.SelectionQuery;
-
-import java.util.List;
 
 public class ReviewDao extends GenericDao<ReviewEntity> implements IReviewDao {
 
@@ -16,32 +13,12 @@ public class ReviewDao extends GenericDao<ReviewEntity> implements IReviewDao {
     }
 
     @Override
-    public List<ReviewEntity> findByProdId(String prodId) {
+    public ReviewEntity findOne(ReviewEntityPK reviewPK) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
-        SelectionQuery<ReviewEntity> query = session.createSelectionQuery(
-                "SELECT r FROM ReviewEntity r WHERE r.prodId = :prodId", ReviewEntity.class);
-
-        query.setParameter("prodId", prodId);
-        List<ReviewEntity> reviewList = query.getResultList();
+        ReviewEntity review = session.get(ReviewEntity.class, reviewPK);
         tx.commit();
 
-        return reviewList;
-    }
-
-    public String findProdIdFromReviewPK(String prodId){
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        SelectionQuery<ReviewEntity> query = session.createSelectionQuery(
-                "SELECT r FROM ReviewEntity r WHERE r.prodId = :prodId AND r. "
-        )
-    }
-
-    public String findUsername(String prodId){
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        SelectionQuery<ReviewEntity> query = session.createSelectionQuery(
-                SELECT r FROM
-                )
+        return review;
     }
 }
