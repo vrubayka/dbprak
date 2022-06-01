@@ -1,2 +1,5 @@
-order?
-customer??
+exception for ERROR: duplicate key value violates unique constraint "xyz" not thrown
+title inserts dresden
+inventory inserts dresden
+dublicates leipzig dresden (example B0000A5BWW)
+create index in DB

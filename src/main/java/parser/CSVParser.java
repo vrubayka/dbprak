@@ -2,7 +2,6 @@ package parser;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import daos.GenericDao;
-import daos.ProductDao;
 import daos.ReviewDao;
 import entities.ProductEntity;
 import entities.ReviewEntity;
@@ -18,7 +17,7 @@ public class CSVParser {
 
     final static String formatFilePath = "src/main/resources/data-files/format.txt";
 
-    public void createReviewEntities(String file, SessionFactory sessionFactory) {
+    public void createReviewEntity(String file, SessionFactory sessionFactory) {
         ArrayList<String> reviewList = new ArrayList<>();
         Set<String> reviewSet = new LinkedHashSet<>();
         try {

@@ -14,8 +14,9 @@ public class ProductDao extends GenericDao<ProductEntity> {
     public ProductEntity findOne(String prodId) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
-        ProductEntity productEntity = session.get(this.getDaoClass(), prodId);
+        ProductEntity product = session.get(this.getDaoClass(), prodId);
         tx.commit();
-        return productEntity;
+
+        return product;
     }
 }
