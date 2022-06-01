@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="Dresden w\ Exceptions additions (incomplete">
-      <change afterPath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" afterDir="false" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="commit before merge w/ Exceptions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/StoreReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/daos/ReviewDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/daos/ReviewDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/LeipzigReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/LeipzigReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,7 +43,6 @@
     <setting file="file://$PROJECT_DIR$/src/main/java/Main.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/entities/BookEntity.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/java/parser/StoreReader.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/parser/XmlParser.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/resources/data-files/dresden.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/resources/data-files/leipzig_transformed.xml" root0="FORCE_HIGHLIGHTING" />
@@ -140,6 +142,7 @@
       <workItem from="1653915927865" duration="2440000" />
       <workItem from="1653935957786" duration="4376000" />
       <workItem from="1653983628222" duration="18974000" />
+      <workItem from="1654097080628" duration="6549000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -288,7 +291,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654010561644</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="commit before merge w/ Exceptions">
+      <created>1654097389178</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1654097389178</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,19 +337,8 @@
     <MESSAGE value="DresdenReader ready, requires duplicate exceptions, etc." />
     <MESSAGE value="Update reviews incomplete" />
     <MESSAGE value="Dresden w\ Exceptions additions (incomplete" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dresden w\ Exceptions additions (incomplete" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="book.getBookId().equals(&quot;377424801X&quot;)" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/parser/DresdenReader.java</url>
-          <line>250</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="commit before merge w/ Exceptions" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit before merge w/ Exceptions" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dbpraktikum$Main.ic" NAME="Main Coverage Results" MODIFIED="1653402293039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

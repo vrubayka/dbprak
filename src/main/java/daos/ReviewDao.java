@@ -28,4 +28,20 @@ public class ReviewDao extends GenericDao<ReviewEntity> implements IReviewDao {
 
         return reviewList;
     }
+
+    public String findProdIdFromReviewPK(String prodId){
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        SelectionQuery<ReviewEntity> query = session.createSelectionQuery(
+                "SELECT r FROM ReviewEntity r WHERE r.prodId = :prodId AND r. "
+        )
+    }
+
+    public String findUsername(String prodId){
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        SelectionQuery<ReviewEntity> query = session.createSelectionQuery(
+                SELECT r FROM
+                )
+    }
 }

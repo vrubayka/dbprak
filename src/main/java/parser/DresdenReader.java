@@ -1,13 +1,11 @@
 package parser;
 
-import daos.ArtistDao;
-import daos.GenericDao;
-import daos.PersonDao;
-import daos.TitleDao;
+import daos.*;
 import entities.*;
 import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
 import logging.ReadingError;
+import logging.exceptions.ShopReaderExceptions;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,20 +66,24 @@ public class DresdenReader {
         for (Node currentNode = root.getFirstChild(); currentNode != null; currentNode = currentNode.getNextSibling()) {
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (currentNode.getNodeName().equals("item"))
-                    readItem(currentNode, storeId);
+                    try {
+                        readItem(currentNode, storeId);
+                    } catch (ShopReaderExceptions e) {
+                        System.err.println(e.getMessage());
+                    }
                 else
                     System.err.println("Other elements than \"item\" in root scope.");
             }
         }
     }
 
-    private void readItem(Node itemNode, long storeId) {
+    private void readItem(Node itemNode, long storeId) throws ShopReaderExceptions {
         ProductEntity product = new ProductEntity();
 
         String group = readProdAndReturnGroup(itemNode, product);
 
         // read price, name and product info by pgroup
-        System.out.println(product.getProdId());
+        //System.out.println(product.getProdId());
         if (product.getProdId() != null && group != null) {
 
             InventoryEntity inventoryEntry = new InventoryEntity();
@@ -102,44 +104,40 @@ public class DresdenReader {
                         } else
                             ReadLog.addError(new ReadingError("Product", product.getProdId(), "picture",
                                     "Link is too long."));
-                    }
-                    else if ("title".equals(scope)) {
-                        // ToDo: check for empty title
+                    } else if ("title".equals(scope)) {
                         product.setProdName(node.getFirstChild().getNodeValue());
 
                     } else if ("bookspec".equals(scope) && "Book".equals(group)) {
+                        checkProductName(product);
                         BookEntity book = new BookEntity();
                         List<PersonEntity> authorList = new ArrayList<>();
 
                         readBook(node, product, book, authorList);
-                        // ToDo: check product/book values for not null and throw Exception
                         insertBook(sessionFactory, product, book, authorList);
                         insertInventory(sessionFactory, inventoryEntry);
 
                     } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
+                        checkProductName(product);
+
                         DvdEntity dvd = new DvdEntity();
                         List<PersonEntity> actorList = new ArrayList<>();
                         List<PersonEntity> creatorList = new ArrayList<>();
                         List<PersonEntity> directorList = new ArrayList<>();
 
                         readDvd(node, product, dvd, actorList, creatorList, directorList);
-                        // ToDo: check product/dvd values for not null and throw Exception
-                        if (product.getProdName() == null) {
-                            product.setProdName("");
-                        }
+
                         insertDvd(sessionFactory, product, dvd, actorList, creatorList, directorList);
                         insertInventory(sessionFactory, inventoryEntry);
 
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
+                        checkProductName(product);
+
                         CdEntity cd = new CdEntity();
                         List<TitleEntity> titleList = new ArrayList<>();
                         List<ArtistEntity> artistList = new ArrayList<>();
 
                         readCd(node, product, cd, titleList, artistList);
-                        // ToDo: check product/cd values for not null and throw Exception
-                        if (product.getProdName() == null) {
-                            product.setProdName("");
-                        }
+
                         insertCd(sessionFactory, product, cd, titleList, artistList);
                         insertInventory(sessionFactory, inventoryEntry);
                     }
@@ -180,10 +178,6 @@ public class DresdenReader {
 
     }
 
-    private void readDetails(Node detailsNode){
-
-    }
-
 
     private void readPrice(Node priceNode, ProductEntity product, InventoryEntity inventoryEntry, long storeId) {
         NamedNodeMap priceAttributes = priceNode.getAttributes();
@@ -200,7 +194,7 @@ public class DresdenReader {
 
         } else if (priceAttributes.getNamedItem("currency").getNodeValue().length() > 0) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "price",
-                    "Unknown currency."));
+                    "Unknown currency, price not set."));
         }
 
     }
@@ -212,29 +206,35 @@ public class DresdenReader {
                 String scope = childNode.getNodeName();
                 switch (scope) {
                     case "isbn":
-                        // ToDo: ISBN sometimes empty string, problem? currently inserted with empty string
+                        // ToDo: ISBN sometimes missing or empty string, problem? currently inserted with "0"
                         String isbn = childNode.getAttributes().getNamedItem("val").getNodeValue();
-                        if(isbn != null) {
-                            book.setIsbn(isbn);
+                        if (isbn == null || isbn.equals("")) {
+                            book.setIsbn("0");
+                            ReadLog.addError(new ReadingError("Book", product.getProdId(), "isbn",
+                                    "No ISBN attribute or empty, ISBN set to 0."));
                         } else {
-
+                            book.setIsbn(isbn);
                         }
                         break;
                     case "pages":
-                        // ToDo: exception if no value
+                        // ToDo: pages sometimes missing or empty string, problem? currently inserted with 0
                         Node pageValue = childNode.getFirstChild();
-                        if (pageValue == null)
+                        if (pageValue == null || pageValue.getNodeValue().equals("")) {
                             book.setPages(0);
-                        else
+                            ReadLog.addError(new ReadingError("Book", product.getProdId(), "pages",
+                                    "No pages attribute or empty, pages set to 0."));
+                        } else
                             book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;
                     case "publication":
+                        // ToDo: date sometimes empty String, problem? currently inserted with current date
                         String dateAsString = childNode.getAttributes().getNamedItem("date").getNodeValue();
-                        // ToDo: empty date String or verify with regular expression and remove else!!!
-                        if (!dateAsString.equals(""))
-                            book.setReleaseDate(Date.valueOf(dateAsString));
-                        else
+                        if (dateAsString.equals("")) {
                             book.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
+                            ReadLog.addError(new ReadingError("Book", product.getProdId(), "publication",
+                                    "Empty string in date attribute, set current date."));
+                        } else
+                            book.setReleaseDate(Date.valueOf(dateAsString));
                         break;
                 }
             }
@@ -249,7 +249,7 @@ public class DresdenReader {
                     if (publishersNode.getNodeType() == Node.ELEMENT_NODE &&
                             publishersNode.getNodeName().equals("publisher")) {
                         String publisherName = publishersNode.getFirstChild().getNodeValue();
-                        if (publisherName != null){
+                        if (publisherName != null) {
                             book.setPublisher(publisherName);
                         } else book.setPublisher("");
                         // set Node to last Node to break for-loop
@@ -257,7 +257,7 @@ public class DresdenReader {
                     }
                 }
                 //TODO: delete when exception is done
-                if (book.getPublisher() == null){
+                if (book.getPublisher() == null) {
                     book.setPublisher("");
                 }
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("authors") &&
@@ -357,14 +357,15 @@ public class DresdenReader {
         for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 String scope = childNode.getNodeName();
-                switch (scope) {
-                    case "releasedate":
-                        // ToDo: releaseDate null value ok? currently current date inserted
-                        if (childNode.hasChildNodes())
-                            cd.setReleaseDate(Date.valueOf(childNode.getFirstChild().getNodeValue()));
-                        else
-                            cd.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
-                        break;
+                if ("releasedate".equals(scope)) {
+                    // ToDo: releaseDate null value ok? currently current date inserted
+                    if (childNode.hasChildNodes())
+                        cd.setReleaseDate(Date.valueOf(childNode.getFirstChild().getNodeValue()));
+                    else {
+                        cd.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
+                        ReadLog.addError(new ReadingError("CD", product.getProdId(), "releasedate",
+                                "No value in releasedate, set current date."));
+                    }
                 }
             }
         }
@@ -384,8 +385,11 @@ public class DresdenReader {
                     }
                 }
                 // ToDo: label null value accepted?
-                if (cd.getLabel() == null)
-                    cd.setLabel("");
+                if (cd.getLabel() == null) {
+                    cd.setLabel("none");
+                    ReadLog.addError(new ReadingError("CD", product.getProdId(), "label",
+                            "CD has no label, set to  \"none\""));
+                }
 
 
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("tracks")) {
@@ -425,25 +429,37 @@ public class DresdenReader {
 
     }
 
+    public void checkProductName(ProductEntity product) throws ShopReaderExceptions {
+        if (product.getProdName() == null) {
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "prodName",
+                    "Product has no name."));
+            throw new ShopReaderExceptions("No product name in product: " + product.getProdId() + ".");
+        }
+    }
 
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
-        bookDao.create(book);
+            GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
+            bookDao.create(book);
 
-        GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
-        AuthorEntity author = new AuthorEntity();
-        for (PersonEntity person : authorList) {
+            GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
+            AuthorEntity author = new AuthorEntity();
+            for (PersonEntity person : authorList) {
 
-            person = personPersistent(person);
+                person = personPersistent(person);
 
-            author.setPersonId(person.getPersonId());
-            author.setBookId(book.getBookId());
-            authorDao.create(author);
+                author.setPersonId(person.getPersonId());
+                author.setBookId(book.getBookId());
+                authorDao.create(author);
+            }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                    "Product already in Database."));
         }
     }
 
@@ -451,87 +467,115 @@ public class DresdenReader {
                            List<PersonEntity> actorList, List<PersonEntity> creatorList,
                            List<PersonEntity> directorList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<DvdEntity> dvdDao = new GenericDao<>(sessionFactory);
-        dvdDao.create(dvd);
+            GenericDao<DvdEntity> dvdDao = new GenericDao<>(sessionFactory);
+            dvdDao.create(dvd);
 
-        GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
-        DvdPersonEntity dvdPerson = new DvdPersonEntity();
+            GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
+            DvdPersonEntity dvdPerson = new DvdPersonEntity();
 
-        for (PersonEntity actor : actorList) {
+            for (PersonEntity actor : actorList) {
 
-            actor = personPersistent(actor);
+                actor = personPersistent(actor);
 
-            dvdPerson.setPersonId(actor.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Actor");
-            dvdPersonDao.create(dvdPerson);
-        }
+                dvdPerson.setPersonId(actor.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Actor");
+                dvdPersonDao.create(dvdPerson);
+            }
 
-        for (PersonEntity creator : creatorList) {
+            for (PersonEntity creator : creatorList) {
 
-            creator = personPersistent(creator);
+                creator = personPersistent(creator);
 
-            dvdPerson.setPersonId(creator.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Creator");
-            dvdPersonDao.create(dvdPerson);
-        }
+                dvdPerson.setPersonId(creator.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Creator");
+                dvdPersonDao.create(dvdPerson);
+            }
 
-        for (PersonEntity director : directorList) {
+            for (PersonEntity director : directorList) {
 
-            director = personPersistent(director);
+                director = personPersistent(director);
 
-            dvdPerson.setPersonId(director.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Director");
-            dvdPersonDao.create(dvdPerson);
+                dvdPerson.setPersonId(director.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Director");
+                dvdPersonDao.create(dvdPerson);
+            }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                    "Product already in Database."));
         }
     }
 
     private void insertCd(SessionFactory sessionFactory, ProductEntity product, CdEntity cd,
                           List<TitleEntity> titleList, List<ArtistEntity> artistList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
-        cdDao.create(cd);
+            GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
+            cdDao.create(cd);
 
-        GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(sessionFactory);
-        CdArtistEntity cdArtist = new CdArtistEntity();
+            GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(sessionFactory);
+            CdArtistEntity cdArtist = new CdArtistEntity();
 
-        for (ArtistEntity artist : artistList) {
-            artist = artistPersistent(artist);
+            for (ArtistEntity artist : artistList) {
+                artist = artistPersistent(artist);
 
-            cdArtist.setArtistId(artist.getArtistId());
-            cdArtist.setCdId(cd.getCdId());
-            // ToDo: custom exception
-            try {
-                cdArtistDao.create(cdArtist);
-            } catch (PersistenceException e) {
-                System.err.println("Duplicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
+                cdArtist.setArtistId(artist.getArtistId());
+                cdArtist.setCdId(cd.getCdId());
+
+                if (isNewCdArtist(cdArtist)) {
+                    cdArtistDao.create(cdArtist);
+                }
+
             }
-        }
 
-        GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(sessionFactory);
-        CdTitleEntity cdTitle = new CdTitleEntity();
+            GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(sessionFactory);
+            CdTitleEntity cdTitle = new CdTitleEntity();
 
-        for (TitleEntity title : titleList) {
-            title = titlePersistent(title);
+            for (TitleEntity title : titleList) {
+                title = titlePersistent(title);
 
-            cdTitle.setTitleId(title.getTitleId());
-            cdTitle.setCdId(cd.getCdId());
-            // ToDo: custom exception
-            cdTitleDao.create(cdTitle);
+                cdTitle.setTitleId(title.getTitleId());
+                cdTitle.setCdId(cd.getCdId());
+                cdTitleDao.create(cdTitle);
+            }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                    "Product already in Database."));
         }
     }
 
     private void insertInventory(SessionFactory sessionFactory, InventoryEntity inventoryEntry) {
         GenericDao<InventoryEntity> inventoryDao = new GenericDao<>(sessionFactory);
         inventoryDao.create(inventoryEntry);
+    }
+
+    private boolean isNewProduct(ProductEntity product) {
+        ProductDao productDao = new ProductDao(sessionFactory);
+        if (productDao.findOne(product.getProdId()) == null) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isNewCdArtist(CdArtistEntity cdArtist) {
+        CdArtistDao cdArtistDao = new CdArtistDao(sessionFactory);
+        CdArtistEntityPK cdArtistPK = new CdArtistEntityPK();
+        cdArtistPK.setCdId(cdArtist.getCdId());
+        cdArtistPK.setArtistId(cdArtist.getArtistId());
+
+        if (cdArtistDao.findOne(cdArtistPK) == null) {
+            return true;
+        }
+        return false;
     }
 
     private PersonEntity personPersistent(PersonEntity person) {

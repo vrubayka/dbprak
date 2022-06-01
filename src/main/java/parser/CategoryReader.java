@@ -1,10 +1,12 @@
 package parser;
 
 import daos.GenericDao;
+import daos.ProductDao;
 import entities.CategoryEntity;
 import entities.ProductCategoryEntity;
 import entities.ProductEntity;
 import entities.ReviewEntity;
+import logging.exceptions.ShopReaderExceptions;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -23,14 +25,7 @@ public class CategoryReader {
         this.sessionFactory = sessionFactory;
     }
 
-    public void createRootCategory(SessionFactory sessionFactory){
-        GenericDao<CategoryEntity> rootCatDao = new GenericDao<>(sessionFactory);
-        CategoryEntity rootEntity = new CategoryEntity();
-        rootEntity.setCategoryName("Root");
-        rootCatDao.create(rootEntity);
-        categoryDaoMap.put(rootEntity.getCategoryName(), rootEntity.getCategoryId());
-    }
-    public void parseCategories(NodeList list, SessionFactory sessionFactory) {
+    public void parseCategories(NodeList list, SessionFactory sessionFactory) throws ShopReaderExceptions {
         for (int i = 0; i < list.getLength(); i++) {
 
             if ((XmlParser.returnTagOfNode(list.item(i))).equals("category")) {
@@ -42,24 +37,21 @@ public class CategoryReader {
                 if (XmlParser.returnTagOfNode(list.item(i).getParentNode()).equals("category")) {
                     entityCat.setSuperCategory(categoryDaoMap.get(XmlParser.returnTextValueOfNode(list.item(i).getParentNode())));
 
-                } /*else if (XmlParser.returnTagOfNode(list.item(i).getParentNode()).equals("categories")){
-                    entityCat.setSuperCategory(categoryDaoMap.get("Root"));
-                }*/
-                daoCat.create(entityCat);
-                categoryDaoMap.put(XmlParser.returnTextValueOfNode(list.item(i)), entityCat.getCategoryId());
-                parseCategories(list.item(i).getChildNodes(), sessionFactory);
+                    daoCat.create(entityCat);
+                    categoryDaoMap.put(XmlParser.returnTextValueOfNode(list.item(i)), entityCat.getCategoryId());
+                    parseCategories(list.item(i).getChildNodes(), sessionFactory);
 
-            } else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")) {
-                try {
-                    GenericDao<ProductCategoryEntity> productDao = new GenericDao(sessionFactory);
-                    ProductCategoryEntity entityProductCategory = new ProductCategoryEntity();
-                    entityProductCategory.setProdId(XmlParser.returnTextValueOfNode(list.item(i)));
-                    entityProductCategory.setCategoryId(categoryDaoMap.
-                            get(XmlParser.returnTextValueOfNode(list.item(i).getParentNode())));
-                    productDao.create(entityProductCategory);
-                } catch (jakarta.persistence.PersistenceException e) {
-                    System.out.println("Item " + XmlParser.returnTextValueOfNode(list.item(i)) + " missing");
-
+                } else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")) {
+                    try {
+                        GenericDao<ProductCategoryEntity> productDao = new GenericDao(sessionFactory);
+                        ProductCategoryEntity entityProductCategory = new ProductCategoryEntity();
+                        entityProductCategory.setProdId(XmlParser.returnTextValueOfNode(list.item(i)));
+                        entityProductCategory.setCategoryId(categoryDaoMap.
+                                get(XmlParser.returnTextValueOfNode(list.item(i).getParentNode())));
+                        productDao.create(entityProductCategory);
+                    } catch (jakarta.persistence.PersistenceException e) {
+                        System.out.println("Item " + XmlParser.returnTextValueOfNode(list.item(i)) + " missing");
+                    }
                 }
             }
 

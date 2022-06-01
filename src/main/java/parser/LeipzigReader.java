@@ -25,7 +25,7 @@ public class LeipzigReader {
     private final SessionFactory sessionFactory;
 
     public LeipzigReader(Document doc, SessionFactory sessionFactory) {
-        this.doc            = doc;
+        this.doc = doc;
         this.sessionFactory = sessionFactory;
     }
 
@@ -83,7 +83,7 @@ public class LeipzigReader {
         String group = readProdAndReturnGroup(itemNode, product);
 
         // read price, name and product info by pgroup
-        System.out.println(product.getProdId());
+        //System.out.println(product.getProdId());
         if (product.getProdId() != null && group != null) {
 
             InventoryEntity inventoryEntry = new InventoryEntity();
@@ -148,7 +148,7 @@ public class LeipzigReader {
 
         // check asin existence and set as prodId (primary key)
         if (itemAttributes.getNamedItem("asin") == null ||
-            itemAttributes.getNamedItem("asin").getNodeValue().equals("")) {
+                itemAttributes.getNamedItem("asin").getNodeValue().equals("")) {
 
             ReadLog.addError(new ReadingError("Product", null, "asin", "Missing or empty asin attribute."));
 
@@ -159,10 +159,10 @@ public class LeipzigReader {
         // check pgroup existence
         String pgroup = null;
         if (itemAttributes.getNamedItem("pgroup") == null ||
-            itemAttributes.getNamedItem("pgroup").getNodeValue().equals("")) {
+                itemAttributes.getNamedItem("pgroup").getNodeValue().equals("")) {
 
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "pgroup",
-                                              "Missing or empty pgroup attribute."));
+                    "Missing or empty pgroup attribute."));
 
         } else {
             pgroup = itemAttributes.getNamedItem("pgroup").getNodeValue();
@@ -175,7 +175,7 @@ public class LeipzigReader {
             product.setImage(picture);
         else
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "image",
-                                              "Link is too long."));
+                    "Link is too long."));
 
         return pgroup;
 
@@ -197,7 +197,7 @@ public class LeipzigReader {
 
         } else if (priceAttributes.getNamedItem("currency").getNodeValue().length() > 0) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "price",
-                                              "Unknown currency, price not set."));
+                    "Unknown currency, price not set."));
         }
 
     }
@@ -214,7 +214,7 @@ public class LeipzigReader {
                         if (isbn == null || isbn.equals("")) {
                             book.setIsbn("0");
                             ReadLog.addError(new ReadingError("Book", product.getProdId(), "isbn",
-                                                              "No ISBN attribute or empty, ISBN set to 0."));
+                                    "No ISBN attribute or empty, ISBN set to 0."));
                         } else {
                             book.setIsbn(isbn);
                         }
@@ -225,7 +225,7 @@ public class LeipzigReader {
                         if (pageValue == null || pageValue.getNodeValue().equals("")) {
                             book.setPages(0);
                             ReadLog.addError(new ReadingError("Book", product.getProdId(), "pages",
-                                                              "No pages attribute or empty, pages set to 0."));
+                                    "No pages attribute or empty, pages set to 0."));
                         } else
                             book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;
@@ -235,7 +235,7 @@ public class LeipzigReader {
                         if (dateAsString.equals("")) {
                             book.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
                             ReadLog.addError(new ReadingError("Book", product.getProdId(), "publication",
-                                                              "Empty string in date attribute, set current date."));
+                                    "Empty string in date attribute, set current date."));
                         } else
                             book.setReleaseDate(Date.valueOf(dateAsString));
                         break;
@@ -250,7 +250,7 @@ public class LeipzigReader {
                 for (Node publishersNode = sibling.getFirstChild(); publishersNode != null; publishersNode =
                         publishersNode.getNextSibling()) {
                     if (publishersNode.getNodeType() == Node.ELEMENT_NODE &&
-                        publishersNode.getNodeName().equals("publisher")) {
+                            publishersNode.getNodeName().equals("publisher")) {
                         NamedNodeMap publisherAttributes = publishersNode.getAttributes();
                         book.setPublisher(publisherAttributes.getNamedItem("name").getNodeValue());
                         // set Node to last Node to break for-loop
@@ -258,7 +258,7 @@ public class LeipzigReader {
                     }
                 }
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("authors") &&
-                       sibling.hasChildNodes()) {
+                    sibling.hasChildNodes()) {
 
                 for (Node authorNode = sibling.getFirstChild(); authorNode != null;
                      authorNode = authorNode.getNextSibling()) {
@@ -312,9 +312,9 @@ public class LeipzigReader {
             // ToDo: DvdEntity studio necessary?
 
             if (sibling.getNodeType() == Node.ELEMENT_NODE &&
-                (sibling.getNodeName().equals("actors") || sibling.getNodeName().equals("creators") ||
-                 sibling.getNodeName().equals("directors")) &&
-                sibling.hasChildNodes()) {
+                    (sibling.getNodeName().equals("actors") || sibling.getNodeName().equals("creators") ||
+                            sibling.getNodeName().equals("directors")) &&
+                    sibling.hasChildNodes()) {
 
                 for (Node roleNode = sibling.getFirstChild(); roleNode != null; roleNode =
                         roleNode.getNextSibling()) {
@@ -325,13 +325,13 @@ public class LeipzigReader {
                         actor.setPersonName(actorAttributes.getNamedItem("name").getNodeValue());
                         actorList.add(actor);
                     } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
-                               roleNode.getNodeName().equals("creator")) {
+                            roleNode.getNodeName().equals("creator")) {
                         NamedNodeMap creatorAttributes = roleNode.getAttributes();
                         PersonEntity creator = new PersonEntity();
                         creator.setPersonName(creatorAttributes.getNamedItem("name").getNodeValue());
                         creatorList.add(creator);
                     } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
-                               roleNode.getNodeName().equals("director")) {
+                            roleNode.getNodeName().equals("director")) {
                         NamedNodeMap directorAttributes = roleNode.getAttributes();
                         PersonEntity director = new PersonEntity();
                         director.setPersonName(directorAttributes.getNamedItem("name").getNodeValue());
@@ -365,7 +365,7 @@ public class LeipzigReader {
                     else {
                         cd.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
                         ReadLog.addError(new ReadingError("CD", product.getProdId(), "releasedate",
-                                                          "No value in releasedate, set current date."));
+                                "No value in releasedate, set current date."));
                     }
                 }
             }
@@ -389,7 +389,7 @@ public class LeipzigReader {
                 if (cd.getLabel() == null) {
                     cd.setLabel("none");
                     ReadLog.addError(new ReadingError("CD", product.getProdId(), "label",
-                                                      "CD has no label, set to  \"none\""));
+                            "CD has no label, set to  \"none\""));
                 }
 
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("tracks")) {
@@ -404,14 +404,14 @@ public class LeipzigReader {
                 }
                 // ToDo: creators = artist ok or error?
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE &&
-                       (sibling.getNodeName().equals("artists") || sibling.getNodeName().equals("creators")) &&
-                       sibling.hasChildNodes()) {
+                    (sibling.getNodeName().equals("artists") || sibling.getNodeName().equals("creators")) &&
+                    sibling.hasChildNodes()) {
 
                 for (Node artistsNode = sibling.getFirstChild(); artistsNode != null; artistsNode =
                         artistsNode.getNextSibling()) {
 
                     if (artistsNode.getNodeType() == Node.ELEMENT_NODE &&
-                        (artistsNode.getNodeName().equals("artist") || artistsNode.getNodeName().equals("creator"))) {
+                            (artistsNode.getNodeName().equals("artist") || artistsNode.getNodeName().equals("creator"))) {
 
                         NamedNodeMap artistAttributes = artistsNode.getAttributes();
                         ArtistEntity artist = new ArtistEntity();
@@ -432,7 +432,7 @@ public class LeipzigReader {
     public void checkProductName(ProductEntity product) throws ShopReaderExceptions {
         if (product.getProdName() == null) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "prodName",
-                                              "Product has no name."));
+                    "Product has no name."));
             throw new ShopReaderExceptions("No product name in product: " + product.getProdId() + ".");
         }
     }
@@ -459,7 +459,7 @@ public class LeipzigReader {
             }
         } else {
             ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
-                                                  "Product already in Database."));
+                    "Product already in Database."));
         }
     }
 
@@ -508,7 +508,7 @@ public class LeipzigReader {
             }
         } else {
             ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
-                                                  "Product already in Database."));
+                    "Product already in Database."));
         }
     }
 
@@ -531,7 +531,7 @@ public class LeipzigReader {
                 cdArtist.setArtistId(artist.getArtistId());
                 cdArtist.setCdId(cd.getCdId());
 
-                if(isNewCdArtist(cdArtist)) {
+                if (isNewCdArtist(cdArtist)) {
                     cdArtistDao.create(cdArtist);
                 }
 
@@ -549,7 +549,7 @@ public class LeipzigReader {
             }
         } else {
             ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
-                                                  "Product already in Database."));
+                    "Product already in Database."));
         }
     }
 
@@ -572,7 +572,7 @@ public class LeipzigReader {
         cdArtistPK.setCdId(cdArtist.getCdId());
         cdArtistPK.setArtistId(cdArtist.getArtistId());
 
-        if(cdArtistDao.findOne(cdArtistPK) == null) {
+        if (cdArtistDao.findOne(cdArtistPK) == null) {
             return true;
         }
         return false;

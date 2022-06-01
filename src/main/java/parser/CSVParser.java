@@ -2,9 +2,11 @@ package parser;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import daos.GenericDao;
+import daos.ProductDao;
 import daos.ReviewDao;
 import entities.ProductEntity;
 import entities.ReviewEntity;
+import logging.exceptions.ShopReaderExceptions;
 import org.hibernate.SessionFactory;
 
 import java.io.BufferedReader;
@@ -17,7 +19,7 @@ public class CSVParser {
 
     final static String formatFilePath = "src/main/resources/data-files/format.txt";
 
-    public void createReviewEntity(String file, SessionFactory sessionFactory) {
+    public void createReviewEntity(String file, SessionFactory sessionFactory) throws ShopReaderExceptions {
         ArrayList<String> reviewList = new ArrayList<>();
         Set<String> reviewSet = new LinkedHashSet<>();
         try {
@@ -49,6 +51,14 @@ public class CSVParser {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean isNewReview(ReviewEntity review, SessionFactory sessionFactory) {
+        ReviewDao reviewDao = new ReviewDao(sessionFactory);
+        if (reviewDao.findOne(review.getProdId()) == null && reviewDao.f) {
+            return true;
+        }
+        return false;
     }
 
     public void findAggregateReviews(ArrayList<String> reviewList, SessionFactory sessionFactory){

@@ -18,27 +18,19 @@ public class XmlParser implements Reader{
 
 
         if (rootElement.equals("shop")){
-                System.out.println("Reading shop...");
                 if (doc.getDocumentElement().getAttribute("name").equals("Dresden")){
+                    System.out.println("Reading Dresden shop...");
                     DresdenReader dresdenReader = new DresdenReader(doc, sessionFactory);
                     dresdenReader.readStoreXml();
                 }
                 else {
+                    System.out.println("Reading Leipzig shop...");
                     LeipzigReader leipzigReader = new LeipzigReader(doc, sessionFactory);
                     leipzigReader.readStoreXml();
                 }
 
 
                 System.out.println("Finished reading shop Xml.");
-
-            //ToDo: delete
-            /*case "categories":
-                System.out.println("Reading categories...");
-                CategoryReader categoryReader = new CategoryReader(doc, sessionFactory);
-                categoryReader.parseCategories(doc.getDocumentElement().getChildNodes(), sessionFactory);
-
-                System.out.println("Finished reading categories Xml.");
-            */
 
         }
 
