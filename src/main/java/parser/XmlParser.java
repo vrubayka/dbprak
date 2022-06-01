@@ -49,10 +49,10 @@ public class XmlParser implements Reader{
     public void readSimilars(String pathfile, SessionFactory sessionFactory){
         File inputFile = new File(pathfile);
         Document doc = getNormalizedDocument(inputFile);
-        NodeList nodeList = doc.getDocumentElement().getChildNodes();
+        Node root = doc.getDocumentElement();
         SimilarsParser sr = new SimilarsParser();
         System.out.println("Parsing similars:");
-        sr.readSimilarProducts(nodeList, sessionFactory);
+        sr.readItems(root, sessionFactory);
         System.out.println("Finished parsing similars");
     }
 

@@ -11,40 +11,50 @@ import org.w3c.dom.NodeList;
 public class SimilarsParser {
 
 
-    public SimilarsParser() {}
+    public SimilarsParser() {
+    }
 
-    /**
-     *
-     * @param nodeList
-     * @param sessionFactory
-     *
-     *
-     */
-    public void readSimilarProducts(NodeList nodeList, SessionFactory sessionFactory) {
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            if (nodeList.item(i).getNodeName().equals("sim_product")) {
-                String asin = nodeList.item(i).getParentNode().getParentNode().getAttributes()
-                        .getNamedItem("asin").getNodeValue();
-                SimilarProductsEntity simProduct = new SimilarProductsEntity();
-                GenericDao<SimilarProductsEntity> simDao = new GenericDao<>(sessionFactory);
-                simProduct.setProdId(asin);
-                for (Node childNode = nodeList.item(i).getFirstChild(); childNode != null;
-                     childNode = childNode.getNextSibling()) {
-                    if (childNode.getNodeType() == Node.ELEMENT_NODE &&
-                            childNode.getNodeName().equals("sim_product")) {
-                        for (Node similarAttrNode = childNode.getFirstChild(); similarAttrNode != null;
-                             similarAttrNode = similarAttrNode.getNextSibling()) {
-                            if (similarAttrNode.getNodeName().equals("asin")) {
-                                simProduct.setSimilarProdId(similarAttrNode.getNodeValue());
+
+    public void readItems(Node root, SessionFactory sessionFactory) {
+        SimilarProductsEntity simProduct = new SimilarProductsEntity();
+        String asin = "";
+        GenericDao<SimilarProductsEntity> simDao = new GenericDao<>(sessionFactory);
+
+        for (Node itemNode = root.getFirstChild(); itemNode != null;  //<item>
+             itemNode = itemNode.getNextSibling()) {
+
+            for (Node itemAttrNode = itemNode.getFirstChild(); itemAttrNode != null; //<price>, <title>...
+                 itemAttrNode = itemAttrNode.getNextSibling()) {
+
+                if (itemAttrNode.getNodeName().equals("similars")) {
+
+                    for (Node simNode = itemAttrNode.getFirstChild(); simNode != null;
+                         simNode = simNode.getNextSibling()) {
+
+                        if (simNode.getNodeValue() != null) {
+                            asin = itemNode.getAttributes()
+                                    .getNamedItem("asin").getNodeValue();
+                            simProduct.setProdId(asin);
+                        }
+
+                        for (Node simAttrNode = simNode.getFirstChild(); simAttrNode != null;
+                             simAttrNode = simAttrNode.getNextSibling()) {
+                            if (simAttrNode.getNodeType() == Node.ELEMENT_NODE &&
+                                    simAttrNode.getNodeName().equals("asin")) {
+                                simProduct.setSimilarProdId(simAttrNode.getFirstChild().getNodeValue());
+                                if (simProduct.getProdId() != null) {
+                                    simDao.create(simProduct);
+
+                                }
                             }
                         }
+
                     }
-                }
-                if (simProduct.getProdId() == null) {
-                    simProduct.setProdId("");
-                    simDao.create(simProduct);
                 }
             }
         }
     }
 }
+
+
+

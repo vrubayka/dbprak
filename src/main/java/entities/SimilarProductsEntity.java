@@ -8,11 +8,9 @@ import java.util.Objects;
 @Table(name = "similar_products", schema = "public", catalog = "dbprak")
 @IdClass(SimilarProductsEntityPK.class)
 public class SimilarProductsEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "prod_id", nullable = false, length = 255)
     private String prodId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "similar_prod_id", nullable = false, length = 255)
     private String similarProdId;
