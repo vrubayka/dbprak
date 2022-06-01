@@ -13,6 +13,13 @@ public class SimilarsParser {
 
     public SimilarsParser() {}
 
+    /**
+     *
+     * @param nodeList
+     * @param sessionFactory
+     *
+     *
+     */
     public void readSimilarProducts(NodeList nodeList, SessionFactory sessionFactory) {
         for (int i = 0; i < nodeList.getLength(); i++) {
             if (nodeList.item(i).getNodeName().equals("sim_product")) {
