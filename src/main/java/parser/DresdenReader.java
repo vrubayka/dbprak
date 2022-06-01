@@ -4,7 +4,7 @@ import daos.*;
 import entities.*;
 import logging.ReadLog;
 import logging.ReadingError;
-import logging.exceptions.ShopReaderExceptions;
+import logging.exceptions.MissingProductNameException;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -65,14 +65,18 @@ public class DresdenReader {
         for (Node currentNode = root.getFirstChild(); currentNode != null; currentNode = currentNode.getNextSibling()) {
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (currentNode.getNodeName().equals("item"))
-                    readItem(currentNode, storeId);
+                    try {
+                        readItem(currentNode, storeId);
+                    } catch (MissingProductNameException e) {
+                        System.err.println(e.getMessage());
+                    }
                 else
                     System.err.println("Other elements than \"item\" in root scope.");
             }
         }
     }
 
-    private void readItem(Node itemNode, long storeId) {
+    private void readItem(Node itemNode, long storeId) throws MissingProductNameException {
         ProductEntity product = new ProductEntity();
 
         String group = readProdAndReturnGroup(itemNode, product);
@@ -428,11 +432,11 @@ public class DresdenReader {
         }
     }
 
-    public void checkProductName(ProductEntity product) throws ShopReaderExceptions {
+    public void checkProductName(ProductEntity product) throws MissingProductNameException {
         if (product.getProdName() == null) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "prodName",
                                               "Product has no name."));
-            throw new ShopReaderExceptions("No product name in product: " + product.getProdId() + ".");
+            throw new MissingProductNameException("No product name in product: " + product.getProdId() + ".");
         }
     }
 
