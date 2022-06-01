@@ -197,7 +197,7 @@ public class StoreReader {
 
         } else if (priceAttributes.getNamedItem("currency").getNodeValue().length() > 0) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "price",
-                                              "Unknown currency."));
+                                              "Unknown currency, price not set."));
         }
 
     }
@@ -209,29 +209,35 @@ public class StoreReader {
                 String scope = childNode.getNodeName();
                 switch (scope) {
                     case "isbn":
-                        // ToDo: ISBN sometimes empty string, problem? currently inserted with empty string
+                        // ToDo: ISBN sometimes missing or empty string, problem? currently inserted with "0"
                         String isbn = childNode.getAttributes().getNamedItem("val").getNodeValue();
-                        if(isbn != null) {
-                            book.setIsbn(isbn);
+                        if (isbn == null || isbn.equals("")) {
+                            book.setIsbn("0");
+                            ReadLog.addError(new ReadingError("Book", product.getProdId(), "isbn",
+                                                              "No ISBN attribute or empty, ISBN set to 0."));
                         } else {
-
+                            book.setIsbn(isbn);
                         }
                         break;
                     case "pages":
-                        // ToDo: exception if no value
+                        // ToDo: pages sometimes missing or empty string, problem? currently inserted with 0
                         Node pageValue = childNode.getFirstChild();
-                        if (pageValue == null)
+                        if (pageValue == null || pageValue.getNodeValue().equals("")) {
                             book.setPages(0);
-                        else
+                            ReadLog.addError(new ReadingError("Book", product.getProdId(), "pages",
+                                                              "No pages attribute or empty, pages set to 0."));
+                        } else
                             book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;
                     case "publication":
+                        // ToDo: date sometimes empty String, problem? currently inserted with current date
                         String dateAsString = childNode.getAttributes().getNamedItem("date").getNodeValue();
-                        // ToDo: empty date String or verify with regular expression and remove else!!!
-                        if (!dateAsString.equals(""))
-                            book.setReleaseDate(Date.valueOf(dateAsString));
-                        else
+                        if (dateAsString.equals("")) {
                             book.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
+                            ReadLog.addError(new ReadingError("Book", product.getProdId(), "publication",
+                                                              "Empty string in date attribute, set current date."));
+                        } else
+                            book.setReleaseDate(Date.valueOf(dateAsString));
                         break;
                 }
             }
