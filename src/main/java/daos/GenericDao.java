@@ -1,5 +1,6 @@
 package daos;
 
+import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Table;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,6 +23,9 @@ public class GenericDao <T> implements IGenericDao <T>{
         this.sessionFactory = sessionFactory;
     }
 
+    public Class<T> getDaoClass() {
+        return daoClass;
+    }
 
     @Override
     public T findOne(long id) {
@@ -38,12 +42,17 @@ public class GenericDao <T> implements IGenericDao <T>{
         return session.createQuery(s, daoClass).getResultList();
     }
 
-    @Override
+    //TODO: Exception wenn Product bereits existiert
+    // @Override
     public void create(T entity) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        session.persist(entity);
-        tx.commit();
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
+            session.persist(entity);
+            tx.commit();
+        } catch (PersistenceException e){
+            System.out.println("Duplicate not accepted");
+        }
     }
 
     @Override

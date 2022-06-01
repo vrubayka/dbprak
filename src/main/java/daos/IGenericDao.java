@@ -3,6 +3,8 @@ package daos;
 import java.util.List;
 
 public interface IGenericDao <T> {
+
+    Class<T> getDaoClass();
     T findOne(long id);
 
     List<T> findAll();

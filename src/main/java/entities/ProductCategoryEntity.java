@@ -11,7 +11,7 @@ public class ProductCategoryEntity {
     @Id
     @Column(name = "prod_id", nullable = false)
     private String prodId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Id
     @Column(name = "category_id", nullable = false)
     private long categoryId;

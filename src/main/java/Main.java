@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.MutationQuery;
+import parser.CSVParser;
+import parser.CategoryReader;
 import parser.XmlParser;
 import queries.HibernateQueries;
 
@@ -37,6 +39,12 @@ public class Main {
         hibernateQueries.cleanDb();
 
 
+        XmlParser xmlParser = new XmlParser();
+        xmlParser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+        xmlParser.readFile("src/main/resources/data-files/dresden.xml", sessionFactory);
+        xmlParser.readCategories("src/main/resources/data-files/categories.xml", sessionFactory);
+        CSVParser csvParser = new CSVParser();
+        csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
         ReadLog log = new ReadLog();
         XmlParser parser = new XmlParser();
         parser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
