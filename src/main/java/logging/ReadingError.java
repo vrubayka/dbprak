@@ -15,4 +15,11 @@ public class ReadingError {
         this.message  = message;
     }
 
+    @Override
+    public String toString() {
+        String s = entity + ";" + entityId + ";" + entityAttribute + ";" + message;
+
+        return s;
+
+    }
 }
