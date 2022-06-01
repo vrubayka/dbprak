@@ -35,19 +35,19 @@ public class Main {
             throw new ExceptionInInitializerError(ex);
         }
 
-        HibernateQueries hibernateQueries = new HibernateQueries(sessionFactory);
-        hibernateQueries.cleanDb();
+//        HibernateQueries hibernateQueries = new HibernateQueries(sessionFactory);
+//        hibernateQueries.cleanDb();
 
         ReadLog log = new ReadLog();
 
         XmlParser xmlParser = new XmlParser();
-        xmlParser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
-        xmlParser.readFile("src/main/resources/data-files/dresden.xml", sessionFactory);
+//        xmlParser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+//        xmlParser.readFile("src/main/resources/data-files/dresden.xml", sessionFactory);
         //xmlParser.readCategories("src/main/resources/data-files/categories.xml", sessionFactory);
-        //CSVParser csvParser = new CSVParser();
-        //csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
-        xmlParser.readSimilars("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
-        xmlParser.readSimilars("src/main/resources/data-files/dresden.xml", sessionFactory);
+        CSVParser csvParser = new CSVParser();
+        csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
+//        xmlParser.readSimilars("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+//        xmlParser.readSimilars("src/main/resources/data-files/dresden.xml", sessionFactory);
 
     }
 
