@@ -9,9 +9,14 @@ import java.util.List;
 public class ReadLog {
 
     private static List<ReadingError> errorList = new ArrayList<>();
+    private static List<ReadingError> duplicates = new ArrayList<>();
 
     public static void addError(ReadingError error) {
         errorList.add(error);
+    }
+
+    public static void addDuplicate(ReadingError duplicate) {
+        duplicates.add(duplicate);
     }
 
     public static void printLog() {

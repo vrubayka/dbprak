@@ -1,9 +1,6 @@
 package parser;
 
-import daos.ArtistDao;
-import daos.GenericDao;
-import daos.PersonDao;
-import daos.TitleDao;
+import daos.*;
 import entities.*;
 import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
@@ -21,12 +18,12 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class StoreReader {
+public class LeipzigReader {
 
     private final Document doc;
     private final SessionFactory sessionFactory;
 
-    public StoreReader(Document doc, SessionFactory sessionFactory) {
+    public LeipzigReader(Document doc, SessionFactory sessionFactory) {
         this.doc            = doc;
         this.sessionFactory = sessionFactory;
     }
@@ -444,21 +441,26 @@ public class StoreReader {
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
-        bookDao.create(book);
+            GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
+            bookDao.create(book);
 
-        GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
-        AuthorEntity author = new AuthorEntity();
-        for (PersonEntity person : authorList) {
+            GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
+            AuthorEntity author = new AuthorEntity();
+            for (PersonEntity person : authorList) {
 
-            person = personPersistent(person);
+                person = personPersistent(person);
 
-            author.setPersonId(person.getPersonId());
-            author.setBookId(book.getBookId());
-            authorDao.create(author);
+                author.setPersonId(person.getPersonId());
+                author.setBookId(book.getBookId());
+                authorDao.create(author);
+            }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                                              "Product already in Database."));
         }
     }
 
@@ -466,87 +468,106 @@ public class StoreReader {
                            List<PersonEntity> actorList, List<PersonEntity> creatorList,
                            List<PersonEntity> directorList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<DvdEntity> dvdDao = new GenericDao<>(sessionFactory);
-        dvdDao.create(dvd);
+            GenericDao<DvdEntity> dvdDao = new GenericDao<>(sessionFactory);
+            dvdDao.create(dvd);
 
-        GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
-        DvdPersonEntity dvdPerson = new DvdPersonEntity();
+            GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
+            DvdPersonEntity dvdPerson = new DvdPersonEntity();
 
-        for (PersonEntity actor : actorList) {
+            for (PersonEntity actor : actorList) {
 
-            actor = personPersistent(actor);
+                actor = personPersistent(actor);
 
-            dvdPerson.setPersonId(actor.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Actor");
-            dvdPersonDao.create(dvdPerson);
-        }
+                dvdPerson.setPersonId(actor.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Actor");
+                dvdPersonDao.create(dvdPerson);
+            }
 
-        for (PersonEntity creator : creatorList) {
+            for (PersonEntity creator : creatorList) {
 
-            creator = personPersistent(creator);
+                creator = personPersistent(creator);
 
-            dvdPerson.setPersonId(creator.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Creator");
-            dvdPersonDao.create(dvdPerson);
-        }
+                dvdPerson.setPersonId(creator.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Creator");
+                dvdPersonDao.create(dvdPerson);
+            }
 
-        for (PersonEntity director : directorList) {
+            for (PersonEntity director : directorList) {
 
-            director = personPersistent(director);
+                director = personPersistent(director);
 
-            dvdPerson.setPersonId(director.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Director");
-            dvdPersonDao.create(dvdPerson);
+                dvdPerson.setPersonId(director.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Director");
+                dvdPersonDao.create(dvdPerson);
+            }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                                              "Product already in Database."));
         }
     }
 
     private void insertCd(SessionFactory sessionFactory, ProductEntity product, CdEntity cd,
                           List<TitleEntity> titleList, List<ArtistEntity> artistList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
-        cdDao.create(cd);
+            GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
+            cdDao.create(cd);
 
-        GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(sessionFactory);
-        CdArtistEntity cdArtist = new CdArtistEntity();
+            GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(sessionFactory);
+            CdArtistEntity cdArtist = new CdArtistEntity();
 
-        for (ArtistEntity artist : artistList) {
-            artist = artistPersistent(artist);
+            for (ArtistEntity artist : artistList) {
+                artist = artistPersistent(artist);
 
-            cdArtist.setArtistId(artist.getArtistId());
-            cdArtist.setCdId(cd.getCdId());
-            // ToDo: custom exception
-            try {
-                cdArtistDao.create(cdArtist);
-            } catch (PersistenceException e) {
-                System.err.println("Dublicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
+                cdArtist.setArtistId(artist.getArtistId());
+                cdArtist.setCdId(cd.getCdId());
+                // ToDo: custom exception
+                try {
+                    cdArtistDao.create(cdArtist);
+                } catch (PersistenceException e) {
+                    System.err.println(
+                            "Duplicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
+                }
             }
-        }
 
-        GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(sessionFactory);
-        CdTitleEntity cdTitle = new CdTitleEntity();
+            GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(sessionFactory);
+            CdTitleEntity cdTitle = new CdTitleEntity();
 
-        for (TitleEntity title : titleList) {
-            title = titlePersistent(title);
+            for (TitleEntity title : titleList) {
+                title = titlePersistent(title);
 
-            cdTitle.setTitleId(title.getTitleId());
-            cdTitle.setCdId(cd.getCdId());
-            // ToDo: custom exception
-            cdTitleDao.create(cdTitle);
+                cdTitle.setTitleId(title.getTitleId());
+                cdTitle.setCdId(cd.getCdId());
+                // ToDo: custom exception
+                cdTitleDao.create(cdTitle);
+            }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                                              "Product already in Database."));
         }
     }
 
     private void insertInventory(SessionFactory sessionFactory, InventoryEntity inventoryEntry) {
         GenericDao<InventoryEntity> inventoryDao = new GenericDao<>(sessionFactory);
         inventoryDao.create(inventoryEntry);
+    }
+
+    private boolean isNewProduct(ProductEntity product) {
+        ProductDao productDao = new ProductDao(sessionFactory);
+        if (productDao.findOne(product.getProdId()) == null) {
+            return true;
+        }
+        return false;
     }
 
     private PersonEntity personPersistent(PersonEntity person) {

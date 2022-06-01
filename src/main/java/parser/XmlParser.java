@@ -25,7 +25,7 @@ public class XmlParser implements Reader{
                     dresdenReader.readStoreXml();
                 }
                 else {
-                    StoreReader leipzigReader = new StoreReader(doc, sessionFactory);
+                    LeipzigReader leipzigReader = new LeipzigReader(doc, sessionFactory);
                     leipzigReader.readStoreXml();
                 }
 

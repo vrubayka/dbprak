@@ -3,8 +3,11 @@ package parser;
 import daos.ArtistDao;
 import daos.GenericDao;
 import daos.PersonDao;
+import daos.ProductDao;
 import entities.*;
 import jakarta.persistence.PersistenceException;
+import logging.ReadLog;
+import logging.ReadingError;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,7 +26,7 @@ public class DresdenReader {
     private final SessionFactory sessionFactory;
 
     public DresdenReader(Document doc, SessionFactory sessionFactory) {
-        this.doc = doc;
+        this.doc            = doc;
         this.sessionFactory = sessionFactory;
     }
 
@@ -49,7 +52,7 @@ public class DresdenReader {
 
     private long saveStore(AddressEntity storeAddress) {
         GenericDao<AddressEntity> addressEntityDao = new GenericDao<>(AddressEntity.class,
-                sessionFactory);
+                                                                      sessionFactory);
         addressEntityDao.create(storeAddress);
 
         long addressId = storeAddress.getAddressId();
@@ -86,7 +89,7 @@ public class DresdenReader {
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     String scope = node.getNodeName();
-                    if ("details".equals(scope)){
+                    if ("details".equals(scope)) {
                         String image = readDetails(node, product);
                         if (image.length() < 256)
                             product.setImage(image);
@@ -219,7 +222,7 @@ public class DresdenReader {
                 for (Node publishersNode = sibling.getFirstChild(); publishersNode != null; publishersNode =
                         publishersNode.getNextSibling()) {
                     if (publishersNode.getNodeType() == Node.ELEMENT_NODE &&
-                            publishersNode.getNodeName().equals("publisher")) {
+                        publishersNode.getNodeName().equals("publisher")) {
                         String publisher = publishersNode.getFirstChild().getNodeValue();
                         book.setPublisher(publisher);
                         // set Node to last Node to break for-loop
@@ -227,7 +230,7 @@ public class DresdenReader {
                     }
                 }
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("authors") &&
-                    sibling.hasChildNodes()) {
+                       sibling.hasChildNodes()) {
 
                 for (Node authorNode = sibling.getFirstChild(); authorNode != null;
                      authorNode = authorNode.getNextSibling()) {
@@ -302,9 +305,9 @@ public class DresdenReader {
 
 
             if (sibling.getNodeType() == Node.ELEMENT_NODE &&
-                    (sibling.getNodeName().equals("actors") || sibling.getNodeName().equals("creators") ||
-                            sibling.getNodeName().equals("directors")) &&
-                    sibling.hasChildNodes()) {
+                (sibling.getNodeName().equals("actors") || sibling.getNodeName().equals("creators") ||
+                 sibling.getNodeName().equals("directors")) &&
+                sibling.hasChildNodes()) {
 
                 for (Node roleNode = sibling.getFirstChild(); roleNode != null; roleNode =
                         roleNode.getNextSibling()) {
@@ -315,13 +318,13 @@ public class DresdenReader {
                         actor.setPersonName(actorAttributes.getNamedItem("name").getNodeValue());
                         actorList.add(actor);
                     } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
-                            roleNode.getNodeName().equals("creator")) {
+                               roleNode.getNodeName().equals("creator")) {
                         NamedNodeMap creatorAttributes = roleNode.getAttributes();
                         PersonEntity creator = new PersonEntity();
                         creator.setPersonName(creatorAttributes.getNamedItem("name").getNodeValue());
                         creatorList.add(creator);
                     } else if (roleNode.getNodeType() == Node.ELEMENT_NODE &&
-                            roleNode.getNodeName().equals("directors")) {
+                               roleNode.getNodeName().equals("directors")) {
                         NamedNodeMap directorAttributes = roleNode.getAttributes();
                         PersonEntity director = new PersonEntity();
                         director.setPersonName(directorAttributes.getNamedItem("name").getNodeValue());
@@ -329,7 +332,7 @@ public class DresdenReader {
                     }
                 }
                 //nicht noetig
-                if(sibling.getNodeName().equals("directors")) {
+                if (sibling.getNodeName().equals("directors")) {
                     // set Node to last Node to break for-loop
                     sibling = sibling.getLastChild();
                 }
@@ -389,14 +392,14 @@ public class DresdenReader {
                 }
                 // ToDo: creators = artist or error?
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE &&
-                    (sibling.getNodeName().equals("artists") || sibling.getNodeName().equals("creators")) &&
-                    sibling.hasChildNodes()) {
+                       (sibling.getNodeName().equals("artists") || sibling.getNodeName().equals("creators")) &&
+                       sibling.hasChildNodes()) {
 
                 for (Node artistsNode = sibling.getFirstChild(); artistsNode != null; artistsNode =
                         artistsNode.getNextSibling()) {
 
                     if (artistsNode.getNodeType() == Node.ELEMENT_NODE &&
-                            (artistsNode.getNodeName().equals("artist") || artistsNode.getNodeName().equals("creator"))) {
+                        (artistsNode.getNodeName().equals("artist") || artistsNode.getNodeName().equals("creator"))) {
                         ArtistEntity artist = new ArtistEntity();
                         artist.setArtistName(artistsNode.getFirstChild().getNodeValue());
 
@@ -404,7 +407,7 @@ public class DresdenReader {
                     }
                 }
                 //das befindet sich außer der Loop
-                if(sibling.getNodeName().equals("creators")) {
+                if (sibling.getNodeName().equals("creators")) {
                     // set Node to last Node to break for-loop
                     sibling = sibling.getLastChild();
                 }
@@ -412,7 +415,7 @@ public class DresdenReader {
         }
     }
 
-    public String readDetails(Node node, ProductEntity product){
+    public String readDetails(Node node, ProductEntity product) {
         String image = node.getAttributes().getNamedItem("img").getNodeValue();
         return image;
     }
@@ -420,21 +423,26 @@ public class DresdenReader {
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
-        bookDao.create(book);
+            GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
+            bookDao.create(book);
 
-        GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
-        AuthorEntity author = new AuthorEntity();
-        for (PersonEntity person : authorList) {
+            GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
+            AuthorEntity author = new AuthorEntity();
+            for (PersonEntity person : authorList) {
 
-            person = personPersistent(person);
+                person = personPersistent(person);
 
-            author.setPersonId(person.getPersonId());
-            author.setBookId(book.getBookId());
-            authorDao.create(author);
+                author.setPersonId(person.getPersonId());
+                author.setBookId(book.getBookId());
+                authorDao.create(author);
+            }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                                              "Product already in Database."));
         }
     }
 
@@ -442,71 +450,89 @@ public class DresdenReader {
                            List<PersonEntity> actorList, List<PersonEntity> creatorList,
                            List<PersonEntity> directorList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<DvdEntity> dvdDao = new GenericDao<>(sessionFactory);
-        dvdDao.create(dvd);
+            GenericDao<DvdEntity> dvdDao = new GenericDao<>(sessionFactory);
+            dvdDao.create(dvd);
 
-        GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
-        DvdPersonEntity dvdPerson = new DvdPersonEntity();
+            GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
+            DvdPersonEntity dvdPerson = new DvdPersonEntity();
 
-        for (PersonEntity actor : actorList) {
+            for (PersonEntity actor : actorList) {
 
-            actor = personPersistent(actor);
+                actor = personPersistent(actor);
 
-            dvdPerson.setPersonId(actor.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Actor");
-            dvdPersonDao.create(dvdPerson);
-        }
+                dvdPerson.setPersonId(actor.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Actor");
+                dvdPersonDao.create(dvdPerson);
+            }
 
-        for (PersonEntity creator : creatorList) {
+            for (PersonEntity creator : creatorList) {
 
-            creator = personPersistent(creator);
+                creator = personPersistent(creator);
 
-            dvdPerson.setPersonId(creator.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Creator");
-            dvdPersonDao.create(dvdPerson);
-        }
+                dvdPerson.setPersonId(creator.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Creator");
+                dvdPersonDao.create(dvdPerson);
+            }
 
-        for (PersonEntity director : directorList) {
+            for (PersonEntity director : directorList) {
 
-            director = personPersistent(director);
+                director = personPersistent(director);
 
-            dvdPerson.setPersonId(director.getPersonId());
-            dvdPerson.setDvdId(dvd.getDvdId());
-            dvdPerson.setpRole("Director");
-            dvdPersonDao.create(dvdPerson);
+                dvdPerson.setPersonId(director.getPersonId());
+                dvdPerson.setDvdId(dvd.getDvdId());
+                dvdPerson.setpRole("Director");
+                dvdPersonDao.create(dvdPerson);
+            }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                                              "Product already in Database."));
         }
     }
 
     private void insertCd(SessionFactory sessionFactory, ProductEntity product, CdEntity cd,
                           List<TitleEntity> titleList, List<ArtistEntity> artistList) {
 
-        GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productDao.create(product);
+        if (isNewProduct(product)) {
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productDao.create(product);
 
-        GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
-        cdDao.create(cd);
+            GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
+            cdDao.create(cd);
 
-        GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(sessionFactory);
-        CdArtistEntity cdArtist = new CdArtistEntity();
+            GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(sessionFactory);
+            CdArtistEntity cdArtist = new CdArtistEntity();
 
-        for (ArtistEntity artist : artistList) {
-            artist = artistPersistent(artist);
+            for (ArtistEntity artist : artistList) {
+                artist = artistPersistent(artist);
 
-            cdArtist.setArtistId(artist.getArtistId());
-            cdArtist.setCdId(cd.getCdId());
-            try {
-                cdArtistDao.create(cdArtist);
-            } catch (PersistenceException e) {
-                System.err.println("Dublicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
+                cdArtist.setArtistId(artist.getArtistId());
+                cdArtist.setCdId(cd.getCdId());
+                try {
+                    cdArtistDao.create(cdArtist);
+                } catch (PersistenceException e) {
+                    System.err.println(
+                            "Duplicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
+                }
             }
+        } else {
+            ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
+                                              "Product already in Database."));
         }
     }
 
+    private boolean isNewProduct(ProductEntity product) {
+        ProductDao productDao = new ProductDao(sessionFactory);
+        if (productDao.findOne(product.getProdId()) == null) {
+            return true;
+        }
+        return false;
+    }
 
     private PersonEntity personPersistent(PersonEntity person) {
 

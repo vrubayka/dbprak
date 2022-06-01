@@ -53,7 +53,7 @@ public class CSVParser {
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
         ProductEntity productEntity = new ProductEntity();
         GenericDao<ProductEntity> productDao = new GenericDao<>(sessionFactory);
-        productEntity = productDao.findOne();
+//        productEntity = productDao.findOne();
         for (String id : nonDuplicateList) {
             List<ReviewEntity> entitiesList = reviewDao.findByProdId(id);
             double rating = 0.0;

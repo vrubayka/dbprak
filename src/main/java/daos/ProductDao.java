@@ -3,6 +3,7 @@ package daos;
 import entities.ProductEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 public class ProductDao extends GenericDao<ProductEntity> {
 
@@ -12,6 +13,10 @@ public class ProductDao extends GenericDao<ProductEntity> {
 
     public ProductEntity findOne(String prodId) {
         Session session = sessionFactory.getCurrentSession();
-        return session.get(this.getDaoClass(), prodId);
+        Transaction tx = session.beginTransaction();
+        ProductEntity product = session.get(this.getDaoClass(), prodId);
+        tx.commit();
+
+        return product;
     }
 }
