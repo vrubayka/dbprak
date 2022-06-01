@@ -3,3 +3,4 @@ title inserts dresden
 inventory inserts dresden
 dublicates leipzig dresden (example B0000A5BWW)
 create index in DB
+replace GenericDaos with specific

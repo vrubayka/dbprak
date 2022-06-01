@@ -686,11 +686,24 @@ public class LeipzigReader {
         }
     }
 
+    /**
+     * Inserts inventory entry into database.
+     *
+     * @param sessionFactory - factory to create session in DAO
+     * @param inventoryEntry - inventory entry to be inserted
+     */
     private void insertInventory(SessionFactory sessionFactory, InventoryEntity inventoryEntry) {
         GenericDao<InventoryEntity> inventoryDao = new GenericDao<>(sessionFactory);
         inventoryDao.create(inventoryEntry);
     }
 
+    /**
+     * Check if given product is not in database.
+     *
+     * @param product - product to be checked
+     *
+     * @return true, if product is not in database, false otherwise
+     */
     private boolean isNewProduct(ProductEntity product) {
         ProductDao productDao = new ProductDao(sessionFactory);
         if (productDao.findOne(product.getProdId()) == null) {
@@ -699,6 +712,13 @@ public class LeipzigReader {
         return false;
     }
 
+    /**
+     * Checks if given CdArtist is not in database.
+     *
+     * @param cdArtist - CdArtist to be checked
+     *
+     * @return true, if CdArtist is not in database, false otherwise
+     */
     private boolean isNewCdArtist(CdArtistEntity cdArtist) {
         CdArtistDao cdArtistDao = new CdArtistDao(sessionFactory);
         CdArtistEntityPK cdArtistPK = new CdArtistEntityPK();
@@ -711,6 +731,13 @@ public class LeipzigReader {
         return false;
     }
 
+    /**
+     * Checks, if given person name is already in database. If not, inserts person. Returns PersonEntity in database.
+     *
+     * @param person - person, which name is checked
+     *
+     * @return PersonEntity read from database, if name already existed. PersonEntity inserted, if name was new.
+     */
     private PersonEntity personPersistent(PersonEntity person) {
 
         PersonDao personDao = new PersonDao(sessionFactory);
@@ -724,6 +751,13 @@ public class LeipzigReader {
         return person;
     }
 
+    /**
+     * Checks, if given artist name is already in database. If not, inserts artist. Returns ArtistEntity in database.
+     *
+     * @param artist - artist, which name is checked
+     *
+     * @return ArtistEntity read from database, if name already existed. ArtistEntity inserted, if name was new.
+     */
     private ArtistEntity artistPersistent(ArtistEntity artist) {
 
         ArtistDao artistDao = new ArtistDao(sessionFactory);
@@ -737,6 +771,13 @@ public class LeipzigReader {
         return artist;
     }
 
+    /**
+     * Checks, if given title name is already in database. If not, inserts title. Returns TitleEntity in database.
+     *
+     * @param title - title, which name is checked
+     *
+     * @return TitleEntity read from database, if name already existed. TitleEntity inserted, if name was new.
+     */
     private TitleEntity titlePersistent(TitleEntity title) {
 
         TitleDao titleDao = new TitleDao(sessionFactory);
