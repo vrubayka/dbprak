@@ -633,12 +633,17 @@ public class LeipzigReader {
     }
 
     /**
+     * Inserts CD (and product) and corresponding persons and tracks into database, if CD (and product) is not
+     * already in database. Creates instances of CdArtistEntity and CdTitleEntity by given lists.
      *
-     * @param sessionFactory
-     * @param product
-     * @param cd
-     * @param titleList
-     * @param artistList
+     * @param sessionFactory - factory to create sessions in DAOs
+     * @param product - product to be inserted
+     * @param cd - CD to be inserted
+     * @param titleList - list with tracks of this CD
+     * @param artistList - list with artists of this CD
+     *
+     * @see CdArtistEntity
+     * @see CdTitleEntity
      */
     private void insertCd(SessionFactory sessionFactory, ProductEntity product, CdEntity cd,
                           List<TitleEntity> titleList, List<ArtistEntity> artistList) {
