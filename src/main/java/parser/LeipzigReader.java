@@ -5,6 +5,7 @@ import entities.*;
 import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
 import logging.ReadingError;
+import logging.exceptions.ShopReaderExceptions;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -65,14 +66,18 @@ public class LeipzigReader {
         for (Node currentNode = root.getFirstChild(); currentNode != null; currentNode = currentNode.getNextSibling()) {
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (currentNode.getNodeName().equals("item"))
-                    readItem(currentNode, storeId);
+                    try {
+                        readItem(currentNode, storeId);
+                    } catch (ShopReaderExceptions e) {
+                        System.err.println(e.getMessage());
+                    }
                 else
                     System.err.println("Other elements than \"item\" in root scope.");
             }
         }
     }
 
-    private void readItem(Node itemNode, long storeId) {
+    private void readItem(Node itemNode, long storeId) throws ShopReaderExceptions {
         ProductEntity product = new ProductEntity();
 
         String group = readProdAndReturnGroup(itemNode, product);
@@ -92,42 +97,41 @@ public class LeipzigReader {
                         readPrice(node, product, inventoryEntry, storeId);
 
                     } else if ("title".equals(scope)) {
-                        // ToDo: check for empty title
                         product.setProdName(node.getFirstChild().getNodeValue());
 
                     } else if ("bookspec".equals(scope) && "Book".equals(group)) {
+                        checkProductName(product);
+
                         BookEntity book = new BookEntity();
                         List<PersonEntity> authorList = new ArrayList<>();
 
                         readBook(node, product, book, authorList);
-                        // ToDo: check product/book values for not null and throw Exception
+
                         insertBook(sessionFactory, product, book, authorList);
                         insertInventory(sessionFactory, inventoryEntry);
 
                     } else if ("dvdspec".equals(scope) && "DVD".equals(group)) {
+                        checkProductName(product);
+
                         DvdEntity dvd = new DvdEntity();
                         List<PersonEntity> actorList = new ArrayList<>();
                         List<PersonEntity> creatorList = new ArrayList<>();
                         List<PersonEntity> directorList = new ArrayList<>();
 
                         readDvd(node, product, dvd, actorList, creatorList, directorList);
-                        // ToDo: check product/dvd values for not null and throw Exception
-                        if (product.getProdName() == null) {
-                            product.setProdName("");
-                        }
+
                         insertDvd(sessionFactory, product, dvd, actorList, creatorList, directorList);
                         insertInventory(sessionFactory, inventoryEntry);
 
                     } else if ("musicspec".equals(scope) && "Music".equals(group)) {
+                        checkProductName(product);
+
                         CdEntity cd = new CdEntity();
                         List<TitleEntity> titleList = new ArrayList<>();
                         List<ArtistEntity> artistList = new ArrayList<>();
 
                         readCd(node, product, cd, titleList, artistList);
-                        // ToDo: check product/cd values for not null and throw Exception
-                        if (product.getProdName() == null) {
-                            product.setProdName("");
-                        }
+
                         insertCd(sessionFactory, product, cd, titleList, artistList);
                         insertInventory(sessionFactory, inventoryEntry);
                     }
@@ -164,13 +168,13 @@ public class LeipzigReader {
             pgroup = itemAttributes.getNamedItem("pgroup").getNodeValue();
         }
 
-        String picture = itemAttributes.getNamedItem("picture").getNodeValue();
 
+        String picture = itemAttributes.getNamedItem("picture").getNodeValue();
         // check for link length
         if (picture.length() < 256)
             product.setImage(picture);
         else
-            ReadLog.addError(new ReadingError("Product", product.getProdId(), "picture",
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "image",
                                               "Link is too long."));
 
         return pgroup;
@@ -293,7 +297,7 @@ public class LeipzigReader {
                             dvd.setRegionCode(Integer.parseInt(childNode.getFirstChild().getNodeValue()));
                         break;
                     case "runningtime":
-                        // ToDo: change timeInSec to minutes
+                        // ToDo: change termInSec to minutes
                         // ToDo: Term null ok?
                         if (childNode.hasChildNodes())
                             dvd.setTermInSec(Integer.parseInt(childNode.getFirstChild().getNodeValue()) * 60);
@@ -302,26 +306,11 @@ public class LeipzigReader {
             }
         }
 
-        // ToDo: DvdEntity has no studio, necessary?
 
         for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
 
-            /*
-            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("studios")) {
+            // ToDo: DvdEntity studio necessary?
 
-                for (Node studiosNode = sibling.getFirstChild(); studiosNode != null; studiosNode  =
-                        studiosNode.getNextSibling()) {
-                    if(studiosNode.getNodeType() == Node.ELEMENT_NODE && studiosNode.getNodeName().equals("studio")) {
-                        NamedNodeMap studioNode = studiosNode.getAttributes();
-                        dvd.set(studioNode.getNamedItem("name").getNodeValue());
-                        // set Node to last Node to break for-loop
-                        studiosNode = sibling.getLastChild();
-                        sibling = sibling.getLastChild();
-                    }
-                }
-            }
-
-             */
             if (sibling.getNodeType() == Node.ELEMENT_NODE &&
                 (sibling.getNodeName().equals("actors") || sibling.getNodeName().equals("creators") ||
                  sibling.getNodeName().equals("directors")) &&
@@ -369,14 +358,15 @@ public class LeipzigReader {
         for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 String scope = childNode.getNodeName();
-                switch (scope) {
-                    case "releasedate":
-                        // ToDo: releaseDate null value ok? currently current date inserted
-                        if (childNode.hasChildNodes())
-                            cd.setReleaseDate(Date.valueOf(childNode.getFirstChild().getNodeValue()));
-                        else
-                            cd.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
-                        break;
+                if ("releasedate".equals(scope)) {
+                    // ToDo: releaseDate null value ok? currently current date inserted
+                    if (childNode.hasChildNodes())
+                        cd.setReleaseDate(Date.valueOf(childNode.getFirstChild().getNodeValue()));
+                    else {
+                        cd.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
+                        ReadLog.addError(new ReadingError("CD", product.getProdId(), "releasedate",
+                                                          "No value in releasedate, set current date."));
+                    }
                 }
             }
         }
@@ -396,9 +386,11 @@ public class LeipzigReader {
                     }
                 }
                 // ToDo: label null value accepted?
-                if (cd.getLabel() == null)
-                    cd.setLabel("");
-
+                if (cd.getLabel() == null) {
+                    cd.setLabel("none");
+                    ReadLog.addError(new ReadingError("CD", product.getProdId(), "label",
+                                                      "CD has no label, set to  \"none\""));
+                }
 
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("tracks")) {
 
@@ -410,7 +402,7 @@ public class LeipzigReader {
                         titleList.add(title);
                     }
                 }
-                // ToDo: creators = artist or error?
+                // ToDo: creators = artist ok or error?
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE &&
                        (sibling.getNodeName().equals("artists") || sibling.getNodeName().equals("creators")) &&
                        sibling.hasChildNodes()) {
@@ -437,6 +429,13 @@ public class LeipzigReader {
 
     }
 
+    public void checkProductName(ProductEntity product) throws ShopReaderExceptions {
+        if (product.getProdName() == null) {
+            ReadLog.addError(new ReadingError("Product", product.getProdId(), "prodName",
+                                              "Product has no name."));
+            throw new ShopReaderExceptions("No product name in product: " + product.getProdId() + ".");
+        }
+    }
 
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
@@ -460,7 +459,7 @@ public class LeipzigReader {
             }
         } else {
             ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
-                                              "Product already in Database."));
+                                                  "Product already in Database."));
         }
     }
 
@@ -509,7 +508,7 @@ public class LeipzigReader {
             }
         } else {
             ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
-                                              "Product already in Database."));
+                                                  "Product already in Database."));
         }
     }
 
@@ -531,13 +530,11 @@ public class LeipzigReader {
 
                 cdArtist.setArtistId(artist.getArtistId());
                 cdArtist.setCdId(cd.getCdId());
-                // ToDo: custom exception
-                try {
+
+                if(isNewCdArtist(cdArtist)) {
                     cdArtistDao.create(cdArtist);
-                } catch (PersistenceException e) {
-                    System.err.println(
-                            "Duplicate CDArtist found: " + cdArtist.getCdId() + " " + cdArtist.getArtistId());
                 }
+
             }
 
             GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(sessionFactory);
@@ -548,12 +545,11 @@ public class LeipzigReader {
 
                 cdTitle.setTitleId(title.getTitleId());
                 cdTitle.setCdId(cd.getCdId());
-                // ToDo: custom exception
                 cdTitleDao.create(cdTitle);
             }
         } else {
             ReadLog.addDuplicate(new ReadingError("Product", product.getProdId(), "Duplicate",
-                                              "Product already in Database."));
+                                                  "Product already in Database."));
         }
     }
 
@@ -565,6 +561,18 @@ public class LeipzigReader {
     private boolean isNewProduct(ProductEntity product) {
         ProductDao productDao = new ProductDao(sessionFactory);
         if (productDao.findOne(product.getProdId()) == null) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isNewCdArtist(CdArtistEntity cdArtist) {
+        CdArtistDao cdArtistDao = new CdArtistDao(sessionFactory);
+        CdArtistEntityPK cdArtistPK = new CdArtistEntityPK();
+        cdArtistPK.setCdId(cdArtist.getCdId());
+        cdArtistPK.setArtistId(cdArtist.getArtistId());
+
+        if(cdArtistDao.findOne(cdArtistPK) == null) {
             return true;
         }
         return false;
