@@ -8,10 +8,12 @@ import entities.ProductCategoryEntityPK;
 import entities.ProductEntity;
 import entities.ReviewEntity;
 import entities.ReviewEntityPK;
+import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
 import logging.ReadingError;
 import logging.exceptions.ShopReaderExceptions;
 import org.hibernate.SessionFactory;
+import org.postgresql.util.PSQLException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,24 +33,40 @@ public class CSVParser {
                     .withType(CSVBean.class).build().parse();
 
             for (CSVBean csvBean : csvBeanList) {
-                    String formatReviewSummary = formatSummary(csvBean);
-                    String formatReviewText = formatReview(csvBean);
-                    ReviewEntity re = new ReviewEntity();
-                    re.setProdId(csvBean.getProdId());
-                    re.setRating(csvBean.getRating());
-                    re.setHelpfulRating(csvBean.getHelpful_rating());
-                    re.setReviewdate(csvBean.getReviewdate());
-                    re.setUsername(csvBean.getUsername());
-                    re.setReviewSum(formatReviewSummary);
-                    re.setReviewText(formatReviewText);
-                    GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
-                    if (isNewReview(re, sessionFactory)) {
+                String formatReviewSummary = formatSummary(csvBean);
+                String formatReviewText = formatReview(csvBean);
+                ReviewEntity re = new ReviewEntity();
+                re.setProdId(csvBean.getProdId());
+                re.setRating(csvBean.getRating());
+                re.setHelpfulRating(csvBean.getHelpful_rating());
+                re.setReviewdate(csvBean.getReviewdate());
+                re.setUsername(csvBean.getUsername());
+                re.setReviewSum(formatReviewSummary);
+                re.setReviewText(formatReviewText);
+                GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
+                if (isNewReview(re, sessionFactory)) {
+                    try {
                         reviewEntityDao.create(re);
                         reviewList.add(csvBean.getProdId());
-                    } else {
-                        ReadLog.addDuplicate(new ReadingError("Review", re.getProdId(), "Duplicate",
-                                "Review already in Database."));
+
+                    } catch (PersistenceException e) {
+                        Throwable cause = e.getCause().getCause();
+                        // check for missing referenced key exception
+                        if (cause instanceof PSQLException && cause.getMessage().matches(
+                                "ERROR: insert or update on table \"review\" violates foreign key constraint " +
+                                "\"review_prod_id_fkey\"\n(.*)")) {
+
+                            ReadLog.addError(new ReadingError("Review", re.getProdId(), "prodId",
+                                                 "No such prod_id in product table. Review not inserted."));
+
+                        } else {
+                            e.printStackTrace();
+                        }
                     }
+                } else {
+                    ReadLog.addDuplicate(new ReadingError("Review", re.getProdId(), "Duplicate",
+                                                          "Review already in Database."));
+                }
             }
 
             findAggregateReviews(reviewList, sessionFactory);
@@ -69,7 +87,7 @@ public class CSVParser {
         return false;
     }
 
-    public void findAggregateReviews(ArrayList<String> reviewList, SessionFactory sessionFactory){
+    public void findAggregateReviews(ArrayList<String> reviewList, SessionFactory sessionFactory) {
         Collections.sort(reviewList);
         ArrayList<String> nonDuplicateList = removeDuplicateReviewList(reviewList);
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
