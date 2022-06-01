@@ -2,7 +2,6 @@ package parser;
 
 import daos.*;
 import entities.*;
-import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
 import logging.ReadingError;
 import logging.exceptions.ShopReaderExceptions;

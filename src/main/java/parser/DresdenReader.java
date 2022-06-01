@@ -2,7 +2,6 @@ package parser;
 
 import daos.*;
 import entities.*;
-import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
 import logging.ReadingError;
 import logging.exceptions.ShopReaderExceptions;
@@ -12,7 +11,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
