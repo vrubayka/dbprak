@@ -28,16 +28,27 @@ public class LeipzigReader {
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * Reads root element (store) of XML and store address, calls set methods for address properties and
+     * address and store inserts.
+     */
     public void readStoreXml() {
 
         Element root = doc.getDocumentElement();
         NamedNodeMap storeAttributeMap = root.getAttributes();
         AddressEntity storeAddress = readStoreAddress(storeAttributeMap);
-        long storeId = saveStore(storeAddress);
+        long storeId = saveStoreAndAddress(storeAddress);
 
         readItems(root, storeId);
     }
 
+    /**
+     * Sets attributes in AddressEntity instance.
+     *
+     * @param attributeMap - A Map containing the address properties
+     * @return the address with set properties
+     * @see AddressEntity
+     */
     private AddressEntity readStoreAddress(NamedNodeMap attributeMap) {
         AddressEntity storeAddress = new AddressEntity();
         storeAddress.setCity(attributeMap.getNamedItem("name").getNodeValue());
@@ -47,7 +58,15 @@ public class LeipzigReader {
         return storeAddress;
     }
 
-    private long saveStore(AddressEntity storeAddress) {
+    /**
+     * Inserts address and store (with given address) into database.
+     *
+     * @param storeAddress - address of store
+     * @return The ID of store inserted in database
+     * @see AddressEntity
+     * @see StoreEntity
+     */
+    private long saveStoreAndAddress(AddressEntity storeAddress) {
         GenericDao<AddressEntity> addressEntityDao = new GenericDao<>(AddressEntity.class, sessionFactory);
         addressEntityDao.create(storeAddress);
 
@@ -61,6 +80,12 @@ public class LeipzigReader {
         return storeEntity.getStoreId();
     }
 
+    /**
+     * Iterates over child nodes of root element and calls read method for every found item element.
+     *
+     * @param root - root element of xml document
+     * @param storeId - the ID of corresponding StoreEntity in database
+     */
     private void readItems(Element root, long storeId) {
         for (Node currentNode = root.getFirstChild(); currentNode != null; currentNode = currentNode.getNextSibling()) {
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -76,6 +101,15 @@ public class LeipzigReader {
         }
     }
 
+    /**
+     * Reads item data by iterating over child elements and calls of helper methods. Calls insert methods for
+     * relevant entities of verified products.
+     *
+     * @param itemNode - node of item to read
+     * @param storeId - ID of corresponding store
+     *
+     * @throws ShopReaderExceptions - if product Name is missing
+     */
     private void readItem(Node itemNode, long storeId) throws ShopReaderExceptions {
         ProductEntity product = new ProductEntity();
 
@@ -141,7 +175,16 @@ public class LeipzigReader {
         }
     }
 
-
+    /**
+     * Reads and sets product ID, product group (Book, CD or DVD) and link to product image.
+     *
+     * @param itemNode - item node containing product attributes
+     * @param product - ProductEntity instance
+     *
+     * @return product group as String
+     *
+     * @see ProductEntity
+     */
     private String readProdAndReturnGroup(Node itemNode, ProductEntity product) {
         NamedNodeMap itemAttributes = itemNode.getAttributes();
 
@@ -180,7 +223,16 @@ public class LeipzigReader {
 
     }
 
-
+    /**
+     * Reads price and state of product. Sets these properties in InventoryEntity. Euro is the only accepted currency.
+     *
+     * @param priceNode - price node of item in XML file
+     * @param product - corresponding ProductEntity instance
+     * @param inventoryEntry - corresponding InventoryEntity instance
+     * @param storeId - corresponding StoreEntity ID as long
+     *
+     * @see InventoryEntity
+     */
     private void readPrice(Node priceNode, ProductEntity product, InventoryEntity inventoryEntry, long storeId) {
         NamedNodeMap priceAttributes = priceNode.getAttributes();
         inventoryEntry.setProdId(product.getProdId());
@@ -201,6 +253,18 @@ public class LeipzigReader {
 
     }
 
+    /**
+     * Reads relevant data for books. First iterates over bookspec node, then gets remaining book properties over
+     * sibling nodes of bookspec.
+     *
+     * @param node - bookspec node of item in XML file
+     * @param product - corresponding ProductEntity instance
+     * @param book - corresponding BookEntity instance
+     * @param authorList - empty list to be filled with authors (PersonEntity)
+     *
+     * @see BookEntity
+     * @see PersonEntity
+     */
     private void readBook(Node node, ProductEntity product, BookEntity book, List<PersonEntity> authorList) {
         book.setBookId(product.getProdId());
         for (Node childNode = node.getFirstChild(); childNode != null; childNode = childNode.getNextSibling()) {
@@ -278,6 +342,20 @@ public class LeipzigReader {
         }
     }
 
+    /**
+     * Reads relevant data for DVDs. First iterates over dvdspec node, then gets remaining DVD properties over
+     * sibling nodes of dvdspec.
+     *
+     * @param node - dvdspec node of item in XML file
+     * @param product - corresponding ProductEntity instance
+     * @param dvd - corresponding DvdEntity instance
+     * @param actorList - empty list to be filled with actors (PersonEntity)
+     * @param creatorList - empty list to be filled with creators (PersonEntity)
+     * @param directorList - empty list to be filled with directors (PersonEntity)
+     *
+     * @see DvdEntity
+     * @see PersonEntity
+     */
     private void readDvd(Node node, ProductEntity product, DvdEntity dvd, List<PersonEntity> actorList,
                          List<PersonEntity> creatorList, List<PersonEntity> directorList) {
 
@@ -348,6 +426,19 @@ public class LeipzigReader {
 
     }
 
+    /**
+     * Reads relevant data for CDs. First iterates over musicspec node, then gets remaining CD properties over
+     * sibling nodes of musicspec.
+     *
+     * @param node - musicspec node of item in XML file
+     * @param product - corresponding ProductEntity instance
+     * @param cd - corresponding CdEntity instance
+     * @param titleList empty list to be filled with CD tracks (TitleEntity)
+     * @param artistList empty list to be filled with CD artists (ArtistEntity)
+     *
+     * @see CdEntity
+     * @see ArtistEntity
+     */
     private void readCd(Node node, ProductEntity product, CdEntity cd, List<TitleEntity> titleList,
                         List<ArtistEntity> artistList) {
 
@@ -428,6 +519,14 @@ public class LeipzigReader {
 
     }
 
+    /**
+     * Checks if product name is set. Throws exception to ignore this product in readItem method (product is not
+     * further read).
+     *
+     * @param product - product to be checked for name
+     *
+     * @throws ShopReaderExceptions - if name is not set (=null)
+     */
     public void checkProductName(ProductEntity product) throws ShopReaderExceptions {
         if (product.getProdName() == null) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "prodName",
@@ -436,6 +535,15 @@ public class LeipzigReader {
         }
     }
 
+    /**
+     * Inserts book (and product) and corresponding authors into database, if book (and product) is not already in
+     * database. Creates corresponding AuthorEntity instances for given authors.
+     *
+     * @param sessionFactory - factory to create sessions in DAOs
+     * @param product - product to be inserted
+     * @param book - book to be inserted
+     * @param authorList - list of persons, which are authors of this book
+     */
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
 
@@ -462,6 +570,19 @@ public class LeipzigReader {
         }
     }
 
+    /**
+     * Inserts DVD (and product) and corresponding persons into database, if DVD (and product) is not already in
+     * database. Creates instances of DVDPersonEntity by given lists with their roles in this DVD.
+     *
+     * @param sessionFactory - factory to create sessions in DAOs
+     * @param product - product to be inserted
+     * @param dvd - dvd to be inserted
+     * @param actorList - list with persons, which are actors in this movie
+     * @param creatorList - list with persons, which are creators of this movie
+     * @param directorList - list with persons, which are directors of this movie
+     *
+     * @see DvdPersonEntity
+     */
     private void insertDvd(SessionFactory sessionFactory, ProductEntity product, DvdEntity dvd,
                            List<PersonEntity> actorList, List<PersonEntity> creatorList,
                            List<PersonEntity> directorList) {
@@ -511,6 +632,14 @@ public class LeipzigReader {
         }
     }
 
+    /**
+     *
+     * @param sessionFactory
+     * @param product
+     * @param cd
+     * @param titleList
+     * @param artistList
+     */
     private void insertCd(SessionFactory sessionFactory, ProductEntity product, CdEntity cd,
                           List<TitleEntity> titleList, List<ArtistEntity> artistList) {
 
