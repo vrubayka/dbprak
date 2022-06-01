@@ -4,14 +4,13 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import daos.GenericDao;
 import daos.ProductDao;
 import daos.ReviewDao;
-import entities.ProductCategoryEntityPK;
 import entities.ProductEntity;
 import entities.ReviewEntity;
 import entities.ReviewEntityPK;
 import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
 import logging.ReadingError;
-import logging.exceptions.ShopReaderExceptions;
+import logging.exceptions.MissingProductNameException;
 import org.hibernate.SessionFactory;
 import org.postgresql.util.PSQLException;
 
@@ -25,7 +24,15 @@ public class CSVParser {
 
     final static String formatFilePath = "src/main/resources/data-files/format.txt";
 
-    public void createReviewEntity(String file, SessionFactory sessionFactory) throws ShopReaderExceptions {
+    /**
+     * Parses the entire CSV by processing each element separated by a comma
+     * using BufferedReader and saving it to
+     * a temporary Bean-variable (using OpenCSV)
+     * @param file Path to the CSV-file
+     * @param sessionFactory - factory to create sessions in DAOs
+     * @throws MissingProductNameException - if product Name is missing
+     */
+    public void createReviewEntity(String file, SessionFactory sessionFactory) throws MissingProductNameException {
         ArrayList<String> reviewList = new ArrayList<>();
         Set<String> reviewSet = new LinkedHashSet<>();
         try {
@@ -76,6 +83,12 @@ public class CSVParser {
         }
     }
 
+    /**
+     * Checks if given review not in Database
+     * @param review - review to be checked
+     * @param sessionFactory - factory to create session in DAOs
+     * @return true if review not in Database, otherwise false
+     */
     private boolean isNewReview(ReviewEntity review, SessionFactory sessionFactory) {
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
         ReviewEntityPK reviewPK = new ReviewEntityPK();
@@ -87,6 +100,12 @@ public class CSVParser {
         return false;
     }
 
+    /**
+     * calculates an aggregate rating for a product
+     * from all the ratings in the table
+     * @param reviewList - list of all ratings including duplicates
+     * @param sessionFactory - factory to create session in DAOs
+     */
     public void findAggregateReviews(ArrayList<String> reviewList, SessionFactory sessionFactory) {
         Collections.sort(reviewList);
         ArrayList<String> nonDuplicateList = removeDuplicateReviewList(reviewList);
@@ -102,13 +121,18 @@ public class CSVParser {
                 rating = entity.getRating() + rating;
                 aggr++;
             }
-            //TODO: 2 decimals after comma?
             rating = Math.round(rating / aggr * 100.0) / 100.0;
             productEntity.setRating(rating);
             productDao.update(productEntity);
         }
     }
 
+    /**
+     * replaces html-codes with utf-8 symbols
+     * in review summaries
+     * @param csvBean - bean containing the summary text
+     * @return formatted summary text
+     */
     public String formatSummary(CSVBean csvBean) {
         String text = csvBean.getReviewSum();
         Map<String, String> mapFromFile = HashMapFromTextFile();
@@ -120,6 +144,12 @@ public class CSVParser {
         return text;
     }
 
+    /**
+     * replaces html-codes with utf-8 symbols
+     * in review texts
+     * @param csvBean - bean containing the review text
+     * @return formatted review text
+     */
     public String formatReview(CSVBean csvBean) {
         String text = csvBean.getReview_text();
         Map<String, String> mapFromFile = HashMapFromTextFile();
@@ -131,6 +161,12 @@ public class CSVParser {
         return text;
     }
 
+    /**
+     * creates a hashmap containing the format rules
+     * for formatting the summary and review texts
+     * from a .txt file
+     * @return a hashmap containing the rules
+     */
     private Map<String, String> HashMapFromTextFile() {
         Map<String, String> map = new HashMap<String, String>();
         BufferedReader br = null;
@@ -176,6 +212,12 @@ public class CSVParser {
         return map;
     }
 
+    /**
+     * removes duplicates from lists of review for
+     * further usage in findAggregateReviews
+     * @param reviewList -list of reviews to be cleared from duplicates
+     * @return an Array List with no duplicates
+     */
     public ArrayList removeDuplicateReviewList(ArrayList reviewList) {
         Set<String> set = new LinkedHashSet<>();
         set.addAll(reviewList);

@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="readSimilars invomplete">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="readSimilars complete">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/SimilarProductsEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/SimilarProductsEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/SimilarProductsEntityPK.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/SimilarProductsEntityPK.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/logging/exceptions/ShopReaderExceptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/logging/exceptions/MissingProductNameException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CSVBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CSVBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CategoryReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/LeipzigReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/LeipzigReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
     </list>
@@ -76,22 +80,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Git.Branch.Popup.ShowAllRemotes": "true",
-    "JPA.DatabaseSchemaImportDialog": "8b7f7931-ad41-4af5-b3e9-3481c839f644",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/chris/Downloads/db_prak_16",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Git.Branch.Popup.ShowAllRemotes&quot;: &quot;true&quot;,
+    &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;8b7f7931-ad41-4af5-b3e9-3481c839f644&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/chris/Downloads/db_prak_16&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources" />
@@ -141,7 +145,7 @@
       <workItem from="1653915927865" duration="2440000" />
       <workItem from="1653935957786" duration="4376000" />
       <workItem from="1653983628222" duration="18974000" />
-      <workItem from="1654097080628" duration="21228000" />
+      <workItem from="1654097080628" duration="25558000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -325,7 +329,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654110531797</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="readSimilars complete">
+      <created>1654119658263</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1654119658263</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -367,7 +378,8 @@
     <MESSAGE value="commit before merge w/ Exceptions" />
     <MESSAGE value="CSVParser logging" />
     <MESSAGE value="readSimilars invomplete" />
-    <option name="LAST_COMMIT_MESSAGE" value="readSimilars invomplete" />
+    <MESSAGE value="readSimilars complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="readSimilars complete" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dbpraktikum$Main.ic" NAME="Main Coverage Results" MODIFIED="1653402293039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

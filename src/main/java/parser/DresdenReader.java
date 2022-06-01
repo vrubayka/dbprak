@@ -2,17 +2,15 @@ package parser;
 
 import daos.*;
 import entities.*;
-import jakarta.persistence.PersistenceException;
 import logging.ReadLog;
 import logging.ReadingError;
-import logging.exceptions.ShopReaderExceptions;
+import logging.exceptions.MissingProductNameException;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -28,6 +26,10 @@ public class DresdenReader {
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * Reads root element (store) of XML and store address, calls set methods for address properties and
+     * address and store inserts.
+     */
     public void readStoreXml() {
 
         Element root = doc.getDocumentElement();
@@ -38,6 +40,14 @@ public class DresdenReader {
         readItems(root, storeId);
     }
 
+    /**
+     * Sets attributes in AddressEntity instance.
+     *
+     * @param attributeMap - A Map containing the address properties
+     * @return the address with set properties
+     * @see AddressEntity
+     */
+
     private AddressEntity readStoreAddress(NamedNodeMap attributeMap) {
         AddressEntity storeAddress = new AddressEntity();
         storeAddress.setCity(attributeMap.getNamedItem("name").getNodeValue());
@@ -46,6 +56,15 @@ public class DresdenReader {
 
         return storeAddress;
     }
+
+    /**
+     * Inserts address and store (with given address) into database.
+     *
+     * @param storeAddress - address of store
+     * @return The ID of store inserted in database
+     * @see AddressEntity
+     * @see StoreEntity
+     */
 
     private long saveStore(AddressEntity storeAddress) {
         GenericDao<AddressEntity> addressEntityDao = new GenericDao<>(AddressEntity.class,
@@ -62,13 +81,20 @@ public class DresdenReader {
         return storeEntity.getStoreId();
     }
 
+    /**
+     * Iterates over child nodes of root element and calls read method for every found item element.
+     *
+     * @param root - root element of xml document
+     * @param storeId - the ID of corresponding StoreEntity in database
+     */
+
     private void readItems(Element root, long storeId) {
         for (Node currentNode = root.getFirstChild(); currentNode != null; currentNode = currentNode.getNextSibling()) {
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (currentNode.getNodeName().equals("item"))
                     try {
                         readItem(currentNode, storeId);
-                    } catch (ShopReaderExceptions e) {
+                    } catch (MissingProductNameException e) {
                         System.err.println(e.getMessage());
                     }
                 else
@@ -77,7 +103,16 @@ public class DresdenReader {
         }
     }
 
-    private void readItem(Node itemNode, long storeId) throws ShopReaderExceptions {
+    /**
+     * Reads item data by iterating over child elements and calls of helper methods. Calls insert methods for
+     * relevant entities of verified products.
+     *
+     * @param itemNode - node of item to read
+     * @param storeId - ID of corresponding store
+     *
+     * @throws MissingProductNameException - if product Name is missing
+     */
+    private void readItem(Node itemNode, long storeId) throws MissingProductNameException {
         ProductEntity product = new ProductEntity();
 
         String group = readProdAndReturnGroup(itemNode, product);
@@ -148,6 +183,16 @@ public class DresdenReader {
         }
     }
 
+    /**
+     * Reads and sets product ID, product group (Book, CD or DVD) and link to product image.
+     *
+     * @param itemNode - item node containing product attributes
+     * @param product - ProductEntity instance
+     *
+     * @return product group as String
+     *
+     * @see ProductEntity
+     */
 
     private String readProdAndReturnGroup(Node itemNode, ProductEntity product) {
         NamedNodeMap itemAttributes = itemNode.getAttributes();
@@ -178,6 +223,16 @@ public class DresdenReader {
 
     }
 
+    /**
+     * Reads price and state of product. Sets these properties in InventoryEntity. Euro is the only accepted currency.
+     *
+     * @param priceNode - price node of item in XML file
+     * @param product - corresponding ProductEntity instance
+     * @param inventoryEntry - corresponding InventoryEntity instance
+     * @param storeId - corresponding StoreEntity ID as long
+     *
+     * @see InventoryEntity
+     */
 
     private void readPrice(Node priceNode, ProductEntity product, InventoryEntity inventoryEntry, long storeId) {
         NamedNodeMap priceAttributes = priceNode.getAttributes();
@@ -198,6 +253,19 @@ public class DresdenReader {
         }
 
     }
+
+    /**
+     * Reads relevant data for books. First iterates over bookspec node, then gets remaining book properties over
+     * sibling nodes of bookspec.
+     *
+     * @param node - bookspec node of item in XML file
+     * @param product - corresponding ProductEntity instance
+     * @param book - corresponding BookEntity instance
+     * @param authorList - empty list to be filled with authors (PersonEntity)
+     *
+     * @see BookEntity
+     * @see PersonEntity
+     */
 
     private void readBook(Node node, ProductEntity product, BookEntity book, List<PersonEntity> authorList) {
         book.setBookId(product.getProdId());
@@ -282,6 +350,21 @@ public class DresdenReader {
         }
     }
 
+    /**
+     * Reads relevant data for DVDs. First iterates over dvdspec node, then gets remaining DVD properties over
+     * sibling nodes of dvdspec.
+     *
+     * @param node - dvdspec node of item in XML file
+     * @param product - corresponding ProductEntity instance
+     * @param dvd - corresponding DvdEntity instance
+     * @param actorList - empty list to be filled with actors (PersonEntity)
+     * @param creatorList - empty list to be filled with creators (PersonEntity)
+     * @param directorList - empty list to be filled with directors (PersonEntity)
+     *
+     * @see DvdEntity
+     * @see PersonEntity
+     */
+
     private void readDvd(Node node, ProductEntity product, DvdEntity dvd, List<PersonEntity> actorList,
                          List<PersonEntity> creatorList, List<PersonEntity> directorList) {
 
@@ -347,6 +430,20 @@ public class DresdenReader {
             }
         }
     }
+
+    /**
+     * Reads relevant data for CDs. First iterates over musicspec node, then gets remaining CD properties over
+     * sibling nodes of musicspec.
+     *
+     * @param node - musicspec node of item in XML file
+     * @param product - corresponding ProductEntity instance
+     * @param cd - corresponding CdEntity instance
+     * @param titleList empty list to be filled with CD tracks (TitleEntity)
+     * @param artistList empty list to be filled with CD artists (ArtistEntity)
+     *
+     * @see CdEntity
+     * @see ArtistEntity
+     */
 
     private void readCd(Node node, ProductEntity product, CdEntity cd, List<TitleEntity> titleList,
                         List<ArtistEntity> artistList) {
@@ -429,13 +526,31 @@ public class DresdenReader {
 
     }
 
-    public void checkProductName(ProductEntity product) throws ShopReaderExceptions {
+    /**
+     * Checks if product name is set. Throws exception to ignore this product in readItem method (product is not
+     * further read).
+     *
+     * @param product - product to be checked for name
+     *
+     * @throws MissingProductNameException - if name is not set (=null)
+     */
+    public void checkProductName(ProductEntity product) throws MissingProductNameException {
         if (product.getProdName() == null) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "prodName",
                     "Product has no name."));
-            throw new ShopReaderExceptions("No product name in product: " + product.getProdId() + ".");
+            throw new MissingProductNameException("No product name in product: " + product.getProdId() + ".");
         }
     }
+
+    /**
+     * Inserts book (and product) and corresponding authors into database, if book (and product) is not already in
+     * database. Creates corresponding AuthorEntity instances for given authors.
+     *
+     * @param sessionFactory - factory to create sessions in DAOs
+     * @param product - product to be inserted
+     * @param book - book to be inserted
+     * @param authorList - list of persons, which are authors of this book
+     */
 
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
@@ -462,6 +577,20 @@ public class DresdenReader {
                     "Product already in Database."));
         }
     }
+
+    /**
+     * Inserts DVD (and product) and corresponding persons into database, if DVD (and product) is not already in
+     * database. Creates instances of DVDPersonEntity by given lists with their roles in this DVD.
+     *
+     * @param sessionFactory - factory to create sessions in DAOs
+     * @param product - product to be inserted
+     * @param dvd - dvd to be inserted
+     * @param actorList - list with persons, which are actors in this movie
+     * @param creatorList - list with persons, which are creators of this movie
+     * @param directorList - list with persons, which are directors of this movie
+     *
+     * @see DvdPersonEntity
+     */
 
     private void insertDvd(SessionFactory sessionFactory, ProductEntity product, DvdEntity dvd,
                            List<PersonEntity> actorList, List<PersonEntity> creatorList,
@@ -512,6 +641,20 @@ public class DresdenReader {
         }
     }
 
+    /**
+     * Inserts CD (and product) and corresponding persons and tracks into database, if CD (and product) is not
+     * already in database. Creates instances of CdArtistEntity and CdTitleEntity by given lists.
+     *
+     * @param sessionFactory - factory to create sessions in DAOs
+     * @param product - product to be inserted
+     * @param cd - CD to be inserted
+     * @param titleList - list with tracks of this CD
+     * @param artistList - list with artists of this CD
+     *
+     * @see CdArtistEntity
+     * @see CdTitleEntity
+     */
+
     private void insertCd(SessionFactory sessionFactory, ProductEntity product, CdEntity cd,
                           List<TitleEntity> titleList, List<ArtistEntity> artistList) {
 
@@ -553,10 +696,25 @@ public class DresdenReader {
         }
     }
 
+    /**
+     * Inserts inventory entry into database.
+     *
+     * @param sessionFactory - factory to create session in DAO
+     * @param inventoryEntry - inventory entry to be inserted
+     */
+
     private void insertInventory(SessionFactory sessionFactory, InventoryEntity inventoryEntry) {
         GenericDao<InventoryEntity> inventoryDao = new GenericDao<>(sessionFactory);
         inventoryDao.create(inventoryEntry);
     }
+
+    /**
+     * Check if given product is not in database.
+     *
+     * @param product - product to be checked
+     *
+     * @return true, if product is not in database, false otherwise
+     */
 
     private boolean isNewProduct(ProductEntity product) {
         ProductDao productDao = new ProductDao(sessionFactory);
@@ -565,6 +723,14 @@ public class DresdenReader {
         }
         return false;
     }
+
+    /**
+     * Checks if given CdArtist is not in database.
+     *
+     * @param cdArtist - CdArtist to be checked
+     *
+     * @return true, if CdArtist is not in database, false otherwise
+     */
 
     private boolean isNewCdArtist(CdArtistEntity cdArtist) {
         CdArtistDao cdArtistDao = new CdArtistDao(sessionFactory);
@@ -577,6 +743,14 @@ public class DresdenReader {
         }
         return false;
     }
+
+    /**
+     * Checks, if given person name is already in database. If not, inserts person. Returns PersonEntity in database.
+     *
+     * @param person - person, which name is checked
+     *
+     * @return PersonEntity read from database, if name already existed. PersonEntity inserted, if name was new.
+     */
 
     private PersonEntity personPersistent(PersonEntity person) {
 
@@ -591,6 +765,14 @@ public class DresdenReader {
         return person;
     }
 
+    /**
+     * Checks, if given artist name is already in database. If not, inserts artist. Returns ArtistEntity in database.
+     *
+     * @param artist - artist, which name is checked
+     *
+     * @return ArtistEntity read from database, if name already existed. ArtistEntity inserted, if name was new.
+     */
+
     private ArtistEntity artistPersistent(ArtistEntity artist) {
 
         ArtistDao artistDao = new ArtistDao(sessionFactory);
@@ -603,6 +785,14 @@ public class DresdenReader {
 
         return artist;
     }
+
+    /**
+     * Checks, if given title name is already in database. If not, inserts title. Returns TitleEntity in database.
+     *
+     * @param title - title, which name is checked
+     *
+     * @return TitleEntity read from database, if name already existed. TitleEntity inserted, if name was new.
+     */
 
     private TitleEntity titlePersistent(TitleEntity title) {
 

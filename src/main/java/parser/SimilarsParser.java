@@ -14,7 +14,11 @@ public class SimilarsParser {
     public SimilarsParser() {
     }
 
-
+    /**
+     * Parses all the items that contain similar items
+     * @param root - root element of the xml
+     * @param sessionFactory - factory to create sessions in DAOs
+     */
     public void readItems(Node root, SessionFactory sessionFactory) {
         SimilarProductsEntity simProduct = new SimilarProductsEntity();
         String asin = "";

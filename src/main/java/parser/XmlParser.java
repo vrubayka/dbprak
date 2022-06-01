@@ -9,7 +9,12 @@ import java.io.File;
 import java.util.HashMap;
 
 public class XmlParser implements Reader{
-    HashMap<String, Long> categoryDaoMap = new HashMap<>();
+    /**
+     * creates a Document-type file from a shop-XML for purposes of parsing
+     * and calls the parser
+     * @param filePath - path to the XML
+     * @param sessionFactory - factory to create sessions in DAOs
+     */
     @Override
     public void readFile(String filePath, SessionFactory sessionFactory) {
         File inputFile = new File(filePath);
@@ -36,16 +41,27 @@ public class XmlParser implements Reader{
 
     }
 
+    /**
+     * a separate method to convert the Categories-XML to a
+     * Document datatype for further parsing
+     * @param pathfile - path to the XML
+     * @param sessionFactory - factory to create sessions in DAOs
+     */
     public void readCategories(String pathfile, SessionFactory sessionFactory){
         File inputFile = new File(pathfile);
         Document doc = getNormalizedDocument(inputFile);
         CategoryReader cr = new CategoryReader(doc, sessionFactory);
         System.out.println("Parsing categories:");
-        //cr.createRootCategory(sessionFactory);
         cr.parseCategories(doc.getDocumentElement().getChildNodes(), sessionFactory);
         System.out.println("Finished reading categories");
     }
 
+    /**
+     * Prepares the shop-XMLs for the process
+     * of parsing of similar elements
+     * @param pathfile - path to the XML
+     * @param sessionFactory - factory to create sessions in DAOs
+     */
     public void readSimilars(String pathfile, SessionFactory sessionFactory){
         File inputFile = new File(pathfile);
         Document doc = getNormalizedDocument(inputFile);
@@ -56,6 +72,11 @@ public class XmlParser implements Reader{
         System.out.println("Finished parsing similars");
     }
 
+    /**
+     * reduces redundancies in the XML
+     * @param inputFile the XML to be cleared from redundancies
+     * @return a normalized document
+     */
     private Document getNormalizedDocument(File inputFile) {
 
         try {
@@ -70,6 +91,11 @@ public class XmlParser implements Reader{
         return null;
     }
 
+    /**
+     * extracts the text value from a Node
+     * @param node - the node from which the text value is extracted
+     * @return - the desired text value
+     */
     static String returnTextValueOfNode(Node node){
         String value;
         if (node == null){
@@ -84,6 +110,11 @@ public class XmlParser implements Reader{
         return value;
     }
 
+    /**
+     * extracts the name of the Node-tag
+     * @param node - the node the tag of which need to be extracted
+     * @return the text of the tag
+     */
     static String returnTagOfNode(Node node){
         String value;
         if (node == null){

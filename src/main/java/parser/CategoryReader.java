@@ -1,15 +1,12 @@
 package parser;
 
 import daos.GenericDao;
-import daos.ProductDao;
-import daos.ReviewDao;
 import entities.*;
 import logging.ReadLog;
 import logging.ReadingError;
-import logging.exceptions.ShopReaderExceptions;
+import logging.exceptions.MissingProductNameException;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.HashMap;
@@ -25,7 +22,14 @@ public class CategoryReader {
         this.sessionFactory = sessionFactory;
     }
 
-    public void parseCategories(NodeList list, SessionFactory sessionFactory) throws ShopReaderExceptions {
+    /**
+     * Parses all categories recursively assigning super-categories
+     * when applicable
+     * @param list - list of all nodes from XML - categories and items
+     * @param sessionFactory - factory to create sessions in DAOs
+     * @throws MissingProductNameException - if product Name is missing
+     */
+    public void parseCategories(NodeList list, SessionFactory sessionFactory) throws MissingProductNameException {
         for (int i = 0; i < list.getLength(); i++) {
 
             if ((XmlParser.returnTagOfNode(list.item(i))).equals("category")) {
@@ -62,6 +66,11 @@ public class CategoryReader {
         }
     }
 
+    /**
+     * Checks if category not yet in the database
+     * @param category - category to be checked
+     * @return true if not in the database, false otherwise
+     */
     private boolean isNewCategory(CategoryEntity category) {
         GenericDao<CategoryEntity> catDao = new GenericDao<>(sessionFactory);
         ProductCategoryEntityPK categoryPK = new ProductCategoryEntityPK();
