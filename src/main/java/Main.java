@@ -2,6 +2,7 @@ import logging.ReadLog;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import parser.CSVParser;
+import parser.SimilarsParser;
 import parser.XmlParser;
 import queries.HibernateQueries;
 
@@ -38,10 +39,11 @@ public class Main {
         ReadLog log = new ReadLog();
         XmlParser xmlParser = new XmlParser();
         CSVParser csvParser = new CSVParser();
-        //xmlParser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+        xmlParser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
         //xmlParser.readFile("src/main/resources/data-files/categories.xml", sessionFactory);
         xmlParser.readFile("src/main/resources/data-files/dresden.xml", sessionFactory);
         //csvParser.createReviewEntities("src/main/resources/data-files/reviews.csv", sessionFactory);
+        //xmlParser.readSimilars("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
 
 
     }

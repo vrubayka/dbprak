@@ -143,6 +143,7 @@ public class StoreReader {
     }
 
 
+
     private String readProdAndReturnGroup(Node itemNode, ProductEntity product) {
         NamedNodeMap itemAttributes = itemNode.getAttributes();
 

@@ -54,6 +54,16 @@ public class XmlParser implements Reader{
         System.out.println("Finished reading categories");
     }
 
+    public void readSimilars(String pathfile, SessionFactory sessionFactory){
+        File inputFile = new File(pathfile);
+        Document doc = getNormalizedDocument(inputFile);
+        NodeList nodeList = doc.getDocumentElement().getChildNodes();
+        SimilarsParser sr = new SimilarsParser();
+        System.out.println("Parsing similars:");
+        sr.readSimilarProducts(nodeList, sessionFactory);
+        System.out.println("Finished parsing similars");
+    }
+
     private Document getNormalizedDocument(File inputFile) {
 
         try {
