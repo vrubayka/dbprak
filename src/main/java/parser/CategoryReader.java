@@ -2,10 +2,10 @@ package parser;
 
 import daos.GenericDao;
 import daos.ProductDao;
-import entities.CategoryEntity;
-import entities.ProductCategoryEntity;
-import entities.ProductEntity;
-import entities.ReviewEntity;
+import daos.ReviewDao;
+import entities.*;
+import logging.ReadLog;
+import logging.ReadingError;
 import logging.exceptions.ShopReaderExceptions;
 import org.hibernate.SessionFactory;
 import org.w3c.dom.Document;
@@ -36,9 +36,13 @@ public class CategoryReader {
 
                 if (XmlParser.returnTagOfNode(list.item(i).getParentNode()).equals("category")) {
                     entityCat.setSuperCategory(categoryDaoMap.get(XmlParser.returnTextValueOfNode(list.item(i).getParentNode())));
-
-                    daoCat.create(entityCat);
-                    categoryDaoMap.put(XmlParser.returnTextValueOfNode(list.item(i)), entityCat.getCategoryId());
+                    if (isNewCategory(entityCat)) {
+                        daoCat.create(entityCat);
+                        categoryDaoMap.put(XmlParser.returnTextValueOfNode(list.item(i)), entityCat.getCategoryId());
+                    } else {
+                        ReadLog.addDuplicate(new ReadingError("Category", entityCat.getCategoryName(), "Duplicate",
+                                "Category already in Database."));
+                    }
                     parseCategories(list.item(i).getChildNodes(), sessionFactory);
 
                 } else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")) {
@@ -56,5 +60,15 @@ public class CategoryReader {
             }
 
         }
+    }
+
+    private boolean isNewCategory(CategoryEntity category) {
+        GenericDao<CategoryEntity> catDao = new GenericDao<>(sessionFactory);
+        ProductCategoryEntityPK categoryPK = new ProductCategoryEntityPK();
+        categoryPK.setCategoryId(category.getCategoryId());
+        if (catDao.findOne(categoryPK.getCategoryId()) == null) {
+            return true;
+        }
+        return false;
     }
 }

@@ -4,8 +4,12 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import daos.GenericDao;
 import daos.ProductDao;
 import daos.ReviewDao;
+import entities.ProductCategoryEntityPK;
 import entities.ProductEntity;
 import entities.ReviewEntity;
+import entities.ReviewEntityPK;
+import logging.ReadLog;
+import logging.ReadingError;
 import logging.exceptions.ShopReaderExceptions;
 import org.hibernate.SessionFactory;
 
@@ -27,7 +31,6 @@ public class CSVParser {
                     .withType(CSVBean.class).build().parse();
 
             for (CSVBean csvBean : csvBeanList) {
-                try { //TODO:
                     String formatReviewSummary = formatSummary(csvBean);
                     String formatReviewText = formatReview(csvBean);
                     ReviewEntity re = new ReviewEntity();
@@ -39,11 +42,13 @@ public class CSVParser {
                     re.setReviewSum(formatReviewSummary);
                     re.setReviewText(formatReviewText);
                     GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
-                    reviewEntityDao.create(re);
-                    reviewList.add(csvBean.getProdId());
-                } catch (jakarta.persistence.PersistenceException e) {
-                    System.out.println("Duplicate review entry " + csvBean.getProdId() + " declined");
-                }
+                    if (isNewReview(re, sessionFactory)) {
+                        reviewEntityDao.create(re);
+                        reviewList.add(csvBean.getProdId());
+                    } else {
+                        ReadLog.addDuplicate(new ReadingError("Review", re.getProdId(), "Duplicate",
+                                "Review already in Database."));
+                    }
             }
 
             findAggregateReviews(reviewList, sessionFactory);
@@ -55,7 +60,10 @@ public class CSVParser {
 
     private boolean isNewReview(ReviewEntity review, SessionFactory sessionFactory) {
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
-        if (reviewDao.findOne(review.getProdId()) == null && reviewDao.f) {
+        ReviewEntityPK reviewPK = new ReviewEntityPK();
+        reviewPK.setProdId(review.getProdId());
+        reviewPK.setUsername(review.getUsername());
+        if (reviewDao.findOne(reviewPK) == null) {
             return true;
         }
         return false;
