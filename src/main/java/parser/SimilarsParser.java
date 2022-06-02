@@ -1,18 +1,14 @@
 package parser;
 
-import daos.GenericDao;
 import daos.ProductDao;
 import daos.SimilarProductDao;
-import entities.ProductEntity;
 import entities.SimilarProductsEntity;
 import entities.SimilarProductsEntityPK;
 import logging.ReadLog;
 import logging.ReadingError;
 import org.hibernate.SessionFactory;
-import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class SimilarsParser {
 
@@ -27,8 +23,6 @@ public class SimilarsParser {
      * @param sessionFactory - factory to create sessions in DAOs
      */
     public void readItems(Node root, SessionFactory sessionFactory) {
-        SimilarProductsEntity simProduct = new SimilarProductsEntity();
-        GenericDao<SimilarProductsEntity> simDao = new GenericDao<>(SimilarProductsEntity.class, sessionFactory);
         String shopName = root.getAttributes().getNamedItem("name").getNodeValue();
 
         for (Node rootChildNode = root.getFirstChild(); rootChildNode != null;
