@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="small changes">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="merged with DresdenReader branch">
+      <change afterPath="$PROJECT_DIR$/src/main/java/daos/ISimilarProductDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/daos/SimilarProductDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/LeipzigReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/LeipzigReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,6 +143,7 @@
       <workItem from="1653981888665" duration="4441000" />
       <workItem from="1653988767091" duration="2952000" />
       <workItem from="1654072450583" duration="27633000" />
+      <workItem from="1654158738508" duration="8966000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -388,7 +390,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654151762974</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="merged with DresdenReader branch">
+      <created>1654155377127</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1654155377127</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -406,7 +415,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="merge with master" />
     <MESSAGE value="XML Parser Clean up" />
     <MESSAGE value="added Label setter in readCd()" />
     <MESSAGE value="added publisher setter in readBook() and studio setter to readDvd (see ToDo)" />
@@ -431,7 +439,8 @@
     <MESSAGE value="finished javadoc for LeipzigReader" />
     <MESSAGE value="change ShopReaderExceptions.java to MissingProductNameException" />
     <MESSAGE value="small changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="small changes" />
+    <MESSAGE value="merged with DresdenReader branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged with DresdenReader branch" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dbpraktikum$Main.ic" NAME="Main Coverage Results" MODIFIED="1653402293039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
