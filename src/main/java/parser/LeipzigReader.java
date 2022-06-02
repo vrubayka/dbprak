@@ -320,6 +320,12 @@ public class LeipzigReader {
                         publishersNode = sibling.getLastChild();
                     }
                 }
+                // ToDo: no publisher ok?
+                if(book.getPublisher() == null) {
+                    book.setPublisher("");
+                    ReadLog.addError(new ReadingError("Book", book.getBookId(), "publisher",
+                                                      "Book has no publisher. Set to empty String."));
+                }
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("authors") &&
                        sibling.hasChildNodes()) {
 

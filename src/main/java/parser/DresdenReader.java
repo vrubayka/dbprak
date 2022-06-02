@@ -103,7 +103,6 @@ public class DresdenReader {
         }
     }
 
-    private void readItem(Node itemNode, long storeId) throws MissingProductNameException {
     /**
      * Reads item data by iterating over child elements and calls of helper methods. Calls insert methods for
      * relevant entities of verified products.
@@ -308,7 +307,6 @@ public class DresdenReader {
         for (Node sibling = node.getPreviousSibling(); sibling != null; sibling = sibling.getPreviousSibling()) {
 
             if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("publishers")) {
-                //TODO: when publisher is missing
                 for (Node publishersNode = sibling.getFirstChild(); publishersNode != null; publishersNode =
                         publishersNode.getNextSibling()) {
                     if (publishersNode.getNodeType() == Node.ELEMENT_NODE &&
@@ -318,6 +316,12 @@ public class DresdenReader {
                         // set Node to last Node to break for-loop
                         publishersNode = sibling.getLastChild();
                     }
+                }
+                // ToDo: no publisher ok?
+                if(book.getPublisher() == null) {
+                    book.setPublisher("");
+                    ReadLog.addError(new ReadingError("Book", book.getBookId(), "publisher",
+                                                      "Book has no publisher. Set to empty String."));
                 }
             } else if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals("authors") &&
                        sibling.hasChildNodes()) {
@@ -384,7 +388,6 @@ public class DresdenReader {
         }
 
 
-        for (Node sibling = node.getNextSibling(); sibling != null; sibling = sibling.getNextSibling()) {
 
         for (Node sibling = node.getPreviousSibling(); sibling != null; sibling = sibling.getPreviousSibling()) {
             if (sibling.getNodeType() == Node.ELEMENT_NODE &&
