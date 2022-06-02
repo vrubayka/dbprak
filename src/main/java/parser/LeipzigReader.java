@@ -551,10 +551,10 @@ public class LeipzigReader {
             ProductDao productDao = new ProductDao(sessionFactory);
             productDao.create(product);
 
-            GenericDao<BookEntity> bookDao = new GenericDao<>(sessionFactory);
+            GenericDao<BookEntity> bookDao = new GenericDao<>(BookEntity.class, sessionFactory);
             bookDao.create(book);
 
-            GenericDao<AuthorEntity> authorDao = new GenericDao<>(sessionFactory);
+            GenericDao<AuthorEntity> authorDao = new GenericDao<>(AuthorEntity.class, sessionFactory);
             AuthorEntity author = new AuthorEntity();
             for (PersonEntity person : authorList) {
 
@@ -591,10 +591,10 @@ public class LeipzigReader {
             ProductDao productDao = new ProductDao(sessionFactory);
             productDao.create(product);
 
-            GenericDao<DvdEntity> dvdDao = new GenericDao<>(sessionFactory);
+            GenericDao<DvdEntity> dvdDao = new GenericDao<>(DvdEntity.class, sessionFactory);
             dvdDao.create(dvd);
 
-            GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(sessionFactory);
+            GenericDao<DvdPersonEntity> dvdPersonDao = new GenericDao<>(DvdPersonEntity.class, sessionFactory);
             DvdPersonEntity dvdPerson = new DvdPersonEntity();
 
             for (PersonEntity actor : actorList) {
@@ -652,10 +652,10 @@ public class LeipzigReader {
             ProductDao productDao = new ProductDao(sessionFactory);
             productDao.create(product);
 
-            GenericDao<CdEntity> cdDao = new GenericDao<>(sessionFactory);
+            GenericDao<CdEntity> cdDao = new GenericDao<>(CdEntity.class, sessionFactory);
             cdDao.create(cd);
 
-            GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(sessionFactory);
+            GenericDao<CdArtistEntity> cdArtistDao = new GenericDao<>(CdArtistEntity.class, sessionFactory);
             CdArtistEntity cdArtist = new CdArtistEntity();
 
             for (ArtistEntity artist : artistList) {
@@ -670,7 +670,7 @@ public class LeipzigReader {
 
             }
 
-            GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(sessionFactory);
+            GenericDao<CdTitleEntity> cdTitleDao = new GenericDao<>(CdTitleEntity.class, sessionFactory);
             CdTitleEntity cdTitle = new CdTitleEntity();
 
             for (TitleEntity title : titleList) {
@@ -693,7 +693,7 @@ public class LeipzigReader {
      * @param inventoryEntry - inventory entry to be inserted
      */
     private void insertInventory(SessionFactory sessionFactory, InventoryEntity inventoryEntry) {
-        GenericDao<InventoryEntity> inventoryDao = new GenericDao<>(sessionFactory);
+        GenericDao<InventoryEntity> inventoryDao = new GenericDao<>(InventoryEntity.class, sessionFactory);
         inventoryDao.create(inventoryEntry);
     }
 

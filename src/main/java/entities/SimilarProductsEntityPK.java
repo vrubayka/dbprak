@@ -11,11 +11,9 @@ import java.util.Objects;
 public class SimilarProductsEntityPK implements Serializable {
     @Column(name = "prod_id", nullable = false, length = 255)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String prodId;
     @Column(name = "similar_prod_id", nullable = false, length = 255)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String similarProdId;
 
     public String getProdId() {

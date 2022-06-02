@@ -4,6 +4,10 @@ import com.opencsv.bean.CsvBindByName;
 
 import java.util.Date;
 
+/**
+ * datatype to temporary store parsed elements
+ * from CSV
+ */
 public class CSVBean {
     @CsvBindByName(column = "product", required = true)
     private String prodId;

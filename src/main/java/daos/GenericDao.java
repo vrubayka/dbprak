@@ -14,10 +14,6 @@ public class GenericDao <T> implements IGenericDao <T>{
     private Class<T> daoClass;
     SessionFactory sessionFactory;
 
-    public GenericDao(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
     public GenericDao(Class<T> daoClass, SessionFactory sessionFactory) {
         this.daoClass       = daoClass;
         this.sessionFactory = sessionFactory;
@@ -30,7 +26,11 @@ public class GenericDao <T> implements IGenericDao <T>{
     @Override
     public T findOne(long id) {
         Session session = sessionFactory.getCurrentSession();
-        return session.get(daoClass, id);
+        Transaction tx = session.beginTransaction();
+        T entity = session.get(daoClass, id);
+        tx.commit();
+
+        return entity;
     }
 
     @Override
@@ -45,14 +45,10 @@ public class GenericDao <T> implements IGenericDao <T>{
     //TODO: Exception wenn Product bereits existiert
     // @Override
     public void create(T entity) {
-        try {
             Session session = sessionFactory.getCurrentSession();
             Transaction tx = session.beginTransaction();
             session.persist(entity);
             tx.commit();
-        } catch (PersistenceException e){
-            System.out.println("Duplicate not accepted");
-        }
     }
 
     @Override
