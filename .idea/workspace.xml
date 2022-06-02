@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="started refactoring SimilarsParser">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="fixed some warning in SimilarsParser">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="ProductCategoryDao" />
+        <entry key="$PROJECT_DIR$" value="Exceptions" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -141,7 +140,7 @@
       <workItem from="1653981888665" duration="4441000" />
       <workItem from="1653988767091" duration="2952000" />
       <workItem from="1654072450583" duration="27633000" />
-      <workItem from="1654158738508" duration="12421000" />
+      <workItem from="1654158738508" duration="13099000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -402,7 +401,21 @@
       <option name="project" value="LOCAL" />
       <updated>1654168930485</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="finished refactoring SimilarsParser">
+      <created>1654172407135</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1654172407135</updated>
+    </task>
+    <task id="LOCAL-00039" summary="fixed some warning in SimilarsParser">
+      <created>1654172475822</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1654172475822</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -420,8 +433,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added Label setter in readCd()" />
-    <MESSAGE value="added publisher setter in readBook() and studio setter to readDvd (see ToDo)" />
     <MESSAGE value="edit Artist to Title relation to match data" />
     <MESSAGE value="read Leipzig data finished, but not inserted yet" />
     <MESSAGE value="changed typo in price" />
@@ -445,7 +456,9 @@
     <MESSAGE value="small changes" />
     <MESSAGE value="merged with DresdenReader branch" />
     <MESSAGE value="started refactoring SimilarsParser" />
-    <option name="LAST_COMMIT_MESSAGE" value="started refactoring SimilarsParser" />
+    <MESSAGE value="finished refactoring SimilarsParser" />
+    <MESSAGE value="fixed some warning in SimilarsParser" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed some warning in SimilarsParser" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dbpraktikum$Main.ic" NAME="Main Coverage Results" MODIFIED="1653402293039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

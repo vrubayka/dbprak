@@ -25,11 +25,12 @@ public class CSVParser {
     final static String formatFilePath = "src/main/resources/data-files/format.txt";
 
     /**
-     * Parses the entire CSV by processing each element separated by a comma
-     * using BufferedReader and saving it to
-     * a temporary Bean-variable (using OpenCSV)
-     * @param file Path to the CSV-file
+     * Parses the entire CSV by processing each element separated by a comma using BufferedReader and saving it to a
+     * temporary Bean-variable (using OpenCSV)
+     *
+     * @param file           Path to the CSV-file
      * @param sessionFactory - factory to create sessions in DAOs
+     *
      * @throws MissingProductNameException - if product Name is missing
      */
     public void createReviewEntity(String file, SessionFactory sessionFactory) throws MissingProductNameException {
@@ -59,12 +60,16 @@ public class CSVParser {
                     } catch (PersistenceException e) {
                         Throwable cause = e.getCause().getCause();
                         // check for missing referenced key exception
-                        if (cause instanceof PSQLException && cause.getMessage().matches(
-                                "ERROR: insert or update on table \"review\" violates foreign key constraint " +
-                                "\"review_prod_id_fkey\"\n(.*)")) {
+                        if (cause instanceof PSQLException
+                            && (cause.getMessage().matches(
+                                    "ERROR: insert or update on table \"review\" violates foreign key constraint " +
+                                    "\"review_prod_id_fkey\"\n(.*)")
+                            || cause.getMessage().matches(
+                                    "(.*)FEHLER: Einfügen oder Aktualisieren in Tabelle »similar_products« verletzt " +
+                                    "Fremdschlüssel-Constraint »similar_products_similar_prod_id_fkey« \n(.*)"))) {
 
                             ReadLog.addError(new ReadingError("Review", re.getProdId(), "prodId",
-                                                 "No such prod_id in product table. Review not inserted."));
+                                                              "No such prod_id in product table. Review not inserted."));
 
                         } else {
                             e.printStackTrace();
@@ -85,8 +90,10 @@ public class CSVParser {
 
     /**
      * Checks if given review not in Database
-     * @param review - review to be checked
+     *
+     * @param review         - review to be checked
      * @param sessionFactory - factory to create session in DAOs
+     *
      * @return true if review not in Database, otherwise false
      */
     private boolean isNewReview(ReviewEntity review, SessionFactory sessionFactory) {
@@ -101,9 +108,9 @@ public class CSVParser {
     }
 
     /**
-     * calculates an aggregate rating for a product
-     * from all the ratings in the table
-     * @param reviewList - list of all ratings including duplicates
+     * calculates an aggregate rating for a product from all the ratings in the table
+     *
+     * @param reviewList     - list of all ratings including duplicates
      * @param sessionFactory - factory to create session in DAOs
      */
     public void findAggregateReviews(ArrayList<String> reviewList, SessionFactory sessionFactory) {
@@ -128,9 +135,10 @@ public class CSVParser {
     }
 
     /**
-     * replaces html-codes with utf-8 symbols
-     * in review summaries
+     * replaces html-codes with utf-8 symbols in review summaries
+     *
      * @param csvBean - bean containing the summary text
+     *
      * @return formatted summary text
      */
     public String formatSummary(CSVBean csvBean) {
@@ -145,9 +153,10 @@ public class CSVParser {
     }
 
     /**
-     * replaces html-codes with utf-8 symbols
-     * in review texts
+     * replaces html-codes with utf-8 symbols in review texts
+     *
      * @param csvBean - bean containing the review text
+     *
      * @return formatted review text
      */
     public String formatReview(CSVBean csvBean) {
@@ -162,9 +171,8 @@ public class CSVParser {
     }
 
     /**
-     * creates a hashmap containing the format rules
-     * for formatting the summary and review texts
-     * from a .txt file
+     * creates a hashmap containing the format rules for formatting the summary and review texts from a .txt file
+     *
      * @return a hashmap containing the rules
      */
     private Map<String, String> HashMapFromTextFile() {
@@ -213,9 +221,10 @@ public class CSVParser {
     }
 
     /**
-     * removes duplicates from lists of review for
-     * further usage in findAggregateReviews
+     * removes duplicates from lists of review for further usage in findAggregateReviews
+     *
      * @param reviewList -list of reviews to be cleared from duplicates
+     *
      * @return an Array List with no duplicates
      */
     public ArrayList removeDuplicateReviewList(ArrayList reviewList) {
