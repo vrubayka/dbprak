@@ -47,6 +47,7 @@ public class CategoryReader {
                         ReadLog.addDuplicate(new ReadingError("Category", entityCat.getCategoryName(), "Duplicate",
                                 "Category already in Database."));
                     }
+                }
                     parseCategories(list.item(i).getChildNodes(), sessionFactory);
 
                 } else if ((XmlParser.returnTagOfNode(list.item(i))).equals("item")) {
@@ -64,7 +65,7 @@ public class CategoryReader {
             }
 
         }
-    }
+
 
     /**
      * Checks if category not yet in the database
