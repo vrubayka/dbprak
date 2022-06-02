@@ -118,7 +118,7 @@ public class DresdenReader {
         String group = readProdAndReturnGroup(itemNode, product);
 
         // read price, name and product info by pgroup
-        System.out.println(product.getProdId());
+        //System.out.println(product.getProdId());
         if (product.getProdId() != null && group != null) {
 
             InventoryEntity inventoryEntry = new InventoryEntity();

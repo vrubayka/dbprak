@@ -52,7 +52,7 @@ public class XmlParser implements Reader{
         Document doc = getNormalizedDocument(inputFile);
         CategoryReader cr = new CategoryReader(doc, sessionFactory);
         System.out.println("Parsing categories:");
-        cr.parseCategories(doc.getDocumentElement().getChildNodes(), sessionFactory);
+        cr.parseCategories(doc.getDocumentElement().getChildNodes(), 0,  sessionFactory);
         System.out.println("Finished reading categories");
     }
 
