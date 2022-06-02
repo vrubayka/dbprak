@@ -50,7 +50,7 @@ public class CSVParser {
                 re.setUsername(csvBean.getUsername());
                 re.setReviewSum(formatReviewSummary);
                 re.setReviewText(formatReviewText);
-                GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(sessionFactory);
+                GenericDao<ReviewEntity> reviewEntityDao = new GenericDao<>(ReviewEntity.class, sessionFactory);
                 if (isNewReview(re, sessionFactory)) {
                     try {
                         reviewEntityDao.create(re);

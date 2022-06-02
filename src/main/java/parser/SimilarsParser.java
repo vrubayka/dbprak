@@ -22,7 +22,7 @@ public class SimilarsParser {
     public void readItems(Node root, SessionFactory sessionFactory) {
         SimilarProductsEntity simProduct = new SimilarProductsEntity();
         String asin = "";
-        GenericDao<SimilarProductsEntity> simDao = new GenericDao<>(sessionFactory);
+        GenericDao<SimilarProductsEntity> simDao = new GenericDao<>(SimilarProductsEntity.class, sessionFactory);
 
         for (Node itemNode = root.getFirstChild(); itemNode != null;  //<item>
              itemNode = itemNode.getNextSibling()) {
