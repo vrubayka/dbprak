@@ -58,7 +58,6 @@ public class SimilarsParser {
     }
 
     private void readSimilarsLeipzig(Node similarsNode, String prodId, SessionFactory sessionFactory) {
-
         for (Node simNode = similarsNode.getFirstChild(); simNode != null;
              simNode = simNode.getNextSibling()) {
 
@@ -70,7 +69,6 @@ public class SimilarsParser {
     }
 
     private void readSimilarsDresden(Node similarsNode, String prodId, SessionFactory sessionFactory) {
-
         for (Node simNode = similarsNode.getFirstChild(); simNode != null;
              simNode = simNode.getNextSibling()) {
 

@@ -65,8 +65,7 @@ public class CSVParser {
                                     "ERROR: insert or update on table \"review\" violates foreign key constraint " +
                                     "\"review_prod_id_fkey\"\n(.*)")
                             || cause.getMessage().matches(
-                                    "(.*)FEHLER: Einfügen oder Aktualisieren in Tabelle »similar_products« verletzt " +
-                                    "Fremdschlüssel-Constraint »similar_products_similar_prod_id_fkey« \n(.*)"))) {
+                                    "FEHLER: Einfügen oder Aktualisieren in Tabelle »review« verletzt Fremdschlüssel-Constraint »review_prod_id_fkey«\n(.*)"))) {
 
                             ReadLog.addError(new ReadingError("Review", re.getProdId(), "prodId",
                                                               "No such prod_id in product table. Review not inserted."));
