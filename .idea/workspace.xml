@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="Category done">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/CSVParser.java" afterDir="false" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="Error-exception tweaked for german system language">
       <change beforePath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/SimilarsParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/XmlParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/queries/HibernateQueries.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +141,7 @@
       <workItem from="1654157368147" duration="12494000" />
       <workItem from="1654175925476" duration="1983000" />
       <workItem from="1654184972397" duration="2440000" />
-      <workItem from="1654241635595" duration="806000" />
+      <workItem from="1654241635595" duration="1172000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -358,7 +353,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654175528738</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Error-exception tweaked for german system language">
+      <created>1654242640716</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1654242640716</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -376,7 +378,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changes in hibernate config and fixed typo in sql script" />
     <MESSAGE value="edit deleteAll() in GenericDao" />
     <MESSAGE value="added HibernateQueries and delete all rows function" />
     <MESSAGE value="resort cleanDb deleteAll methods to match data relations" />
@@ -401,7 +402,8 @@
     <MESSAGE value="Documentation for parser-package added" />
     <MESSAGE value="Category Hibernate-Error" />
     <MESSAGE value="Category done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Category done" />
+    <MESSAGE value="Error-exception tweaked for german system language" />
+    <option name="LAST_COMMIT_MESSAGE" value="Error-exception tweaked for german system language" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

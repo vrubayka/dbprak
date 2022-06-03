@@ -66,11 +66,9 @@ public class SimilarsParser {
             }
 
         }
-        System.out.println("Finished parsing Leipzig similars");
     }
 
     private void readSimilarsDresden(Node similarsNode, String prodId, SessionFactory sessionFactory) {
-        System.out.println("Parsing Dresden similars");
         for (Node simNode = similarsNode.getFirstChild(); simNode != null;
              simNode = simNode.getNextSibling()) {
 
@@ -79,7 +77,6 @@ public class SimilarsParser {
             }
 
         }
-        System.out.println("Finished parsing Dresden similars");
     }
 
     private void readProductLeipzig(Node simProdNode, String prodId, SessionFactory sessionFactory) {
