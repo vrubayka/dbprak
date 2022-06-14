@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="small changes in main" />
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="worlspace">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ToDo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ToDo.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,7 +22,7 @@
     </option>
   </component>
   <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="DresdenReader" />
+    <option name="BRANCH" value="origin/master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -139,7 +142,9 @@
       <workItem from="1654072450583" duration="27633000" />
       <workItem from="1654158738508" duration="19233000" />
       <workItem from="1654183039025" duration="2314000" />
-      <workItem from="1654242456183" duration="340000" />
+      <workItem from="1654242456183" duration="514000" />
+      <workItem from="1654243389821" duration="1469000" />
+      <workItem from="1654691204022" duration="12000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -435,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654242765215</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="worlspace">
+      <created>1654242910064</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1654242910065</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -453,7 +465,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="finished book insertation" />
     <MESSAGE value="finished dvd inserts" />
     <MESSAGE value="started CD insert" />
     <MESSAGE value="added ArtistDao" />
@@ -478,7 +489,8 @@
     <MESSAGE value="added duplicate Exception for german messages in CSVParser" />
     <MESSAGE value="uncomment all parser in main" />
     <MESSAGE value="small changes in main" />
-    <option name="LAST_COMMIT_MESSAGE" value="small changes in main" />
+    <MESSAGE value="worlspace" />
+    <option name="LAST_COMMIT_MESSAGE" value="worlspace" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dbpraktikum$Main.ic" NAME="Main Coverage Results" MODIFIED="1653402293039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
