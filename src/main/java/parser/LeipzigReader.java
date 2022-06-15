@@ -302,14 +302,19 @@ public class LeipzigReader {
                             book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;
                     case "publication":
-                        // ToDo: date sometimes empty String, problem? currently inserted with current date
                         String dateAsString = childNode.getAttributes().getNamedItem("date").getNodeValue();
                         if (dateAsString.equals("")) {
-                            book.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
                             ReadLog.addError(new ReadingError("Book", product.getProdId(), "publication",
-                                                              "Empty string in date attribute, set current date."));
-                        } else
-                            book.setReleaseDate(Date.valueOf(dateAsString));
+                                                              "Empty string in date attribute, date set to null."));
+                        } else {
+                            Date date = Date.valueOf(dateAsString);
+                            Date currentDate = new Date(Calendar.getInstance().getTimeInMillis());
+                            if(date.compareTo(currentDate) <= 0)
+                                book.setReleaseDate(date);
+                            else
+                                ReadLog.addError(new ReadingError("Book", product.getProdId(), "publication",
+                                                                  "Publication date in the future, date set to null."));
+                        }
                         break;
                 }
             }
@@ -464,13 +469,17 @@ public class LeipzigReader {
             if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 String scope = childNode.getNodeName();
                 if ("releasedate".equals(scope)) {
-                    // ToDo: releaseDate null value ok? currently current date inserted
-                    if (childNode.hasChildNodes())
-                        cd.setReleaseDate(Date.valueOf(childNode.getFirstChild().getNodeValue()));
-                    else {
-                        cd.setReleaseDate(new Date(Calendar.getInstance().getTimeInMillis()));
+                    if (childNode.hasChildNodes()) {
+                        Date date = Date.valueOf(childNode.getFirstChild().getNodeValue());
+                        Date currentDate = new Date(Calendar.getInstance().getTimeInMillis());
+                        if (date.compareTo(currentDate) <= 0)
+                            cd.setReleaseDate(date);
+                        else
+                            ReadLog.addError(new ReadingError("CD", product.getProdId(), "releasedate",
+                                                              "Date is in the future, date set to null."));
+                    } else {
                         ReadLog.addError(new ReadingError("CD", product.getProdId(), "releasedate",
-                                                          "No value in releasedate, set current date."));
+                                                          "No value in releasedate, date set to null."));
                     }
                 }
             }
