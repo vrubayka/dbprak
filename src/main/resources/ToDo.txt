@@ -1,6 +1,5 @@
 create index in DB
 replace GenericDaos with specific
-negative prices
 rating not 0
 date future
 order customer

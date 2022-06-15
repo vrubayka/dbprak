@@ -285,7 +285,6 @@ public class DresdenReader {
                         }
                         break;
                     case "pages":
-                        // ToDo: pages sometimes missing or empty string, problem? currently inserted with 0
                         Node pageValue = childNode.getFirstChild();
                         if (pageValue == null || pageValue.getNodeValue().equals("")) {
                             ReadLog.addError(new ReadingError("Book", product.getProdId(), "pages",
