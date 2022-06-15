@@ -241,8 +241,12 @@ public class DresdenReader {
         // ToDo: exceptions other currencies
         if (priceAttributes.getNamedItem("currency").getNodeValue().equals("EUR")) {
             double mult = Double.parseDouble(priceAttributes.getNamedItem("mult").getNodeValue());
-            double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue());
-            inventoryEntry.setPrice(new BigDecimal(mult * price));
+            double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue()) * mult;
+            if (price > 0)
+                inventoryEntry.setPrice(new BigDecimal(price));
+            else
+                ReadLog.addError(new ReadingError("Inventory", product.getProdId(), "price",
+                                                  "Price is zero or negative, price set to null."));
 
         } else if (priceAttributes.getNamedItem("currency").getNodeValue().length() > 0) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "price",
@@ -284,9 +288,11 @@ public class DresdenReader {
                         // ToDo: pages sometimes missing or empty string, problem? currently inserted with 0
                         Node pageValue = childNode.getFirstChild();
                         if (pageValue == null || pageValue.getNodeValue().equals("")) {
-                            book.setPages(0);
                             ReadLog.addError(new ReadingError("Book", product.getProdId(), "pages",
-                                                              "No pages attribute or empty, pages set to 0."));
+                                                              "No pages attribute or empty, pages set to null."));
+                        } else if (Integer.parseInt(pageValue.getNodeValue()) <= 0) {
+                            ReadLog.addError((new ReadingError("Book", product.getProdId(), "pages",
+                                                               "Pages zero or negative, pages set to null.")));
                         } else
                             book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;

@@ -16,8 +16,7 @@ CREATE TABLE book (
     isbn VARCHAR(50) NOT NULL,
     publisher VARCHAR(255) NOT NULL,                                        -- id and own table??
     release_date DATE NOT NULL,
-    pages INT NOT NULL
-
+    pages INT CONSTRAINT positive_pages CHECK (pages > 0)
 );
 
 CREATE TABLE author (
@@ -104,7 +103,7 @@ CREATE TABLE store (                                                            
 CREATE TABLE inventory (
     store_id BIGINT REFERENCES store (store_id) ON DELETE CASCADE,
     prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
-    price NUMERIC(32,2),
+    price NUMERIC(32,2) CONSTRAINT positive_price CHECK (price > 0),
     condition VARCHAR(50),
     PRIMARY KEY (store_id, prod_id)
 );

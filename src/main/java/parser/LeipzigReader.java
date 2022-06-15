@@ -29,8 +29,8 @@ public class LeipzigReader {
     }
 
     /**
-     * Reads root element (store) of XML and store address, calls set methods for address properties and
-     * address and store inserts.
+     * Reads root element (store) of XML and store address, calls set methods for address properties and address and
+     * store inserts.
      */
     public void readStoreXml() {
 
@@ -46,7 +46,9 @@ public class LeipzigReader {
      * Sets attributes in AddressEntity instance.
      *
      * @param attributeMap - A Map containing the address properties
+     *
      * @return the address with set properties
+     *
      * @see AddressEntity
      */
     private AddressEntity readStoreAddress(NamedNodeMap attributeMap) {
@@ -62,7 +64,9 @@ public class LeipzigReader {
      * Inserts address and store (with given address) into database.
      *
      * @param storeAddress - address of store
+     *
      * @return The ID of store inserted in database
+     *
      * @see AddressEntity
      * @see StoreEntity
      */
@@ -83,7 +87,7 @@ public class LeipzigReader {
     /**
      * Iterates over child nodes of root element and calls read method for every found item element.
      *
-     * @param root - root element of xml document
+     * @param root    - root element of xml document
      * @param storeId - the ID of corresponding StoreEntity in database
      */
     private void readItems(Element root, long storeId) {
@@ -102,11 +106,11 @@ public class LeipzigReader {
     }
 
     /**
-     * Reads item data by iterating over child elements and calls of helper methods. Calls insert methods for
-     * relevant entities of verified products.
+     * Reads item data by iterating over child elements and calls of helper methods. Calls insert methods for relevant
+     * entities of verified products.
      *
      * @param itemNode - node of item to read
-     * @param storeId - ID of corresponding store
+     * @param storeId  - ID of corresponding store
      *
      * @throws MissingProductNameException - if product Name is missing
      */
@@ -179,7 +183,7 @@ public class LeipzigReader {
      * Reads and sets product ID, product group (Book, CD or DVD) and link to product image.
      *
      * @param itemNode - item node containing product attributes
-     * @param product - ProductEntity instance
+     * @param product  - ProductEntity instance
      *
      * @return product group as String
      *
@@ -226,10 +230,10 @@ public class LeipzigReader {
     /**
      * Reads price and state of product. Sets these properties in InventoryEntity. Euro is the only accepted currency.
      *
-     * @param priceNode - price node of item in XML file
-     * @param product - corresponding ProductEntity instance
+     * @param priceNode      - price node of item in XML file
+     * @param product        - corresponding ProductEntity instance
      * @param inventoryEntry - corresponding InventoryEntity instance
-     * @param storeId - corresponding StoreEntity ID as long
+     * @param storeId        - corresponding StoreEntity ID as long
      *
      * @see InventoryEntity
      */
@@ -243,8 +247,12 @@ public class LeipzigReader {
         // ToDo: exceptions other currencies
         if (priceAttributes.getNamedItem("currency").getNodeValue().equals("EUR")) {
             double mult = Double.parseDouble(priceAttributes.getNamedItem("mult").getNodeValue());
-            double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue());
-            inventoryEntry.setPrice(new BigDecimal(mult * price));
+            double price = Double.parseDouble(priceNode.getFirstChild().getNodeValue()) * mult;
+            if (price > 0)
+                inventoryEntry.setPrice(new BigDecimal(price));
+            else
+                ReadLog.addError(new ReadingError("Inventory", product.getProdId(), "price",
+                                                  "Price is zero or negative, price set to null."));
 
         } else if (priceAttributes.getNamedItem("currency").getNodeValue().length() > 0) {
             ReadLog.addError(new ReadingError("Product", product.getProdId(), "price",
@@ -257,9 +265,9 @@ public class LeipzigReader {
      * Reads relevant data for books. First iterates over bookspec node, then gets remaining book properties over
      * sibling nodes of bookspec.
      *
-     * @param node - bookspec node of item in XML file
-     * @param product - corresponding ProductEntity instance
-     * @param book - corresponding BookEntity instance
+     * @param node       - bookspec node of item in XML file
+     * @param product    - corresponding ProductEntity instance
+     * @param book       - corresponding BookEntity instance
      * @param authorList - empty list to be filled with authors (PersonEntity)
      *
      * @see BookEntity
@@ -283,12 +291,13 @@ public class LeipzigReader {
                         }
                         break;
                     case "pages":
-                        // ToDo: pages sometimes missing or empty string, problem? currently inserted with 0
                         Node pageValue = childNode.getFirstChild();
                         if (pageValue == null || pageValue.getNodeValue().equals("")) {
-                            book.setPages(0);
                             ReadLog.addError(new ReadingError("Book", product.getProdId(), "pages",
-                                                              "No pages attribute or empty, pages set to 0."));
+                                                              "No pages attribute or empty, pages set to null."));
+                        } else if (Integer.parseInt(pageValue.getNodeValue()) <= 0) {
+                            ReadLog.addError((new ReadingError("Book", product.getProdId(), "pages",
+                                                               "Pages zero or negative, pages set to null.")));
                         } else
                             book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;
@@ -321,7 +330,7 @@ public class LeipzigReader {
                     }
                 }
                 // ToDo: no publisher ok?
-                if(book.getPublisher() == null) {
+                if (book.getPublisher() == null) {
                     book.setPublisher("");
                     ReadLog.addError(new ReadingError("Book", book.getBookId(), "publisher",
                                                       "Book has no publisher. Set to empty String."));
@@ -349,14 +358,14 @@ public class LeipzigReader {
     }
 
     /**
-     * Reads relevant data for DVDs. First iterates over dvdspec node, then gets remaining DVD properties over
-     * sibling nodes of dvdspec.
+     * Reads relevant data for DVDs. First iterates over dvdspec node, then gets remaining DVD properties over sibling
+     * nodes of dvdspec.
      *
-     * @param node - dvdspec node of item in XML file
-     * @param product - corresponding ProductEntity instance
-     * @param dvd - corresponding DvdEntity instance
-     * @param actorList - empty list to be filled with actors (PersonEntity)
-     * @param creatorList - empty list to be filled with creators (PersonEntity)
+     * @param node         - dvdspec node of item in XML file
+     * @param product      - corresponding ProductEntity instance
+     * @param dvd          - corresponding DvdEntity instance
+     * @param actorList    - empty list to be filled with actors (PersonEntity)
+     * @param creatorList  - empty list to be filled with creators (PersonEntity)
      * @param directorList - empty list to be filled with directors (PersonEntity)
      *
      * @see DvdEntity
@@ -433,13 +442,13 @@ public class LeipzigReader {
     }
 
     /**
-     * Reads relevant data for CDs. First iterates over musicspec node, then gets remaining CD properties over
-     * sibling nodes of musicspec.
+     * Reads relevant data for CDs. First iterates over musicspec node, then gets remaining CD properties over sibling
+     * nodes of musicspec.
      *
-     * @param node - musicspec node of item in XML file
-     * @param product - corresponding ProductEntity instance
-     * @param cd - corresponding CdEntity instance
-     * @param titleList empty list to be filled with CD tracks (TitleEntity)
+     * @param node       - musicspec node of item in XML file
+     * @param product    - corresponding ProductEntity instance
+     * @param cd         - corresponding CdEntity instance
+     * @param titleList  empty list to be filled with CD tracks (TitleEntity)
      * @param artistList empty list to be filled with CD artists (ArtistEntity)
      *
      * @see CdEntity
@@ -526,8 +535,8 @@ public class LeipzigReader {
     }
 
     /**
-     * Checks if product name is set. Throws exception to ignore this product in readItem method (product is not
-     * further read).
+     * Checks if product name is set. Throws exception to ignore this product in readItem method (product is not further
+     * read).
      *
      * @param product - product to be checked for name
      *
@@ -546,9 +555,9 @@ public class LeipzigReader {
      * database. Creates corresponding AuthorEntity instances for given authors.
      *
      * @param sessionFactory - factory to create sessions in DAOs
-     * @param product - product to be inserted
-     * @param book - book to be inserted
-     * @param authorList - list of persons, which are authors of this book
+     * @param product        - product to be inserted
+     * @param book           - book to be inserted
+     * @param authorList     - list of persons, which are authors of this book
      */
     private void insertBook(SessionFactory sessionFactory, ProductEntity product, BookEntity book,
                             List<PersonEntity> authorList) {
@@ -581,11 +590,11 @@ public class LeipzigReader {
      * database. Creates instances of DVDPersonEntity by given lists with their roles in this DVD.
      *
      * @param sessionFactory - factory to create sessions in DAOs
-     * @param product - product to be inserted
-     * @param dvd - dvd to be inserted
-     * @param actorList - list with persons, which are actors in this movie
-     * @param creatorList - list with persons, which are creators of this movie
-     * @param directorList - list with persons, which are directors of this movie
+     * @param product        - product to be inserted
+     * @param dvd            - dvd to be inserted
+     * @param actorList      - list with persons, which are actors in this movie
+     * @param creatorList    - list with persons, which are creators of this movie
+     * @param directorList   - list with persons, which are directors of this movie
      *
      * @see DvdPersonEntity
      */
@@ -639,14 +648,14 @@ public class LeipzigReader {
     }
 
     /**
-     * Inserts CD (and product) and corresponding persons and tracks into database, if CD (and product) is not
-     * already in database. Creates instances of CdArtistEntity and CdTitleEntity by given lists.
+     * Inserts CD (and product) and corresponding persons and tracks into database, if CD (and product) is not already
+     * in database. Creates instances of CdArtistEntity and CdTitleEntity by given lists.
      *
      * @param sessionFactory - factory to create sessions in DAOs
-     * @param product - product to be inserted
-     * @param cd - CD to be inserted
-     * @param titleList - list with tracks of this CD
-     * @param artistList - list with artists of this CD
+     * @param product        - product to be inserted
+     * @param cd             - CD to be inserted
+     * @param titleList      - list with tracks of this CD
+     * @param artistList     - list with artists of this CD
      *
      * @see CdArtistEntity
      * @see CdTitleEntity
@@ -670,7 +679,7 @@ public class LeipzigReader {
                 cdArtist.setArtistId(artist.getArtistId());
                 cdArtist.setCdId(cd.getCdId());
 
-                if(isNewCdArtist(cdArtist)) {
+                if (isNewCdArtist(cdArtist)) {
                     cdArtistDao.create(cdArtist);
                 }
 
@@ -731,7 +740,7 @@ public class LeipzigReader {
         cdArtistPK.setCdId(cdArtist.getCdId());
         cdArtistPK.setArtistId(cdArtist.getArtistId());
 
-        if(cdArtistDao.findOne(cdArtistPK) == null) {
+        if (cdArtistDao.findOne(cdArtistPK) == null) {
             return true;
         }
         return false;

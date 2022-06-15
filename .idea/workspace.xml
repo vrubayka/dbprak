@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="worlspace">
+    <list default="true" id="6fec1af2-7efe-43d0-ac38-6d1813d8a54d" name="Changes" comment="ToDos from Testat 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/DresdenReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/parser/LeipzigReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/parser/LeipzigReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ToDo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ToDo.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +30,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Exceptions" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -72,6 +75,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Git.Branch.Popup.ShowAllRemotes&quot;: &quot;true&quot;,
     &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;8b7f7931-ad41-4af5-b3e9-3481c839f644&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -145,6 +149,8 @@
       <workItem from="1654242456183" duration="514000" />
       <workItem from="1654243389821" duration="1469000" />
       <workItem from="1654691204022" duration="12000" />
+      <workItem from="1655200917721" duration="1091000" />
+      <workItem from="1655285776594" duration="2700000" />
     </task>
     <task id="LOCAL-00001" summary="changed DB table creation and added data files">
       <created>1652693983223</created>
@@ -447,7 +453,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654242910065</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="ToDos from Testat 1">
+      <created>1655200997805</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1655200997805</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -465,7 +478,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="finished dvd inserts" />
     <MESSAGE value="started CD insert" />
     <MESSAGE value="added ArtistDao" />
     <MESSAGE value="started exceptions" />
@@ -490,7 +502,8 @@
     <MESSAGE value="uncomment all parser in main" />
     <MESSAGE value="small changes in main" />
     <MESSAGE value="worlspace" />
-    <option name="LAST_COMMIT_MESSAGE" value="worlspace" />
+    <MESSAGE value="ToDos from Testat 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="ToDos from Testat 1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dbpraktikum$Main.ic" NAME="Main Coverage Results" MODIFIED="1653402293039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
