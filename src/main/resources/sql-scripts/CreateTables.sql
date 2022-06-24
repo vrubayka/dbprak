@@ -16,7 +16,7 @@ CREATE TABLE book (
     isbn VARCHAR(50) NOT NULL,
     publisher VARCHAR(255) NOT NULL,                                        -- id and own table??
     release_date DATE CONSTRAINT no_future_date_book CHECK (release_date <= CURRENT_DATE),
-    pages INT CONSTRAINT positive_pages CHECK (pages > 0)
+    pages INT CONSTRAINT positive_pages CHECK (pages >= 0)
 );
 
 CREATE TABLE author (

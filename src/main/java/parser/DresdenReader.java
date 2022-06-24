@@ -288,10 +288,10 @@ public class DresdenReader {
                         Node pageValue = childNode.getFirstChild();
                         if (pageValue == null || pageValue.getNodeValue().equals("")) {
                             ReadLog.addError(new ReadingError("Book", product.getProdId(), "pages",
-                                                              "No pages attribute or empty, pages set to null."));
+                                                              "No pages attribute or empty, pages set to zero."));
                         } else if (Integer.parseInt(pageValue.getNodeValue()) <= 0) {
                             ReadLog.addError((new ReadingError("Book", product.getProdId(), "pages",
-                                                               "Pages zero or negative, pages set to null.")));
+                                                               "Pages zero or negative, pages set to zero.")));
                         } else
                             book.setPages(Integer.parseInt(pageValue.getNodeValue()));
                         break;

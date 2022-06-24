@@ -20,7 +20,7 @@ public class BookEntity {
     @Column(name = "publisher", nullable = false)
     private String publisher;
     @Basic
-    @Column(name = "release_date", nullable = false)
+    @Column(name = "release_date")
     private Date releaseDate;
     @Basic
     @Column(name = "pages", nullable = false)

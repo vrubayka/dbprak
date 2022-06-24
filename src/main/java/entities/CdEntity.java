@@ -17,7 +17,7 @@ public class CdEntity {
     @Column(name = "label", nullable = false, length = 255)
     private String label;
     @Basic
-    @Column(name = "release_date", nullable = false)
+    @Column(name = "release_date")
     private Date releaseDate;
     @OneToOne
     @JoinColumn(name = "cd_id", referencedColumnName = "prod_id", nullable = false)
