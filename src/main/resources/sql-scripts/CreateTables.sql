@@ -113,7 +113,7 @@ CREATE TABLE review (
     prod_id VARCHAR(255) REFERENCES product (prod_id) ON DELETE CASCADE,
     username VARCHAR(50) NOT NULL,
     reviewdate DATE NOT NULL,
-    rating INT NOT NULL,
+    rating INT NOT NULL CONSTRAINT rating_range CHECK (rating >= 1 AND rating <= 5),
     helpful_rating INT NOT NULL,
     review_sum VARCHAR(255),
     review_text VARCHAR(5000),
