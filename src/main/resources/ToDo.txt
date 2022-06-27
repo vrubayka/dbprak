@@ -3,3 +3,5 @@ replace GenericDaos with specific
 rating not 0
 date in future check for reviews?
 order customer
+review rating range
+helpful_rating not NOT NULL
