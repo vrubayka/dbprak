@@ -3,6 +3,6 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateFunctions.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/sql-scripts/newReviewTrigger.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTriggers.sql" dialect="PostgreSQL" />
   </component>
 </project>
