@@ -60,15 +60,9 @@ public class CSVParser {
                     } catch (PersistenceException e) {
                         Throwable cause = e.getCause().getCause();
                         // check for missing referenced key exception
-                        if (cause instanceof PSQLException
-                            && (cause.getMessage().matches(
-                                    "ERROR: insert or update on table \"review\" violates foreign key constraint " +
-                                    "\"review_prod_id_fkey\"\n(.*)")
-                            || cause.getMessage().matches(
-                                    "FEHLER: Einfügen oder Aktualisieren in Tabelle »review« verletzt Fremdschlüssel-Constraint »review_prod_id_fkey«\n(.*)"))) {
-
-                            ReadLog.addError(new ReadingError("Review", re.getProdId(), "prodId",
-                                                              "No such prod_id in product table. Review not inserted."));
+                            if (cause instanceof PSQLException) {
+                                ReadLog.addError(new ReadingError("Review", re.getProdId(), "prodId",
+                                                                  e.getCause().getCause().getMessage()));
 
                         } else {
                             e.printStackTrace();
