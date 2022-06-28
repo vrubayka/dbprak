@@ -114,7 +114,7 @@ CREATE TABLE review (
     username VARCHAR(50) NOT NULL,
     reviewdate DATE NOT NULL,
     rating INT NOT NULL CONSTRAINT rating_range CHECK (rating >= 1 AND rating <= 5),
-    helpful_rating INT NOT NULL,
+    helpful_rating INT,
     review_sum VARCHAR(255),
     review_text VARCHAR(5000),
     PRIMARY KEY (prod_id, username)
