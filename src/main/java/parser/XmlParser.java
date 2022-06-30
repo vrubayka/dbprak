@@ -100,14 +100,14 @@ public class XmlParser implements Reader{
         String value;
         if (node == null){
             value = "";
-            return value;
+            return value.trim();
         }
         else if (node.getFirstChild() == null){
             value = "";
-            return value;
+            return value.trim();
         }
         else value = node.getFirstChild().getNodeValue();
-        return value;
+        return value.trim();
     }
 
     /**
