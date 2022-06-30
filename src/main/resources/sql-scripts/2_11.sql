@@ -1,4 +1,4 @@
-SELECT prod_id
+SELECT prod_id, prod_name
 FROM product p
 WHERE NOT EXISTS(
         SELECT *
