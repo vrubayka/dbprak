@@ -1,0 +1,17 @@
+  prod_id   |                          prod_name                          | rating | prod_group
+------------+-------------------------------------------------------------+--------+------------
+ 3937406425 | A Day In New York; Bildband mit 4 Audio-CDs                 |      5 | Book
+ 3570126463 | Abby Lynn, Verborgen im Niemandsland                        |      5 | Book
+ 3401052330 | Alles ber Sterne und Planeten                               |      5 | Book
+ 3401054457 | Allgemeinbildung, Das musst du wissen                       |      5 | Book
+ 3110181460 | Allgemeine und Anorganische Chemie                          |      5 | Book
+ B00004TRFZ | 00 Void [UK-Import]                                         |      5 | CD
+ B00000IGPN | 10 Dinge, die ich an dir hasse (10 Things I Hate About You) |      5 | CD
+ B0001QNOC4 | 2 am Wakeup Call                                            |      5 | CD
+ B000024KWC | 200 More Miles                                              |      5 | CD
+ B000002WVI | 200 More Miles, Live Performances 1985-1994 [Musikkassette] |      5 | CD
+ B000683TJK | A Perfect Circle - aMotion (2 DVDs)                         |      5 | DVD
+ B00006ALCH | ABBA - The Definitive Collection                            |      5 | DVD
+ B0000DG7BZ | AC/DC - Live at Donington                                   |      5 | DVD
+ B000B8T296 | Alicia Keys - Unplugged                                     |      5 | DVD
+ B000075AIV | Anastacia - The Video Collection                            |      5 | DVD
