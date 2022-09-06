@@ -9,6 +9,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "book", schema = "public", catalog = "dbprak")
 public class BookEntity {
+    @Override
+    public String toString() {
+        return "ISBN: " + isbn + "\nPublisher: " + publisher + "\nRelease Date: " + releaseDate +
+                "\nPages: " + pages + "\nAuthors: " + authorsByBookId;
+    }
 
     @Id
     @Column(name = "book_id", nullable = false)

@@ -1,6 +1,8 @@
 package middle;
 
+import daos.CdArtistDao;
 import daos.ProductDao;
+import entities.BookEntity;
 import entities.InventoryEntity;
 import entities.ProductEntity;
 import logging.ReadLog;
@@ -68,7 +70,20 @@ public class MenuMapper implements IMenuMapper{
     @Override
     public ProductEntity getProduct(String id) {
         ProductDao productDao = new ProductDao(sessionFactory);
-        return productDao.findOne(id);
+        ProductEntity productEntity = productDao.findOne(id);
+        if (productEntity.getBookByProdId() != null){
+            //TODO:Authoren holen
+
+        }
+        else if (productEntity.getCdByProdId() != null){
+            CdArtistDao cdArtistDao = new CdArtistDao(sessionFactory);
+            productEntity.getCdByProdId().setCdArtistsByCdId(cdArtistDao.findArtistForCd(id));
+
+        }
+        else if (productEntity.getDvdByProdId() != null){
+            //TODO: bis zum ende machen
+        }
+        return productEntity;
     }
 
     @Override

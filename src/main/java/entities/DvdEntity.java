@@ -8,6 +8,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "dvd", schema = "public", catalog = "dbprak")
 public class DvdEntity {
+
+    @Override
+    public String toString() {
+        return "Format: " + format + "\nLength: " + termInSec/60 + "\nRegion Code: " + regionCode;
+    }
+
     @Id
     @Column(name = "dvd_id", nullable = false)
     private String dvdId;
