@@ -3,8 +3,14 @@ package middle;
 import daos.ProductDao;
 import entities.InventoryEntity;
 import entities.ProductEntity;
+import logging.ReadLog;
+import middle.wrapperClass.CategoryNode;
+import middle.wrapperClass.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import parser.CSVParser;
+import parser.XmlParser;
+import queries.HibernateQueries;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +26,7 @@ public class MenuMapper implements IMenuMapper{
     private SessionFactory sessionFactory;
 
     @Override
-    public void init() {
+    public void init(boolean reload) {
 
         try {
             Configuration configuration = new Configuration().configure();
@@ -31,6 +37,24 @@ public class MenuMapper implements IMenuMapper{
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);
+        }
+
+        if(reload) {
+            HibernateQueries hibernateQueries = new HibernateQueries(sessionFactory);
+            hibernateQueries.cleanDb();
+
+            ReadLog log = new ReadLog();
+
+            XmlParser xmlParser = new XmlParser();
+            xmlParser.readFile("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+            xmlParser.readFile("src/main/resources/data-files/dresden.xml", sessionFactory);
+            xmlParser.readCategories("src/main/resources/data-files/categories.xml", sessionFactory);
+            xmlParser.readSimilars("src/main/resources/data-files/leipzig_transformed.xml", sessionFactory);
+            xmlParser.readSimilars("src/main/resources/data-files/dresden.xml", sessionFactory);
+            CSVParser csvParser = new CSVParser();
+            csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
+
+            ReadLog.writeLogToCSV();
         }
     }
 
@@ -50,7 +74,16 @@ public class MenuMapper implements IMenuMapper{
     @Override
     public List<ProductEntity> getProducts(String pattern) {
         ProductDao productDao = new ProductDao(sessionFactory);
-        return productDao;
+        List<ProductEntity> prodList = productDao.findByPattern(formatPattern(pattern));
+        return prodList;
+    }
+
+    private String formatPattern(String pattern) {
+        pattern.replace("\\", "\\\\");
+        pattern.replace("_", "\\_");
+        pattern.replace("%", "\\%");
+        pattern = "%" + pattern + "%";
+        return pattern;
     }
 
     @Override
