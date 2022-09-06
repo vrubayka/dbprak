@@ -21,10 +21,10 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws URISyntaxException, IOException, ClassNotFoundException {
+        Menu menu = new Menu();
+        menu.printMenu();
 
-        SessionFactory sessionFactory;
-
-        try {
+        /*try {
             Configuration configuration = new Configuration().configure();
             for (Class cls : getEntityClassesFromPackage("entities")) {
                 configuration.addAnnotatedClass(cls);
@@ -50,6 +50,7 @@ public class Main {
         csvParser.createReviewEntity("src/main/resources/data-files/reviews.csv", sessionFactory);
 
         ReadLog.writeLogToCSV();
+        */
 
     }
 
