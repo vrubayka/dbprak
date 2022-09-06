@@ -29,7 +29,6 @@ public class ProductDao extends GenericDao<ProductEntity> {
         SelectionQuery<ProductEntity> query = session.createSelectionQuery(
                 "FROM ProductEntity p WHERE p.prodName like :pattern", ProductEntity.class)
                 .setParameter("pattern", pattern);
-
         return query.getResultList();
     }
 }
