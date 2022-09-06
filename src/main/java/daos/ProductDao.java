@@ -4,6 +4,9 @@ import entities.ProductEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.SelectionQuery;
+
+import java.util.List;
 
 public class ProductDao extends GenericDao<ProductEntity> {
 
@@ -18,5 +21,15 @@ public class ProductDao extends GenericDao<ProductEntity> {
         tx.commit();
 
         return product;
+    }
+
+    public List<ProductEntity> findByPattern(String pattern) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        SelectionQuery<ProductEntity> query = session.createSelectionQuery(
+                "FROM ProductEntity p WHERE p.prodName like :pattern", ProductEntity.class)
+                .setParameter("pattern", pattern);
+
+        return query.getResultList();
     }
 }
