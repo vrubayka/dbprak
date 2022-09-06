@@ -93,10 +93,16 @@ public class Menu {
         System.out.println("Gib den Product-ID ein");
         String prodID = scanner.next();
         ProductEntity product = mapper.getProduct(prodID);
-        System.out.print(product.toString());
-        /*String[] lines = {"ASIN: " + product.getProdId(),"Name " + product.getProdName(),
-        product.get};*/
-        //TODO: Detailinformationen über Produkt ausgeben
+        System.out.println(product);
+        if (product.getCdByProdId() != null){
+            System.out.print(product.getCdByProdId());
+            //TODO: Interpret
+        }
+        else if (product.getBookByProdId() != null){
+            System.out.print(product.getBookByProdId());
+        }
+        else System.out.print(product.getDvdByProdId());
+        //TODO: Price
     }
 
     private void option3() { //getProducts (String pattern)

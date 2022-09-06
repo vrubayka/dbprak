@@ -9,6 +9,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "cd", schema = "public", catalog = "dbprak")
 public class CdEntity {
+    @Override
+    public String toString() {
+        String output = "Label: " + label + "\nRelease Date: " + releaseDate;
+        return output;
+    }
 
     @Id
     @Column(name = "cd_id", nullable = false, length = 255)
