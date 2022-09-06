@@ -79,9 +79,9 @@ public class MenuMapper implements IMenuMapper{
     }
 
     private String formatPattern(String pattern) {
-        pattern.replace("\\", "\\\\");
-        pattern.replace("_", "\\_");
-        pattern.replace("%", "\\%");
+        pattern = pattern.replace("\\", "\\\\");
+        pattern = pattern.replace("_", "\\_");
+        pattern = pattern.replace("%", "\\%");
         pattern = "%" + pattern + "%";
         return pattern;
     }
