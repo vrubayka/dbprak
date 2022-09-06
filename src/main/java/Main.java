@@ -24,5 +24,13 @@ public class Main {
 
     public static void main(String[] args) throws URISyntaxException, IOException, ClassNotFoundException {
 
+
+        IMenuMapper mapper = new MenuMapper();
+        mapper.init(false);
+        List<ProductEntity> productList = mapper.getProducts("zim");
+        for(ProductEntity prod : productList) {
+            System.out.println(prod);
+        }
+
     }
 }

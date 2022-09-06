@@ -179,4 +179,8 @@ public class ProductEntity {
     public void setSimilarProductsByProdId_0(Collection<SimilarProductsEntity> similarProductsByProdId_0) {
         this.similarProductsByProdId_0 = similarProductsByProdId_0;
     }
+
+    public String toString() {
+        return "\nProdId: " + prodId + "\nProdName: " + prodName + "\nRating: " + rating;
+    }
 }
