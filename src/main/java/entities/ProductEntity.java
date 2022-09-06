@@ -21,7 +21,7 @@ public class ProductEntity {
     private double rating;
     @Basic
     @Column(name = "sales_rank")
-    private int salesRank;
+    private Integer salesRank;
     @Basic
     @Column(name = "image")
     private String image;
@@ -81,7 +81,7 @@ public class ProductEntity {
         this.rating = rating;
     }
 
-    public int getSalesRank() {
+    public Integer getSalesRank() {
         return salesRank;
     }
 
@@ -89,9 +89,6 @@ public class ProductEntity {
         this.salesRank = salesRank;
     }
 
-    public void setSalesRank(int salesRank) {
-        this.salesRank = salesRank;
-    }
 
     public String getImage() {
         return image;

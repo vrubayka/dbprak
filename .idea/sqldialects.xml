@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateFunctions.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTables.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/sql-scripts/CreateTriggers.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/sql-scripts/InsertReviews.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/test_data/InsertReviews.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/test_data/pattern_test_products.sql" dialect="PostgreSQL" />
   </component>
 </project>
