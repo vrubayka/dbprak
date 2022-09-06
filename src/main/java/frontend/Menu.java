@@ -19,18 +19,21 @@ public class Menu {
 
     private MenuMapper mapper = new MenuMapper();
 
-    private String[] options = {"1 - init", "2 - finish", "3 - getProduct", "4 - getProducts(String pattern)", "5 - getCategoryTree",
-            "6 - getProductsByCategoryPath", "7 - getTopProducts", "8 - getSimilarCheaperProduct", "9 - addNewReview",
-            "10 - getTrolls", "11 - getOffers"};
+    private String[] options = {"1 - finish", "2 - getProduct", "3 - getProducts(String pattern)", "4 - getCategoryTree",
+            "5 - getProductsByCategoryPath", "6 - getTopProducts", "7 - getSimilarCheaperProduct", "8 - addNewReview",
+            "9 - getTrolls", "10 - getOffers"};
 
     public void printMenu() {
         System.out.println("DB neu laden?");
         System.out.println("1 - Ja");
         System.out.println("2 - Nein");
+        System.out.println("\nEingabe:");
         Integer boolNum = scanner.nextInt();
         if (boolNum == 1){
          mapper.init(true);
         }
+        else mapper.init(false);
+
         System.out.println("Waehle eine Option:");
         for (String option : options) {
             System.out.println(option);
@@ -71,9 +74,6 @@ public class Menu {
                 case 10:
                     option10();
                     break;
-                case 11:
-                    option11();
-                    break;
             }
 
         /*} /*catch (Exception ex) {
@@ -83,44 +83,23 @@ public class Menu {
     }
 
     private void option1() {
-        System.out.println("Option init gewählt");
-        System.out.println("Wollen Sie den Datenbank neu laden");
-        System.out.println("1 - JA");
-        System.out.println("2 - NEIN");
-        Integer option = scanner.nextInt();
-        if (option == 1) {
-            System.out.println("DB wird neu geladen, bitte warten");
-            //TODO: cleanDB durchführen
-
-        } else {
-            System.out.println("DB wird nicht neu geladen");
-            //TODO: init ohne cleanDB
-            mapper.init();
-        }
-        ;
+        System.out.println("Option finish ausgewaehlt");
+        mapper.finish();
+        System.out.println("Tschuess!");
     }
 
     private void option2() {
-        System.out.println("Option finish ausgewaehlt");
-        mapper.finish();
-        //TODO: db finish
-    }
-
-    private void option3() {
         System.out.println("Option getProduct ausgewaehlt");
         System.out.println("Gib den Product-ID ein");
         String prodID = scanner.next();
         ProductEntity product = mapper.getProduct(prodID);
-        CdEntity cdProduct = product.getCdByProdId();
-        DvdEntity dvdProduct = product.getDvdByProdId();
-        BookEntity bookEntity = product.getBookByProdId();
-        System.out.println(cdProduct.getCdId());
+        System.out.print(product.toString());
         /*String[] lines = {"ASIN: " + product.getProdId(),"Name " + product.getProdName(),
         product.get};*/
         //TODO: Detailinformationen über Produkt ausgeben
     }
 
-    private void option4() { //getProducts (String pattern)
+    private void option3() { //getProducts (String pattern)
         System.out.println("Option getProucts (String pattern)");
         System.out.println("Gib den Pattern ein");
         String pattern = scanner.next();
@@ -128,44 +107,44 @@ public class Menu {
         //TODO: Produkte ausgeben
     }
 
-    private void option5() { //getCategoryTree
+    private void option4() { //getCategoryTree
         System.out.println("Option getCategoryTree augewaehlt");
         //TODO: was soll ermittelt werden
         System.out.println("Gib productID ein");
         String prodID = scanner.next();
     }
 
-    private void option6() { //getProductsByCategoryPath
+    private void option5() { //getProductsByCategoryPath
         System.out.println("Option getProductsByCategoryPath ausgewaehlt");
         System.out.println("Gib den Pfad ein");
         String pfad = scanner.next();
         //TODO Pfad übergeben und Producten zurueckgeben
     }
 
-    private void option7() { //getTopProducts
+    private void option6() { //getTopProducts
         System.out.println("Option getTopProducts ausgewaehlt");
         System.out.println("Gib den Rating ein");
         Integer rating = scanner.nextInt();
         //TODO: alle Produkte denen Rating >= rating-Wert ist.
     }
 
-    private void option8() { //getSimilarCheaperProduct
+    private void option7() { //getSimilarCheaperProduct
         System.out.println("Option getSimilarCheaperProduct ausgewaehlt");
         System.out.println("Gib ProduktID ein");
         Integer prodID = scanner.nextInt();
         //TODO: prodID aehnliche und billiger Produkte
     }
 
-    private void option9() { //addNewReview
+    private void option8() { //addNewReview
         System.out.println("Option addNewReview ausgewaehlt");
         System.out.println("Gib ");
     }
 
-    private void option10() {
+    private void option9() {
 
     }
 
-    private void option11() {
+    private void option10() {
 
     }
 
