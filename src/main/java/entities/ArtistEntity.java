@@ -54,4 +54,7 @@ public class ArtistEntity {
     public void setCdArtistsByArtistId(Collection<CdArtistEntity> cdArtistsByArtistId) {
         this.cdArtistsByArtistId = cdArtistsByArtistId;
     }
+    public String toString(){
+        return artistName;
+    }
 }

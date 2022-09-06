@@ -1,5 +1,6 @@
 package entities;
 
+import daos.CdArtistDao;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -11,7 +12,10 @@ import java.util.Objects;
 public class CdEntity {
     @Override
     public String toString() {
-        String output = "Label: " + label + "\nRelease Date: " + releaseDate;
+        String output = "Label: " + label + "\nRelease Date: " + releaseDate + "\nInterpret: \n" ;
+        for (CdArtistEntity cdArtistEntity : getCdArtistsByCdId() ){
+            output = output + cdArtistEntity.getArtistByArtistId().toString() + "\n";
+        }
         return output;
     }
 
@@ -86,6 +90,7 @@ public class CdEntity {
     public void setCdTitlesByCdId(Collection<CdTitleEntity> cdTitlesByCdId) {
         this.cdTitlesByCdId = cdTitlesByCdId;
     }
+
 
     public Collection<CdArtistEntity> getCdArtistsByCdId() {
         return cdArtistsByCdId;

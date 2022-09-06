@@ -95,14 +95,16 @@ public class Menu {
         ProductEntity product = mapper.getProduct(prodID);
         System.out.println(product);
         if (product.getCdByProdId() != null){
-            System.out.print(product.getCdByProdId());
+            System.out.print(product.getCdByProdId().toString());
             //TODO: Interpret
         }
         else if (product.getBookByProdId() != null){
-            System.out.print(product.getBookByProdId());
+            System.out.print(product.getBookByProdId().toString());
         }
-        else System.out.print(product.getDvdByProdId());
-        //TODO: Price
+        else if (product.getDvdByProdId() != null) {
+            System.out.print(product.getDvdByProdId());
+        }
+        //TODO: Preis
     }
 
     private void option3() { //getProducts (String pattern)
