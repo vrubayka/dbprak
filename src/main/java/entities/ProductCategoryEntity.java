@@ -14,7 +14,7 @@ public class ProductCategoryEntity {
     
     @Id
     @Column(name = "category_id", nullable = false)
-    private long categoryId;
+    private Long categoryId;
     @ManyToOne
     @JoinColumn(name = "prod_id", referencedColumnName = "prod_id", nullable = false, insertable = false, updatable = false)
     private ProductEntity productByProdId;
@@ -30,11 +30,11 @@ public class ProductCategoryEntity {
         this.prodId = prodId;
     }
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -43,7 +43,7 @@ public class ProductCategoryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductCategoryEntity that = (ProductCategoryEntity) o;
-        return prodId == that.prodId && categoryId == that.categoryId;
+        return Objects.equals(prodId, that.prodId) && Objects.equals(categoryId, that.categoryId);
     }
 
     @Override

@@ -14,7 +14,6 @@ public class CategoryDao extends GenericDao<CategoryEntity> implements ICategory
         super(CategoryEntity.class, sessionFactory);
     }
 
-    @Override
     public List<CategoryEntity> findBySuperCategory(Long superId) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -33,7 +32,6 @@ public class CategoryDao extends GenericDao<CategoryEntity> implements ICategory
         return categoryEntityList;
     }
 
-    @Override
     public CategoryEntity findByNameAndSuperCategory(String name, Long superId) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
