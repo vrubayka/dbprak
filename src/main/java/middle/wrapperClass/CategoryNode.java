@@ -6,17 +6,19 @@ import java.util.List;
 public class CategoryNode {
 
     private Long id;
+    private String name;
     private List<CategoryNode> childCategories;
 
-    public CategoryNode() {
-        this(null);
+    public CategoryNode(String name) {
+        this(name,null);
     }
 
-    public CategoryNode(Long id) {
-        this(id, new ArrayList<>());
+    public CategoryNode(String name, Long id) {
+        this(name, id, new ArrayList<>());
     }
 
-    public CategoryNode(Long id, List<CategoryNode> childCategories) {
+    public CategoryNode(String name, Long id, List<CategoryNode> childCategories) {
+        this.name = name;
         this.id = id;
         this.childCategories = childCategories;
     }
@@ -27,6 +29,14 @@ public class CategoryNode {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<CategoryNode> getChildCategories() {

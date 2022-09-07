@@ -11,7 +11,7 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "category_id", nullable = false)
-    private long categoryId;
+    private Long categoryId;
     @Basic
     @Column(name = "category_name", nullable = false)
     private String categoryName;
@@ -26,11 +26,11 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "categoryByCategoryId")
     private Collection<ProductCategoryEntity> productCategoriesByCategoryId;
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -55,7 +55,7 @@ public class CategoryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryEntity that = (CategoryEntity) o;
-        return categoryId == that.categoryId && Objects.equals(categoryName, that.categoryName) &&
+        return Objects.equals(categoryId, that.categoryId) && Objects.equals(categoryName, that.categoryName) &&
                Objects.equals(superCategory, that.superCategory);
     }
 

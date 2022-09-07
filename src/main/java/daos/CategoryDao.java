@@ -19,17 +19,40 @@ public class CategoryDao extends GenericDao<CategoryEntity> implements ICategory
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
         SelectionQuery<CategoryEntity> query;
-        if(superId == null) {
-            query = session.createSelectionQuery("FROM CategoryEntity c WHERE superCategory IS NULL",
+        if (superId == null) {
+            query = session.createSelectionQuery("FROM CategoryEntity c WHERE c.superCategory IS NULL",
                                                  CategoryEntity.class);
         } else {
             query = session.createSelectionQuery(
-                            "FROM CategoryEntity c WHERE superCategory = :superId",
+                            "FROM CategoryEntity c WHERE c.superCategory = :superId",
                             CategoryEntity.class)
                     .setParameter("superId", superId.toString());
         }
         List<CategoryEntity> categoryEntityList = query.getResultList();
         tx.commit();
         return categoryEntityList;
+    }
+
+    @Override
+    public CategoryEntity findByNameAndSuperCategory(String name, Long superId) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        SelectionQuery<CategoryEntity> query;
+        if (superId == null) {
+            query = session.createSelectionQuery(
+                            "FROM CategoryEntity c WHERE c.categoryName = :name AND c.superCategory IS NULL",
+                            CategoryEntity.class)
+                    .setParameter("name", name);
+        } else {
+            query = session.createSelectionQuery(
+                    "FROM CategoryEntity c WHERE c.categoryName = :name AND c.superCategory = :superId",
+                    CategoryEntity.class)
+                    .setParameter("name", name)
+                    .setParameter("superId", superId.toString());
+        }
+        CategoryEntity category = query.getSingleResultOrNull();
+        tx.commit();
+
+        return category;
     }
 }
