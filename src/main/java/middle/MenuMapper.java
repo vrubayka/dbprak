@@ -155,7 +155,8 @@ public class MenuMapper implements IMenuMapper {
     @Override
     public List<ProductEntity> getTopProducts(int k) {
         ProductDao productDao = new ProductDao(sessionFactory);
-        return productDao.getTopProducts(k);
+//        return productDao.getTopProducts(k);
+        return null;
     }
 
     @Override
