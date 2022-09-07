@@ -27,7 +27,7 @@ public class Main {
 
         IMenuMapper mapper = new MenuMapper();
         mapper.init(false);
-        mapper.getCategoryTree();
+        mapper.getProductsByCategoryPath("Features/Alle Sacs/Foo/Baa");
 
     }
 }
