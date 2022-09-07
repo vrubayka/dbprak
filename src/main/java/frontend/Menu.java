@@ -4,22 +4,28 @@ import entities.BookEntity;
 import entities.CdEntity;
 import entities.DvdEntity;
 import entities.ProductEntity;
+import hu.webarticum.treeprinter.SimpleTreeNode;
+import hu.webarticum.treeprinter.printer.listing.ListingTreePrinter;
 import middle.MenuMapper;
+import middle.wrapperClass.CategoryNode;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.internal.util.collections.SingletonIterator;
 
 import java.sql.SQLSyntaxErrorException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
 
 public class Menu {
 
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
-    private MenuMapper mapper = new MenuMapper();
+    private final MenuMapper mapper = new MenuMapper();
 
-    private String[] options = {"1 - finish", "2 - getProduct", "3 - getProducts(String pattern)", "4 - getCategoryTree",
+    private final String[] options = {"1 - finish", "2 - getProduct", "3 - getProducts(String pattern)", "4 - getCategoryTree",
             "5 - getProductsByCategoryPath", "6 - getTopProducts", "7 - getSimilarCheaperProduct", "8 - addNewReview",
             "9 - getTrolls", "10 - getOffers"};
 
@@ -29,10 +35,7 @@ public class Menu {
         System.out.println("2 - Nein");
         System.out.println("\nEingabe:");
         Integer boolNum = scanner.nextInt();
-        if (boolNum == 1){
-         mapper.init(true);
-        }
-        else mapper.init(false);
+        mapper.init(boolNum == 1);
 
         System.out.println("Waehle eine Option:");
         for (String option : options) {
@@ -91,7 +94,7 @@ public class Menu {
     private void option2() {
         System.out.println("Option getProduct ausgewaehlt");
         System.out.println("Gib den Product-ID ein");
-        String prodID = scanner.next();
+        String prodID = scanner.nextLine();
         ProductEntity product = mapper.getProduct(prodID);
         System.out.println(product);
         if (product.getCdByProdId() != null){
@@ -108,7 +111,7 @@ public class Menu {
     private void option3() { //getProducts (String pattern)
         System.out.println("Option getProucts (String pattern)");
         System.out.println("Gib den Pattern ein");
-        String pattern = scanner.next();
+        String pattern = scanner.nextLine();
         for(ProductEntity product : mapper.getProducts(pattern)){
             System.out.println(product);
         }
@@ -117,14 +120,26 @@ public class Menu {
 
     private void option4() { //getCategoryTree
         System.out.println("Option getCategoryTree augewaehlt");
+        CategoryNode root = mapper.getCategoryTree();
+        printTree(0, root);
+        System.out.println("\n\n\nFertig");
 
     }
 
     private void option5() { //getProductsByCategoryPath
         System.out.println("Option getProductsByCategoryPath ausgewaehlt");
         System.out.println("Gib den Pfad ein");
-        String pfad = scanner.next();
-        //TODO Pfad übergeben und Producten zurueckgeben
+        System.out.println("Beispiel:");
+        System.out.println("Features/Alle SACDs");
+        System.out.println("Eingabe:");
+        scanner.nextLine();
+        String pfad = scanner.nextLine();
+
+        List<ProductEntity> liste = mapper.getProductsByCategoryPath(pfad);
+        for (ProductEntity product : liste){
+            System.out.println(product.value());
+        }
+        //TODO Pfad übergeben und Produkten zurueckgeben
     }
 
     private void option6() { //getTopProducts
@@ -152,6 +167,14 @@ public class Menu {
 
     private void option10() {
 
+    }
+
+    public void printTree(int x, CategoryNode node){
+        System.out.println(StringUtils.repeat("\t", x) + "|--" + node.getValue());
+
+        for (CategoryNode child : node.getChildCategories() ){
+                printTree(x+1, child);
+        }
     }
 
 

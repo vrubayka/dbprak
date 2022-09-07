@@ -189,4 +189,11 @@ public class ProductEntity {
         }
         return output;
     }
+
+    public String value(){
+        if (prodId == null){
+            return "";
+        }
+        return prodId;
+    }
 }
