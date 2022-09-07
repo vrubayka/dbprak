@@ -18,10 +18,18 @@ public class CategoryDao extends GenericDao<CategoryEntity> implements ICategory
     public List<CategoryEntity> findBySuperCategory(Long superId) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
-        SelectionQuery<CategoryEntity> query = session.createSelectionQuery(
-                                                "FROM CategoryEntity c WHERE superCategory = :superId",
-                                                CategoryEntity.class)
-                .setParameter("superId", superId);
-        return query.getResultList();
+        SelectionQuery<CategoryEntity> query;
+        if(superId == null) {
+            query = session.createSelectionQuery("FROM CategoryEntity c WHERE superCategory IS NULL",
+                                                 CategoryEntity.class);
+        } else {
+            query = session.createSelectionQuery(
+                            "FROM CategoryEntity c WHERE superCategory = :superId",
+                            CategoryEntity.class)
+                    .setParameter("superId", superId.toString());
+        }
+        List<CategoryEntity> categoryEntityList = query.getResultList();
+        tx.commit();
+        return categoryEntityList;
     }
 }

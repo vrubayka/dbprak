@@ -27,10 +27,7 @@ public class Main {
 
         IMenuMapper mapper = new MenuMapper();
         mapper.init(false);
-        List<ProductEntity> productList = mapper.getProducts("%");
-        for(ProductEntity prod : productList) {
-            System.out.println(prod);
-        }
+        mapper.getCategoryTree();
 
     }
 }
