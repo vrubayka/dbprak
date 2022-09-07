@@ -18,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MenuMapper implements IMenuMapper{
@@ -106,7 +107,7 @@ public class MenuMapper implements IMenuMapper{
 
     @Override
     public CategoryNode getCategoryTree() {
-        CategoryNode root = new CategoryNode();
+        CategoryNode root = new CategoryNode("root", null);
         CategoryDao categoryDao = new CategoryDao(sessionFactory);
         findChildCategories(categoryDao, root, null);
         return root;
@@ -115,7 +116,7 @@ public class MenuMapper implements IMenuMapper{
     private void findChildCategories(CategoryDao categoryDao, CategoryNode parentNode, Long parentId) {
         List<CategoryEntity> childCategoryEntities = categoryDao.findBySuperCategory(parentId);
         for(CategoryEntity categoryEntity : childCategoryEntities) {
-            CategoryNode childNode = new CategoryNode(categoryEntity.getCategoryId());
+            CategoryNode childNode = new CategoryNode(categoryEntity.getCategoryName(), categoryEntity.getCategoryId());
             findChildCategories(categoryDao, childNode, childNode.getId());
             parentNode.getChildCategories().add(childNode);
         }
@@ -123,7 +124,20 @@ public class MenuMapper implements IMenuMapper{
 
     @Override
     public List<ProductEntity> getProductsByCategoryPath(String path) {
+        CategoryEntity currentCategory = new CategoryEntity();
+        CategoryDao categoryDao = new CategoryDao(sessionFactory);
+        ArrayList<String> pathList = createListFromPath(path);
+
+        while(!pathList.isEmpty()) {
+            currentCategory = categoryDao.findByNameAndSuperCategory(pathList.remove(0),
+                                                                     currentCategory.getCategoryId());
+        }
         return null;
+    }
+
+    private ArrayList<String> createListFromPath(String path) {
+        String[] pathArray = path.split("/");
+        return new ArrayList<>(Arrays.asList(pathArray));
     }
 
     @Override
