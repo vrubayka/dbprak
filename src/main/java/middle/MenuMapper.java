@@ -2,11 +2,9 @@ package middle;
 
 import daos.CategoryDao;
 import daos.CdArtistDao;
+import daos.ProductCategoryDao;
 import daos.ProductDao;
-import entities.BookEntity;
-import entities.CategoryEntity;
-import entities.InventoryEntity;
-import entities.ProductEntity;
+import entities.*;
 import logging.ReadLog;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
@@ -26,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MenuMapper implements IMenuMapper{
+public class MenuMapper implements IMenuMapper {
 
     private SessionFactory sessionFactory;
 
@@ -44,7 +42,7 @@ public class MenuMapper implements IMenuMapper{
             throw new ExceptionInInitializerError(ex);
         }
 
-        if(reload) {
+        if (reload) {
             HibernateQueries hibernateQueries = new HibernateQueries(sessionFactory);
             hibernateQueries.cleanDb();
 
@@ -65,7 +63,7 @@ public class MenuMapper implements IMenuMapper{
 
     @Override
     public void finish() {
-        if(sessionFactory != null) {
+        if (sessionFactory != null) {
             sessionFactory.close();
         }
     }
@@ -74,16 +72,14 @@ public class MenuMapper implements IMenuMapper{
     public ProductEntity getProduct(String id) {
         ProductDao productDao = new ProductDao(sessionFactory);
         ProductEntity productEntity = productDao.findOne(id);
-        if (productEntity.getBookByProdId() != null){
+        if (productEntity.getBookByProdId() != null) {
             //TODO:Authoren holen
 
-        }
-        else if (productEntity.getCdByProdId() != null){
+        } else if (productEntity.getCdByProdId() != null) {
             CdArtistDao cdArtistDao = new CdArtistDao(sessionFactory);
             productEntity.getCdByProdId().setCdArtistsByCdId(cdArtistDao.findArtistForCd(id));
 
-        }
-        else if (productEntity.getDvdByProdId() != null){
+        } else if (productEntity.getDvdByProdId() != null) {
             //TODO: bis zum ende machen
         }
         return productEntity;
@@ -115,7 +111,7 @@ public class MenuMapper implements IMenuMapper{
 
     private void findChildCategories(CategoryDao categoryDao, CategoryNode parentNode, Long parentId) {
         List<CategoryEntity> childCategoryEntities = categoryDao.findBySuperCategory(parentId);
-        for(CategoryEntity categoryEntity : childCategoryEntities) {
+        for (CategoryEntity categoryEntity : childCategoryEntities) {
             CategoryNode childNode = new CategoryNode(categoryEntity.getCategoryName(), categoryEntity.getCategoryId());
             findChildCategories(categoryDao, childNode, childNode.getId());
             parentNode.getChildCategories().add(childNode);
@@ -128,11 +124,27 @@ public class MenuMapper implements IMenuMapper{
         CategoryDao categoryDao = new CategoryDao(sessionFactory);
         ArrayList<String> pathList = createListFromPath(path);
 
-        while(!pathList.isEmpty()) {
+        while (!(pathList.isEmpty() || currentCategory == null)) {
             currentCategory = categoryDao.findByNameAndSuperCategory(pathList.remove(0),
                                                                      currentCategory.getCategoryId());
         }
-        return null;
+
+        if (currentCategory == null) {
+            return null;
+        } else {
+            ProductCategoryDao productCategoryDao = new ProductCategoryDao(sessionFactory);
+            List<ProductCategoryEntity> productCategoryEntities =
+                    productCategoryDao.findByCategoryId(currentCategory.getCategoryId());
+
+            List<ProductEntity> productEntityList = new ArrayList<>();
+            for(ProductCategoryEntity productCategoryEntity: productCategoryEntities) {
+                productEntityList.add(productCategoryEntity.getProductByProdId());
+            }
+
+            return productEntityList;
+        }
+
+        // ToDo: get products when path not complete
     }
 
     private ArrayList<String> createListFromPath(String path) {
@@ -141,8 +153,9 @@ public class MenuMapper implements IMenuMapper{
     }
 
     @Override
-    public List<ProductEntity> getTopProducts() {
-        return null;
+    public List<ProductEntity> getTopProducts(int k) {
+        ProductDao productDao = new ProductDao(sessionFactory);
+        return productDao.getTopProducts(k);
     }
 
     @Override
@@ -166,8 +179,8 @@ public class MenuMapper implements IMenuMapper{
     }
 
     private static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException,
-                                                                                        IOException,
-                                                                                        URISyntaxException {
+                                                                                         IOException,
+                                                                                         URISyntaxException {
         List<String> classNames = getClassNamesFromPackage(packageName);
         List<Class<?>> classes = new ArrayList<Class<?>>();
         for (String className : classNames) {
@@ -186,7 +199,8 @@ public class MenuMapper implements IMenuMapper{
     }
 
     private static ArrayList<String> getClassNamesFromPackage(String packageName) throws IOException,
-                                                                                         URISyntaxException, ClassNotFoundException {
+                                                                                         URISyntaxException,
+                                                                                         ClassNotFoundException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         ArrayList<String> names = new ArrayList<String>();
 
@@ -196,7 +210,7 @@ public class MenuMapper implements IMenuMapper{
         URI uri = new URI(packageURL.toString());
         File folder = new File(uri.getPath());
         File[] files = folder.listFiles();
-        for (File file: files) {
+        for (File file : files) {
             String name = file.getName();
             name = name.substring(0, name.lastIndexOf('.'));  // remove ".class"
             names.add(name);
