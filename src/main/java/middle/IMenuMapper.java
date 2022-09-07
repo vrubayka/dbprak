@@ -22,7 +22,7 @@ public interface IMenuMapper {
 
     List<ProductEntity> getProductsByCategoryPath(String path);
 
-    List<ProductEntity> getTopProducts();
+    List<ProductEntity> getTopProducts(int k);
 
     List<ProductEntity> getSimilarCheaperProduct();
 
