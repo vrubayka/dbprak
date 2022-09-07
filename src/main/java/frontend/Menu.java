@@ -96,30 +96,28 @@ public class Menu {
         System.out.println(product);
         if (product.getCdByProdId() != null){
             System.out.print(product.getCdByProdId().toString());
-            //TODO: Interpret
         }
         else if (product.getBookByProdId() != null){
             System.out.print(product.getBookByProdId().toString());
         }
         else if (product.getDvdByProdId() != null) {
-            System.out.print(product.getDvdByProdId());
+            System.out.print(product.getDvdByProdId().toString());
         }
-        //TODO: Preis
     }
 
     private void option3() { //getProducts (String pattern)
         System.out.println("Option getProucts (String pattern)");
         System.out.println("Gib den Pattern ein");
         String pattern = scanner.next();
-        //mapper.getProducts(pattern);
-        //TODO: Produkte ausgeben
+        for(ProductEntity product : mapper.getProducts(pattern)){
+            System.out.println(product);
+        }
+
     }
 
     private void option4() { //getCategoryTree
         System.out.println("Option getCategoryTree augewaehlt");
-        //TODO: was soll ermittelt werden
-        System.out.println("Gib productID ein");
-        String prodID = scanner.next();
+
     }
 
     private void option5() { //getProductsByCategoryPath

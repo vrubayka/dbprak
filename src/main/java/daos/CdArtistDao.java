@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.SelectionQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CdArtistDao extends GenericDao<CdArtistEntity> implements ICdArtistDao {
@@ -31,7 +32,9 @@ public class CdArtistDao extends GenericDao<CdArtistEntity> implements ICdArtist
         SelectionQuery<CdArtistEntity> query = session.createSelectionQuery(
                         "FROM CdArtistEntity cda WHERE cda.cdId = :cdId", CdArtistEntity.class)
                 .setParameter("cdId", cdId);
-        return query.getResultList();
+        List<CdArtistEntity> artists = query.getResultList();
+        tx.commit();
+        return artists;
     }
 
 }

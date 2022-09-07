@@ -1,12 +1,7 @@
 package middle;
 
-import daos.CategoryDao;
-import daos.CdArtistDao;
-import daos.ProductDao;
-import entities.BookEntity;
-import entities.CategoryEntity;
-import entities.InventoryEntity;
-import entities.ProductEntity;
+import daos.*;
+import entities.*;
 import logging.ReadLog;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
@@ -73,17 +68,22 @@ public class MenuMapper implements IMenuMapper{
     public ProductEntity getProduct(String id) {
         ProductDao productDao = new ProductDao(sessionFactory);
         ProductEntity productEntity = productDao.findOne(id);
-        if (productEntity.getBookByProdId() != null){
-            //TODO:Authoren holen
+        InventoryDao inventoryDao = new InventoryDao(sessionFactory);
+        productEntity.setInventoriesByProdId(inventoryDao.findInventoryForProduct(id));
 
+        if (productEntity.getBookByProdId() != null){
+            AuthorDao authorDao = new AuthorDao(sessionFactory);
+            productEntity.getBookByProdId().setAuthorsByBookId(authorDao.findAuthorByBookId(id));
         }
+
         else if (productEntity.getCdByProdId() != null){
             CdArtistDao cdArtistDao = new CdArtistDao(sessionFactory);
             productEntity.getCdByProdId().setCdArtistsByCdId(cdArtistDao.findArtistForCd(id));
-
         }
+
         else if (productEntity.getDvdByProdId() != null){
-            //TODO: bis zum ende machen
+            DvdPersonDao dvdPersonDao = new DvdPersonDao(sessionFactory);
+            productEntity.getDvdByProdId().setDvdPeopleByDvdId(dvdPersonDao.findPersonByDvdId(id));
         }
         return productEntity;
     }
