@@ -29,6 +29,8 @@ public class ProductDao extends GenericDao<ProductEntity> {
         SelectionQuery<ProductEntity> query = session.createSelectionQuery(
                 "FROM ProductEntity p WHERE p.prodName like :pattern escape '\\'", ProductEntity.class)
                 .setParameter("pattern", pattern);
-        return query.getResultList();
+        List<ProductEntity> productEntityList = query.getResultList();
+        tx.commit();
+        return productEntityList;
     }
 }

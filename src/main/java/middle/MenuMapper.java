@@ -1,8 +1,10 @@
 package middle;
 
+import daos.CategoryDao;
 import daos.CdArtistDao;
 import daos.ProductDao;
 import entities.BookEntity;
+import entities.CategoryEntity;
 import entities.InventoryEntity;
 import entities.ProductEntity;
 import logging.ReadLog;
@@ -91,6 +93,7 @@ public class MenuMapper implements IMenuMapper{
         ProductDao productDao = new ProductDao(sessionFactory);
         List<ProductEntity> prodList = productDao.findByPattern(formatPattern(pattern));
         return prodList;
+        // ToDo: check empty string as pattern
     }
 
     private String formatPattern(String pattern) {
@@ -103,7 +106,19 @@ public class MenuMapper implements IMenuMapper{
 
     @Override
     public CategoryNode getCategoryTree() {
-        return null;
+        CategoryNode root = new CategoryNode();
+        CategoryDao categoryDao = new CategoryDao(sessionFactory);
+        findChildCategories(categoryDao, root, null);
+        return root;
+    }
+
+    private void findChildCategories(CategoryDao categoryDao, CategoryNode parentNode, Long parentId) {
+        List<CategoryEntity> childCategoryEntities = categoryDao.findBySuperCategory(parentId);
+        for(CategoryEntity categoryEntity : childCategoryEntities) {
+            CategoryNode childNode = new CategoryNode(categoryEntity.getCategoryId());
+            findChildCategories(categoryDao, childNode, childNode.getId());
+            parentNode.getChildCategories().add(childNode);
+        }
     }
 
     @Override
