@@ -1,9 +1,6 @@
 package middle;
 
-import daos.CategoryDao;
-import daos.CdArtistDao;
-import daos.ProductCategoryDao;
-import daos.ProductDao;
+import daos.*;
 import entities.*;
 import logging.ReadLog;
 import middle.wrapperClass.CategoryNode;
@@ -170,8 +167,15 @@ public class MenuMapper implements IMenuMapper {
     }
 
     @Override
-    public List<User> getTrolls() {
-        return null;
+    public List<User> getTrolls(Double rating) {
+        ReviewDao reviewDao = new ReviewDao(sessionFactory);
+        List<ReviewEntity> usernameAvgListe = reviewDao.findAggregateRatingOfUser(rating);
+        List<User> userList = new ArrayList<>();
+        for (ReviewEntity review : usernameAvgListe){
+            User user = new User(review.getUsername());
+            userList.add(user);
+        }
+        return userList;
     }
 
     @Override

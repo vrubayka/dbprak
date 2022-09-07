@@ -8,6 +8,7 @@ import hu.webarticum.treeprinter.SimpleTreeNode;
 import hu.webarticum.treeprinter.printer.listing.ListingTreePrinter;
 import middle.MenuMapper;
 import middle.wrapperClass.CategoryNode;
+import middle.wrapperClass.User;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.internal.util.collections.SingletonIterator;
@@ -161,8 +162,15 @@ public class Menu {
         System.out.println("Gib ");
     }
 
-    private void option9() {
-
+    private void option9() { //getTrolls
+        System.out.println("Option getTrolls gewaehlt");
+        System.out.println("Gib den Rating ein: ");
+        Double rating = scanner.nextDouble();
+        scanner.nextLine();
+        List<User> userList = mapper.getTrolls(rating);
+        for (User user : userList){
+            System.out.println(user.getUsername());
+        }
     }
 
     private void option10() {

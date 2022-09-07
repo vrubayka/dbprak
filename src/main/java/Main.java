@@ -1,4 +1,5 @@
 import entities.*;
+import frontend.Menu;
 import logging.ReadLog;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
