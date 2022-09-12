@@ -8,7 +8,7 @@ import org.hibernate.query.SelectionQuery;
 
 import java.util.List;
 
-public class ProductDao extends GenericDao<ProductEntity> {
+public class ProductDao extends GenericDao<ProductEntity> implements IProductDao {
 
     public ProductDao(SessionFactory sessionFactory) {
         super(ProductEntity.class, sessionFactory);
@@ -33,4 +33,6 @@ public class ProductDao extends GenericDao<ProductEntity> {
         tx.commit();
         return productEntityList;
     }
+
+
 }

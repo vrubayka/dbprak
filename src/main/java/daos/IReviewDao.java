@@ -1,5 +1,6 @@
 package daos;
 
+import entities.ProductEntity;
 import entities.ReviewEntity;
 import entities.ReviewEntityPK;
 
@@ -9,4 +10,6 @@ public interface IReviewDao extends IGenericDao<ReviewEntity> {
 
     ReviewEntity findOne(ReviewEntityPK reviewPK);
     List<ReviewEntity> findByProdId(String prodId);
+
+    List<Object[]> findTopProducts(int k);
 }

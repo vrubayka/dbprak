@@ -1,5 +1,6 @@
 package daos;
 
+import entities.ProductEntity;
 import entities.ReviewEntity;
 import entities.ReviewEntityPK;
 import org.hibernate.Session;
@@ -39,17 +40,28 @@ public class ReviewDao extends GenericDao<ReviewEntity> implements IReviewDao {
         return reviewList;
     }
 
-    public List<ReviewEntity> findAggregateRatingOfUser(Double minRating){
+    public List<Object[]> findAggregateRatingOfUser(Double minRating){
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
-        SelectionQuery<ReviewEntity> query = session.createSelectionQuery(
-                "SELECT DISTINCT username, AVG(rating) FROM ReviewEntity GROUP BY username " +
-                        "having AVG(rating) < :minRating  ", ReviewEntity.class);
+        SelectionQuery<Object[]> query = session.createSelectionQuery(
+                "SELECT username, AVG(rating) FROM ReviewEntity GROUP BY username " +
+                        "having AVG(rating) < :minRating  ", Object[].class);
         query.setParameter("minRating", minRating);
-        List<ReviewEntity> reviewsOfUser = query.getResultList();
+        List<Object[]> reviewsOfUser = query.getResultList();
         tx.commit();
 
         return reviewsOfUser;
+    }
+
+    public List<Object[]> findTopProducts(int k) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        SelectionQuery<Object[]> query = session.createSelectionQuery(
+                "SELECT prodId, AVG(rating) AS rating, count(*) AS nReviews FROM ReviewEntity GROUP BY prodId ORDER " +
+                "BY rating DESC, nReviews DESC LIMIT :k", Object[].class)
+                .setParameter("k", k);
+        List<Object[]> topReviews = query.getResultList();
+        return topReviews;
     }
 
 }

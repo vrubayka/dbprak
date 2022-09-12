@@ -2,7 +2,11 @@ package daos;
 
 import entities.ProductEntity;
 
-public interface IProductDao extends IGenericDao<ProductDao> {
+import java.util.List;
+
+public interface IProductDao extends IGenericDao<ProductEntity> {
 
     ProductEntity findOne(String prodId);
+
+    List<ProductEntity> findByPattern(String pattern);
 }
