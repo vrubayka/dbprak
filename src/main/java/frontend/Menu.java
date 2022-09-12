@@ -1,9 +1,6 @@
 package frontend;
 
-import entities.BookEntity;
-import entities.CdEntity;
-import entities.DvdEntity;
-import entities.ProductEntity;
+import entities.*;
 import hu.webarticum.treeprinter.SimpleTreeNode;
 import hu.webarticum.treeprinter.printer.listing.ListingTreePrinter;
 import middle.MenuMapper;
@@ -32,10 +29,8 @@ public class Menu {
 
     public void printMenu() {
         System.out.println("DB neu laden?");
-        System.out.println("1 - Ja");
-        System.out.println("2 - Nein");
-        System.out.println("\nEingabe:");
-        Integer boolNum = scanner.nextInt();
+        System.out.println("1 - Ja\n2 - Nein\nEingabe:");
+        int boolNum = scanner.nextInt();
         mapper.init(boolNum == 1);
 
         System.out.println("Waehle eine Option:");
@@ -47,6 +42,7 @@ public class Menu {
         int option;
         //try {
             option = scanner.nextInt();
+            scanner.nextLine();
             switch (option) {
                 case 1:
                     option1();
@@ -80,6 +76,7 @@ public class Menu {
                     break;
             }
 
+
         /*} /*catch (Exception ex) {
             System.out.println("Bitte geben Sie ein Zahl zwischen 1 und " + options.length + "!");
             scanner.next();
@@ -87,15 +84,13 @@ public class Menu {
     }
 
     private void option1() {
-        System.out.println("Option finish ausgewaehlt");
+        System.out.println("Option finish ausgewaehlt\nTschuess!");
         mapper.finish();
-        System.out.println("Tschuess!");
     }
 
     private void option2() {
-        System.out.println("Option getProduct ausgewaehlt");
-        System.out.println("Gib den Product-ID ein");
-        String prodID = scanner.nextLine();
+        System.out.println("Option getProduct ausgewaehlt\nGib den Product-ID ein");
+        String prodID = scanner.next();
         ProductEntity product = mapper.getProduct(prodID);
         System.out.println(product);
         if (product.getCdByProdId() != null){
@@ -110,17 +105,18 @@ public class Menu {
     }
 
     private void option3() { //getProducts (String pattern)
-        System.out.println("Option getProucts (String pattern)");
-        System.out.println("Gib den Pattern ein");
+        System.out.println("Option getProucts (String pattern)\nGib den Pattern ein");
         String pattern = scanner.nextLine();
-        for(ProductEntity product : mapper.getProducts(pattern)){
+        List<ProductEntity> liste = mapper.getProducts(pattern);
+        for(ProductEntity product : liste){
             System.out.println(product);
         }
+        System.out.println(liste.size());
 
     }
 
     private void option4() { //getCategoryTree
-        System.out.println("Option getCategoryTree augewaehlt");
+        System.out.println("Option getCategoryTree augewaehlt\nBitte warten Sie...\n");
         CategoryNode root = mapper.getCategoryTree();
         printTree(0, root);
         System.out.println("\n\n\nFertig");
@@ -128,11 +124,8 @@ public class Menu {
     }
 
     private void option5() { //getProductsByCategoryPath
-        System.out.println("Option getProductsByCategoryPath ausgewaehlt");
-        System.out.println("Gib den Pfad ein");
-        System.out.println("Beispiel:");
-        System.out.println("Features/Alle SACDs");
-        System.out.println("Eingabe:");
+        System.out.println("Option getProductsByCategoryPath ausgewaehlt\nGib den Pfad ein\nBeispiel:" +
+                "\nFeatures/Alle SACDs\nEingabe:");
         scanner.nextLine();
         String pfad = scanner.nextLine();
 
@@ -140,19 +133,16 @@ public class Menu {
         for (ProductEntity product : liste){
             System.out.println(product.value());
         }
-        //TODO Pfad übergeben und Produkten zurueckgeben
     }
 
     private void option6() { //getTopProducts
-        System.out.println("Option getTopProducts ausgewaehlt");
-        System.out.println("Gib den Rating ein");
+        System.out.println("Option getTopProducts ausgewaehlt\nGib den Rating ein\"");
         Integer rating = scanner.nextInt();
         //TODO: alle Produkte denen Rating >= rating-Wert ist.
     }
 
     private void option7() { //getSimilarCheaperProduct
-        System.out.println("Option getSimilarCheaperProduct ausgewaehlt");
-        System.out.println("Gib ProduktID ein");
+        System.out.println("Option getSimilarCheaperProduct ausgewaehlt\nGib ProduktID ein");
         Integer prodID = scanner.nextInt();
         //TODO: prodID aehnliche und billiger Produkte
     }
@@ -179,7 +169,6 @@ public class Menu {
 
     public void printTree(int x, CategoryNode node){
         System.out.println(StringUtils.repeat("\t", x) + "|--" + node.getValue());
-
         for (CategoryNode child : node.getChildCategories() ){
                 printTree(x+1, child);
         }

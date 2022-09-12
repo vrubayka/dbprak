@@ -69,15 +69,18 @@ public class MenuMapper implements IMenuMapper {
     public ProductEntity getProduct(String id) {
         ProductDao productDao = new ProductDao(sessionFactory);
         ProductEntity productEntity = productDao.findOne(id);
+        retrieveInventory(productEntity);
         if (productEntity.getBookByProdId() != null) {
-            //TODO:Authoren holen
+            AuthorDao authorDao = new AuthorDao(sessionFactory);
+            productEntity.getBookByProdId().setAuthorsByBookId(authorDao.findAuthorByBookId(id));
 
         } else if (productEntity.getCdByProdId() != null) {
             CdArtistDao cdArtistDao = new CdArtistDao(sessionFactory);
             productEntity.getCdByProdId().setCdArtistsByCdId(cdArtistDao.findArtistForCd(id));
 
         } else if (productEntity.getDvdByProdId() != null) {
-            //TODO: bis zum ende machen
+            DvdPersonDao dvdPersonDao = new DvdPersonDao(sessionFactory);
+            productEntity.getDvdByProdId().setDvdPeopleByDvdId(dvdPersonDao.findPersonByDvdId(id));
         }
         return productEntity;
     }
@@ -86,8 +89,10 @@ public class MenuMapper implements IMenuMapper {
     public List<ProductEntity> getProducts(String pattern) {
         ProductDao productDao = new ProductDao(sessionFactory);
         List<ProductEntity> prodList = productDao.findByPattern(formatPattern(pattern));
+        for (ProductEntity product : prodList){
+            retrieveInventory(product);
+        }
         return prodList;
-        // ToDo: check empty string as pattern
     }
 
     private String formatPattern(String pattern) {
@@ -222,5 +227,11 @@ public class MenuMapper implements IMenuMapper {
         }
 
         return names;
+    }
+
+    public void retrieveInventory(ProductEntity productEntity){
+        String id = productEntity.getProdId();
+        InventoryDao inventoryDao = new InventoryDao(sessionFactory);
+        productEntity.setInventoriesByProdId(inventoryDao.findInventoryForProduct(id));
     }
 }
