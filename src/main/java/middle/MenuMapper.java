@@ -14,12 +14,14 @@ import queries.HibernateQueries;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.DoubleBinaryOperator;
 
 public class MenuMapper implements IMenuMapper {
 
@@ -161,8 +163,28 @@ public class MenuMapper implements IMenuMapper {
     }
 
     @Override
-    public List<ProductEntity> getSimilarCheaperProduct() {
+    public List<ProductEntity> getSimilarCheaperProduct(String id) {
+        ProductDao productDao = new ProductDao(sessionFactory);
+        ProductEntity product = productDao.findOne(id);
+
         SimilarProductDao similarProductDao = new SimilarProductDao(sessionFactory);
+        product.setSimilarProductsByProdId(similarProductDao.findSimilarProducts(id));
+
+        InventoryDao inventoryDao = new InventoryDao(sessionFactory);
+        product.setInventoriesByProdId(inventoryDao.findInventoryForProduct(id));
+
+        List <ProductEntity> similars = new ArrayList<>();
+        for (SimilarProductsEntity simProdReference : product.getSimilarProductsByProdId()){
+            ProductEntity simProd = productDao.findOne(simProdReference.getSimilarProdId());
+            simProd.setInventoriesByProdId(inventoryDao.findInventoryForProduct(simProd.getProdId()));
+            similars.add(simProd);
+        }
+        BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
+        for (InventoryEntity inventory : product.getInventoriesByProdId()){
+            if (minPrice.compareTo(inventory.getPrice())>0){
+                minPrice = inventory.getPrice();
+            }
+        }
 
     }
 
