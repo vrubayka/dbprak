@@ -1,22 +1,13 @@
 package frontend;
 
-import entities.BookEntity;
-import entities.CdEntity;
-import entities.DvdEntity;
 import entities.ProductEntity;
 import middle.MenuMapper;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.SessionFactory;
-import org.hibernate.internal.util.collections.SingletonIterator;
 
-import java.sql.SQLSyntaxErrorException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import static java.lang.System.exit;
 
 public class Menu {
 

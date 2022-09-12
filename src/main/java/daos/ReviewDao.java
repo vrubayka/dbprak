@@ -1,6 +1,5 @@
 package daos;
 
-import entities.ProductEntity;
 import entities.ReviewEntity;
 import entities.ReviewEntityPK;
 import org.hibernate.Session;
@@ -58,7 +57,7 @@ public class ReviewDao extends GenericDao<ReviewEntity> implements IReviewDao {
         Transaction tx = session.beginTransaction();
         SelectionQuery<Object[]> query = session.createSelectionQuery(
                 "SELECT prodId, AVG(rating) AS rating, count(*) AS nReviews FROM ReviewEntity GROUP BY prodId ORDER " +
-                "BY rating DESC, nReviews DESC LIMIT :k", Object[].class)
+                "BY rating DESC, nReviews DESC, prodId LIMIT :k", Object[].class)
                 .setParameter("k", k);
         List<Object[]> topReviews = query.getResultList();
         return topReviews;
