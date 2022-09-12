@@ -120,7 +120,7 @@ public class SimilarsParser {
         similarProductPK.setProdId(similarProduct.getProdId());
         similarProductPK.setSimilarProdId(similarProduct.getSimilarProdId());
 
-        SimilarProductDao similarProductDao = new SimilarProductDao(SimilarProductsEntity.class, sessionFactory);
+        SimilarProductDao similarProductDao = new SimilarProductDao(sessionFactory);
 
         if (similarProductDao.findOne(similarProductPK) == null) {
             return true;
@@ -129,7 +129,7 @@ public class SimilarsParser {
     }
 
     private void insertSimilarProduct(SimilarProductsEntity similarProduct, SessionFactory sessionFactory) {
-        SimilarProductDao similarProductDao = new SimilarProductDao(SimilarProductsEntity.class, sessionFactory);
+        SimilarProductDao similarProductDao = new SimilarProductDao(sessionFactory);
         similarProductDao.create(similarProduct);
     }
 

@@ -9,7 +9,7 @@ import org.hibernate.Transaction;
 public class SimilarProductDao extends GenericDao<SimilarProductsEntity> implements ISimilarProductDao {
 
 
-    public SimilarProductDao(Class<SimilarProductsEntity> daoClass, SessionFactory sessionFactory) {
+    public SimilarProductDao(SessionFactory sessionFactory) {
         super(SimilarProductsEntity.class, sessionFactory);
     }
 
