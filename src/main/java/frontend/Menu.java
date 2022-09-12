@@ -138,6 +138,7 @@ public class Menu {
     private void option6() { //getTopProducts
         System.out.println("Option getTopProducts ausgewaehlt\nGib den Rating ein\"");
         Integer rating = scanner.nextInt();
+        List<Object[]> liste = mapper.getTopProducts(rating);
         //TODO: alle Produkte denen Rating >= rating-Wert ist.
     }
 
