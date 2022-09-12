@@ -186,13 +186,12 @@ public class MenuMapper implements IMenuMapper {
             }
         }
         for (ProductEntity simProduct : similars){
-            for (InventoryEntity inventory : simProduct.getInventoriesByProdId()){
-                if (inventory.getPrice().compareTo(minPrice) >= 0){
-                    simProduct.getInventoriesByProdId().remove()
-                }
-            }
+            BigDecimal finalMinPrice = minPrice;
+            simProduct.getInventoriesByProdId().removeIf(inventory -> inventory.getPrice().compareTo(finalMinPrice) >= 0);
         }
+        similars.removeIf(simProd -> simProd.getInventoriesByProdId().isEmpty());
 
+        return similars;
     }
 
     @Override

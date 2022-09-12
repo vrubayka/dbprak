@@ -23,7 +23,7 @@ public interface IMenuMapper {
 
     List<Object[]> getTopProducts(int k);
 
-    List<ProductEntity> getSimilarCheaperProduct();
+    List<ProductEntity> getSimilarCheaperProduct(String id);
 
     void addNewReview();
 

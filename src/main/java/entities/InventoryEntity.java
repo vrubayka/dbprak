@@ -67,8 +67,8 @@ public class InventoryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InventoryEntity that = (InventoryEntity) o;
-        return Objects.equals(storeId, that.storeId) && Objects.equals(prodId, that.prodId) &&
-               Objects.equals(price, that.price) && Objects.equals(condition, that.condition);
+        return (storeId == that.storeId) && (prodId.equals(that.prodId)) &&
+               (price.compareTo(that.price) == 0) && condition.equals(that.condition);
     }
 
     @Override

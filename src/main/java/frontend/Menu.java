@@ -146,8 +146,8 @@ public class Menu {
     private void option7() { //getSimilarCheaperProduct
         System.out.println("Option getSimilarCheaperProduct ausgewaehlt");
         System.out.println("Gib ProduktID ein");
-        Integer prodID = scanner.nextInt();
-        List<ProductEntity> liste = mapper.getSimilarCheaperProduct();
+        String prodID = scanner.nextLine();
+        List<ProductEntity> liste = mapper.getSimilarCheaperProduct(prodID);
     }
 
     private void option8() { //addNewReview
