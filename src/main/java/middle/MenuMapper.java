@@ -168,10 +168,10 @@ public class MenuMapper implements IMenuMapper {
     @Override
     public List<User> getTrolls(Double rating) {
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
-        List<ReviewEntity> usernameAvgListe = reviewDao.findAggregateRatingOfUser(rating);
+        List<Object[]> usernameAvgListe = reviewDao.findAggregateRatingOfUser(rating);
         List<User> userList = new ArrayList<>();
-        for (ReviewEntity review : usernameAvgListe){
-            User user = new User(review.getUsername());
+        for (Object[] object : usernameAvgListe){
+            User user = new User((String) object[0]);
             userList.add(user);
         }
         return userList;

@@ -4,7 +4,7 @@ import entities.ProductEntity;
 
 import java.util.List;
 
-public interface IProductDao extends IGenericDao<ProductDao> {
+public interface IProductDao extends IGenericDao<ProductEntity> {
 
     ProductEntity findOne(String prodId);
 

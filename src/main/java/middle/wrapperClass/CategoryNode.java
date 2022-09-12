@@ -1,6 +1,5 @@
 package middle.wrapperClass;
 
-import hu.webarticum.treeprinter.SimpleTreeNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -54,15 +53,4 @@ public class CategoryNode {
         return StringUtils.substring(name, 0, 10);
     }
 
-    public SimpleTreeNode toSimpleTreeNode(CategoryNode categoryNode){
-        SimpleTreeNode simpleTreeNode = new SimpleTreeNode(categoryNode.getValue());
-
-        while (simpleTreeNode.children().isEmpty() == false)
-
-        for (CategoryNode child : categoryNode.getChildCategories()){
-            SimpleTreeNode childNode = new SimpleTreeNode(child.getValue());
-            simpleTreeNode.addChild(childNode);
-        }
-        return  simpleTreeNode;
-    }
 }

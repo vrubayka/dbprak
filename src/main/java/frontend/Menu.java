@@ -4,8 +4,6 @@ import entities.BookEntity;
 import entities.CdEntity;
 import entities.DvdEntity;
 import entities.ProductEntity;
-import hu.webarticum.treeprinter.SimpleTreeNode;
-import hu.webarticum.treeprinter.printer.listing.ListingTreePrinter;
 import middle.MenuMapper;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
