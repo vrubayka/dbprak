@@ -34,7 +34,7 @@ public class Menu {
         System.out.println("\nEingabe:");
 
         int option;
-        //try {
+        try {
             option = scanner.nextInt();
             switch (option) {
                 case 1:
@@ -69,10 +69,10 @@ public class Menu {
                     break;
             }
 
-        /*} /*catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Bitte geben Sie ein Zahl zwischen 1 und " + options.length + "!");
             scanner.next();
-        }*/
+        }
     }
 
     private void option1() {
@@ -147,7 +147,7 @@ public class Menu {
         System.out.println("Option getSimilarCheaperProduct ausgewaehlt");
         System.out.println("Gib ProduktID ein");
         Integer prodID = scanner.nextInt();
-        //TODO: prodID aehnliche und billiger Produkte
+        List<ProductEntity> liste = mapper.getSimilarCheaperProduct();
     }
 
     private void option8() { //addNewReview

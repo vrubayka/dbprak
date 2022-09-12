@@ -162,7 +162,8 @@ public class MenuMapper implements IMenuMapper {
 
     @Override
     public List<ProductEntity> getSimilarCheaperProduct() {
-        return null;
+        SimilarProductDao similarProductDao = new SimilarProductDao(sessionFactory);
+
     }
 
     @Override
