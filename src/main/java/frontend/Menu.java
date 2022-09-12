@@ -129,14 +129,18 @@ public class Menu {
         for (ProductEntity product : liste){
             System.out.println(product.value());
         }
-        //TODO Pfad übergeben und Produkten zurueckgeben
     }
 
     private void option6() { //getTopProducts
         System.out.println("Option getTopProducts ausgewaehlt");
-        System.out.println("Gib den Rating ein");
-        Integer rating = scanner.nextInt();
-        //TODO: alle Produkte denen Rating >= rating-Wert ist.
+        System.out.println("Gib die Anzahl der Reviews ein");
+        Integer k = scanner.nextInt();
+        List<Object[]> liste = mapper.getTopProducts(k);
+        for (Object[] product : liste){
+            String prodID = (String)product[0];
+            String rating = String.valueOf((double) product[1]);
+            System.out.println(prodID + " " + rating);
+        }
     }
 
     private void option7() { //getSimilarCheaperProduct
