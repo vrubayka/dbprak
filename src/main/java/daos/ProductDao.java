@@ -34,8 +34,5 @@ public class ProductDao extends GenericDao<ProductEntity> implements IProductDao
         return productEntityList;
     }
 
-    public List<ProductEntity> findTopProducts(int k) {
-        return null;
-        // ToDo: implement
-    }
+
 }

@@ -150,9 +150,9 @@ public class MenuMapper implements IMenuMapper {
     }
 
     @Override
-    public List<ProductEntity> getTopProducts(int k) {
-        ProductDao productDao = new ProductDao(sessionFactory);
-        return productDao.findTopProducts(k);
+    public List<Object[]> getTopProducts(int k) {
+        ReviewDao reviewDao = new ReviewDao(sessionFactory);
+        return reviewDao.findTopProducts(k);
     }
 
     @Override
