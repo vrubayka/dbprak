@@ -26,22 +26,22 @@ public class ProductEntity {
     @Column(name = "image")
     private String image;
     @OneToOne(mappedBy = "productByBookId",
-              cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL)
     private BookEntity bookByProdId;
     @OneToOne(mappedBy = "productByCdId",
-              cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL)
     private CdEntity cdByProdId;
     @OneToOne(mappedBy = "productByDvdId",
-              cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL)
     private DvdEntity dvdByProdId;
     @OneToMany(mappedBy = "productByProdId",
-               cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL)
     private Collection<InventoryEntity> inventoriesByProdId;
     @OneToMany(mappedBy = "productByProdId",
-               cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL)
     private Collection<ProductCategoryEntity> productCategoriesByProdId;
     @OneToMany(mappedBy = "productByProdId",
-               cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL)
     private Collection<ReviewEntity> reviewsByProdId;
     @OneToMany(mappedBy = "productByProdId")
     private Collection<SimilarProductsEntity> similarProductsByProdId;
@@ -52,8 +52,8 @@ public class ProductEntity {
     }
 
     public ProductEntity(String prodName, double rating, int salesRank) {
-        this.prodName  = prodName;
-        this.rating    = rating;
+        this.prodName = prodName;
+        this.rating = rating;
         this.salesRank = salesRank;
     }
 
@@ -104,7 +104,7 @@ public class ProductEntity {
         if (o == null || getClass() != o.getClass()) return false;
         ProductEntity that = (ProductEntity) o;
         return prodId.equals(that.prodId) && Double.compare(that.rating, rating) == 0 && salesRank == that.salesRank &&
-               Objects.equals(prodName, that.prodName) && image.equals(that.image);
+                Objects.equals(prodName, that.prodName) && image.equals(that.image);
     }
 
     @Override
@@ -178,6 +178,22 @@ public class ProductEntity {
     }
 
     public String toString() {
-        return "\nProdId: " + prodId + "\nProdName: " + prodName + "\nRating: " + rating;
+        String output = "\nProdId: " + prodId + "\nProdName: " + prodName + "\nRating: " + rating;
+        for (InventoryEntity inventoryEntity : getInventoriesByProdId()) {
+            if (inventoryEntity.getPrice() == null){
+            output = output + "\nPrice in " + inventoryEntity.getStoreByStoreId().getStoreName() +
+                    ": nicht im Angebot";
+            }
+            else output = output + "\nPrice in " + inventoryEntity.getStoreByStoreId().getStoreName() +
+                    ": " + inventoryEntity.getPrice();
+        }
+        return output;
+    }
+
+    public String value(){
+        if (prodId == null){
+            return "";
+        }
+        return prodId;
     }
 }

@@ -28,7 +28,7 @@ public interface IMenuMapper {
 
     void addNewReview();
 
-    List<User> getTrolls();
+    List<User> getTrolls(Double rating);
 
     List<InventoryEntity> getOffers();
 }

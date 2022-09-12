@@ -39,4 +39,17 @@ public class ReviewDao extends GenericDao<ReviewEntity> implements IReviewDao {
         return reviewList;
     }
 
+    public List<ReviewEntity> findAggregateRatingOfUser(Double rating){
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        SelectionQuery<ReviewEntity> query = session.createSelectionQuery(
+                "SELECT DISTINCT username, AVG(rating) FROM review GROUP BY username " +
+                        "having AVG(rating) < rating  ", ReviewEntity.class);
+        query.setParameter("rating", rating);
+        List<ReviewEntity> reviewsOfUser = query.getResultList();
+        tx.commit();
+
+        return reviewsOfUser;
+    }
+
 }

@@ -11,8 +11,12 @@ import java.util.Objects;
 public class BookEntity {
     @Override
     public String toString() {
-        return "ISBN: " + isbn + "\nPublisher: " + publisher + "\nRelease Date: " + releaseDate +
-                "\nPages: " + pages + "\nAuthors: " + authorsByBookId;
+        String output =  "ISBN: " + isbn + "\nPublisher: " + publisher + "\nRelease Date: " + releaseDate +
+                "\nPages: " + pages + "\nAuthors:\n";
+        for (AuthorEntity authorEntity : getAuthorsByBookId() ){
+            output = output + authorEntity.getPersonByPersonId().getPersonName() + "\n";
+        }
+        return output;
     }
 
     @Id

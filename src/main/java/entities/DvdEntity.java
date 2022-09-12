@@ -1,5 +1,6 @@
 package entities;
 
+import daos.DvdPersonDao;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -11,7 +12,20 @@ public class DvdEntity {
 
     @Override
     public String toString() {
-        return "Format: " + format + "\nLength: " + termInSec/60 + "\nRegion Code: " + regionCode;
+        String output = "Format: " + format + "\nLength: " + termInSec / 60 + "\nRegion Code: " + regionCode + "\nCast:";
+        for (DvdPersonEntity dvdPersonEntity : getDvdPeopleByDvdId()) {
+            if (dvdPersonEntity.getpRole().equals("Actor")) {
+                output = output + "\n" + dvdPersonEntity.getPersonByPersonId().getPersonName();
+            }
+        }
+        for (DvdPersonEntity dvdPersonEntity : getDvdPeopleByDvdId()) {
+            if (dvdPersonEntity.getpRole().equals("Director")) {
+                output = output + "\nDirected by: " + dvdPersonEntity.getPersonByPersonId().getPersonName();
+            } else if (dvdPersonEntity.getpRole().equals("Creator")) {
+                output = output + "\nCreated by: " + dvdPersonEntity.getPersonByPersonId().getPersonName();
+            }
+        }
+        return output;
     }
 
     @Id
@@ -94,4 +108,6 @@ public class DvdEntity {
     public void setDvdPeopleByDvdId(Collection<DvdPersonEntity> dvdPeopleByDvdId) {
         this.dvdPeopleByDvdId = dvdPeopleByDvdId;
     }
+
+
 }
