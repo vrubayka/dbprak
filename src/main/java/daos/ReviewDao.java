@@ -60,6 +60,8 @@ public class ReviewDao extends GenericDao<ReviewEntity> implements IReviewDao {
                 "BY rating DESC, nReviews DESC, prodId LIMIT :k", Object[].class)
                 .setParameter("k", k);
         List<Object[]> topReviews = query.getResultList();
+        tx.commit();
+
         return topReviews;
     }
 
