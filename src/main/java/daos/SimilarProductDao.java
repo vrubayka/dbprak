@@ -31,7 +31,7 @@ public class SimilarProductDao extends GenericDao<SimilarProductsEntity> impleme
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
         SelectionQuery<SimilarProductsEntity> query = session.createSelectionQuery(
-                "SELECT * FROM SimilarProductsEntity WHERE prodId = :id", SimilarProductsEntity.class)
+                "FROM SimilarProductsEntity WHERE prodId = :id", SimilarProductsEntity.class)
                 .setParameter("id", id);
         List<SimilarProductsEntity> liste = query.getResultList();
         tx.commit();

@@ -25,6 +25,7 @@ public class Menu {
         System.out.println("2 - Nein");
         System.out.println("\nEingabe:");
         Integer boolNum = scanner.nextInt();
+        scanner.nextLine();
         mapper.init(boolNum == 1);
 
         System.out.println("Waehle eine Option:");
@@ -36,6 +37,7 @@ public class Menu {
         int option;
         try {
             option = scanner.nextInt();
+            scanner.nextLine();
             switch (option) {
                 case 1:
                     option1();
@@ -71,7 +73,7 @@ public class Menu {
 
         } catch (Exception ex) {
             System.out.println("Bitte geben Sie ein Zahl zwischen 1 und " + options.length + "!");
-            scanner.next();
+            scanner.nextLine();
         }
     }
 
