@@ -181,13 +181,14 @@ public class MenuMapper implements IMenuMapper {
         }
         BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
         for (InventoryEntity inventory : product.getInventoriesByProdId()){
-            if (minPrice.compareTo(inventory.getPrice())>0){
+            if ((inventory.getPrice() != null) && minPrice.compareTo(inventory.getPrice())>0){
                 minPrice = inventory.getPrice();
             }
         }
         for (ProductEntity simProduct : similars){
             BigDecimal finalMinPrice = minPrice;
-            simProduct.getInventoriesByProdId().removeIf(inventory -> inventory.getPrice().compareTo(finalMinPrice) >= 0);
+            simProduct.getInventoriesByProdId().removeIf(inventory -> inventory.getPrice() == null ||
+                    inventory.getPrice().compareTo(finalMinPrice) >= 0);
         }
         similars.removeIf(simProd -> simProd.getInventoriesByProdId().isEmpty());
 
