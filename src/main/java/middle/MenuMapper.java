@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.DoubleBinaryOperator;
 
@@ -91,7 +92,7 @@ public class MenuMapper implements IMenuMapper {
     public List<ProductEntity> getProducts(String pattern) {
         ProductDao productDao = new ProductDao(sessionFactory);
         List<ProductEntity> prodList = productDao.findByPattern(formatPattern(pattern));
-        for (ProductEntity product : prodList){
+        for (ProductEntity product : prodList) {
             retrieveInventory(product);
         }
         return prodList;
@@ -130,7 +131,7 @@ public class MenuMapper implements IMenuMapper {
 
         while (!(pathList.isEmpty() || currentCategory == null)) {
             currentCategory = categoryDao.findByNameAndSuperCategory(pathList.remove(0),
-                                                                     currentCategory.getCategoryId());
+                    currentCategory.getCategoryId());
         }
 
         if (currentCategory == null) {
@@ -141,7 +142,7 @@ public class MenuMapper implements IMenuMapper {
                     productCategoryDao.findByCategoryId(currentCategory.getCategoryId());
 
             List<ProductEntity> productEntityList = new ArrayList<>();
-            for(ProductCategoryEntity productCategoryEntity: productCategoryEntities) {
+            for (ProductCategoryEntity productCategoryEntity : productCategoryEntities) {
                 productEntityList.add(productCategoryEntity.getProductByProdId());
             }
 
@@ -173,19 +174,22 @@ public class MenuMapper implements IMenuMapper {
         InventoryDao inventoryDao = new InventoryDao(sessionFactory);
         product.setInventoriesByProdId(inventoryDao.findInventoryForProduct(id));
 
-        List <ProductEntity> similars = new ArrayList<>();
-        for (SimilarProductsEntity simProdReference : product.getSimilarProductsByProdId()){
+        List<ProductEntity> similars = new ArrayList<>();
+        for (SimilarProductsEntity simProdReference : product.getSimilarProductsByProdId()) {
             ProductEntity simProd = productDao.findOne(simProdReference.getSimilarProdId());
             simProd.setInventoriesByProdId(inventoryDao.findInventoryForProduct(simProd.getProdId()));
             similars.add(simProd);
         }
         BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
-        for (InventoryEntity inventory : product.getInventoriesByProdId()){
-            if (minPrice.compareTo(inventory.getPrice())>0){
+        for (InventoryEntity inventory : product.getInventoriesByProdId()) {
+            if (inventory.getPrice() == null){
+                return Collections.emptyList();
+            }
+            if (minPrice.compareTo(inventory.getPrice()) > 0) {
                 minPrice = inventory.getPrice();
             }
         }
-        for (ProductEntity simProduct : similars){
+        for (ProductEntity simProduct : similars) {
             BigDecimal finalMinPrice = minPrice;
             simProduct.getInventoriesByProdId().removeIf(inventory -> inventory.getPrice().compareTo(finalMinPrice) >= 0);
         }
@@ -204,7 +208,7 @@ public class MenuMapper implements IMenuMapper {
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
         List<Object[]> usernameAvgListe = reviewDao.findAggregateRatingOfUser(rating);
         List<User> userList = new ArrayList<>();
-        for (Object[] object : usernameAvgListe){
+        for (Object[] object : usernameAvgListe) {
             User user = new User((String) object[0]);
             userList.add(user);
         }
@@ -217,8 +221,8 @@ public class MenuMapper implements IMenuMapper {
     }
 
     private static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException,
-                                                                                         IOException,
-                                                                                         URISyntaxException {
+            IOException,
+            URISyntaxException {
         List<String> classNames = getClassNamesFromPackage(packageName);
         List<Class<?>> classes = new ArrayList<Class<?>>();
         for (String className : classNames) {
@@ -237,8 +241,8 @@ public class MenuMapper implements IMenuMapper {
     }
 
     private static ArrayList<String> getClassNamesFromPackage(String packageName) throws IOException,
-                                                                                         URISyntaxException,
-                                                                                         ClassNotFoundException {
+            URISyntaxException,
+            ClassNotFoundException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         ArrayList<String> names = new ArrayList<String>();
 
@@ -257,7 +261,7 @@ public class MenuMapper implements IMenuMapper {
         return names;
     }
 
-    public void retrieveInventory(ProductEntity productEntity){
+    public void retrieveInventory(ProductEntity productEntity) {
         String id = productEntity.getProdId();
         InventoryDao inventoryDao = new InventoryDao(sessionFactory);
         productEntity.setInventoriesByProdId(inventoryDao.findInventoryForProduct(id));
