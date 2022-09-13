@@ -10,6 +10,16 @@ import java.util.Objects;
 @Table(name = "inventory", schema = "public", catalog = "dbprak")
 @IdClass(InventoryEntityPK.class)
 public class InventoryEntity {
+    @Override
+    public String toString(){
+
+        String output = "\nStore: " + storeByStoreId.getStoreName() + "\nProdukt: " + prodId;
+        if (price == null){
+            output = output + "\nPrice: kein Angebot";
+        }
+        else output = output + "\nPrice: " + price;
+        return output;
+    }
 
     @Id
     @Column(name = "store_id", nullable = false)
