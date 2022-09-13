@@ -1,13 +1,16 @@
 package frontend;
 
 import entities.ProductEntity;
+import entities.ReviewEntity;
 import middle.MenuMapper;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
-import java.util.Scanner;
+import javax.print.attribute.standard.DateTimeAtProcessing;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 public class Menu {
 
@@ -35,7 +38,7 @@ public class Menu {
         System.out.println("\nEingabe:");
 
         int option;
-        try {
+        //try {
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
@@ -71,10 +74,10 @@ public class Menu {
                     break;
             }
 
-        } catch (Exception ex) {
+       /* } catch (Exception ex) {
             System.out.println("Bitte geben Sie ein Zahl zwischen 1 und " + options.length + "!");
             scanner.nextLine();
-        }
+        }*/
     }
 
     private void option1() {
@@ -150,11 +153,64 @@ public class Menu {
         System.out.println("Gib ProduktID ein");
         String prodID = scanner.nextLine();
         List<ProductEntity> liste = mapper.getSimilarCheaperProduct(prodID);
+        if (liste.isEmpty()){
+            System.out.println("Es gibt keine billigeren ähnlichen Produkte");
+        }
+        for (ProductEntity produkt : liste){
+            System.out.println(produkt);
+        }
     }
 
     private void option8() { //addNewReview
         System.out.println("Option addNewReview ausgewaehlt");
-        System.out.println("Gib ");
+        System.out.println("1 - existierenden Review zeigen\n2 - neues Review schreiben");
+        String auswahl = scanner.nextLine();
+        ReviewEntity output;
+        if (auswahl.equals("1")){
+            System.out.println("Geben Sie den Produkt-ID ein");
+            String prodId = scanner.nextLine();
+            System.out.println("Geben Sie den Username ein");
+            String username = scanner.nextLine();
+            ReviewEntity review = new ReviewEntity();
+            review.setUsername(username);
+            review.setProdId(prodId);
+            output = mapper.addNewReview(review, false);
+            if (output == null){
+                System.out.println("Kein review gefunden");
+            } else System.out.println(output);
+        }
+        else if (auswahl.equals("2")){
+            System.out.println("Geben Sie den Produkt-ID ein");
+            String prodId = scanner.nextLine();
+
+            System.out.println("Geben Sie den Username ein");
+            String username = scanner.nextLine();
+
+            System.out.println("Geben Sie den Rating ein");
+            int rating = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.println("Geben Sie die Zusammenfassung");
+            String summary = scanner.nextLine();
+
+            java.sql.Date date = null;
+            date = (java.sql.Date.valueOf(LocalDate.now()));
+
+
+            System.out.println("Geben Sie den Review ein");
+            String reviewText = scanner.nextLine();
+
+
+            ReviewEntity review = new ReviewEntity();
+            review.setHelpfulRating(0);
+            review.setReviewText(reviewText);
+            review.setProdId(prodId);
+            review.setRating(rating);
+            review.setReviewdate(date);
+            review.setUsername(username);
+            review.setReviewSum(summary);
+            System.out.println("Fertig");
+        }
     }
 
     private void option9() { //getTrolls

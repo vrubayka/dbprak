@@ -113,4 +113,10 @@ public class ReviewEntity {
     public void setProductByProdId(ProductEntity productByProdId) {
         this.productByProdId = productByProdId;
     }
+
+    @Override
+    public String toString() {
+        return "Produkt: " + prodId + "\nusername: " + username + "\nrating: " + rating + "\nReview Date: " + reviewdate +
+                "\nReview Summary: " + reviewSum + "\n\nReview: " + "\n" + reviewText;
+    }
 }
