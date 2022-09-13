@@ -165,7 +165,7 @@ public class Menu {
         System.out.println("Option addNewReview ausgewaehlt");
         System.out.println("1 - existierenden Review zeigen\n2 - neues Review schreiben");
         String auswahl = scanner.nextLine();
-        String output;
+        ReviewEntity output;
         if (auswahl.equals("1")){
             System.out.println("Geben Sie den Produkt-ID ein");
             String prodId = scanner.nextLine();
@@ -174,7 +174,10 @@ public class Menu {
             ReviewEntity review = new ReviewEntity();
             review.setUsername(username);
             review.setProdId(prodId);
-            //output = mapper.addNewReview(review, false);
+            output = mapper.addNewReview(review, false);
+            if (output == null){
+                System.out.println("Kein review gefunden");
+            } else System.out.println(output);
         }
         else if (auswahl.equals("2")){
             System.out.println("Geben Sie den Produkt-ID ein");
@@ -206,8 +209,7 @@ public class Menu {
             review.setReviewdate(date);
             review.setUsername(username);
             review.setReviewSum(summary);
-            mapper.addNewReview(review, );
-
+            System.out.println("Fertig");
         }
     }
 
