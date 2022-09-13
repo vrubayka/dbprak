@@ -2,6 +2,7 @@ package middle;
 
 import entities.InventoryEntity;
 import entities.ProductEntity;
+import entities.ReviewEntity;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
 
@@ -25,7 +26,7 @@ public interface IMenuMapper {
 
     List<ProductEntity> getSimilarCheaperProduct(String id);
 
-    void addNewReview();
+    ReviewEntity addNewReview(ReviewEntity review, boolean newReview);
 
     List<User> getTrolls(Double rating);
 

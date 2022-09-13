@@ -3,6 +3,7 @@ package middle;
 import daos.*;
 import entities.*;
 import logging.ReadLog;
+import logging.exceptions.AlreadyInDatabaseException;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
 import org.hibernate.SessionFactory;
@@ -196,8 +197,24 @@ public class MenuMapper implements IMenuMapper {
     }
 
     @Override
-    public void addNewReview() {
+    public ReviewEntity addNewReview(ReviewEntity review, boolean newReview) throws AlreadyInDatabaseException {
+        ReviewDao reviewDao = new ReviewDao(sessionFactory);
+        ReviewEntityPK reviewEntityPK = new ReviewEntityPK();
+        reviewEntityPK.setProdId(review.getProdId());
+        reviewEntityPK.setUsername(review.getUsername());
 
+        if(newReview) {
+            if(reviewDao.findOne(reviewEntityPK) == null) {
+                reviewDao.create(review);
+            } else {
+                throw new AlreadyInDatabaseException("Es gibt bereits ein Review von diesem User zu diesem Produkt in" +
+                                                     " der Datenbank.");
+            }
+            return review;
+
+        } else {
+            return reviewDao.findOne(reviewEntityPK);
+        }
     }
 
     @Override
