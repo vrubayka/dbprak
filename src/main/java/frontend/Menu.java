@@ -28,106 +28,123 @@ public class Menu {
 
     public void printMenu() {
         try {
-        System.out.println("DB neu laden?");
-        System.out.println("1 - Ja");
-        System.out.println("2 - Nein");
-        System.out.println("\nEingabe:");
-        Integer boolNum = scanner.nextInt();
-        scanner.nextLine();
-        mapper.init(boolNum == 1);
+            System.out.println("DB neu laden?");
+            System.out.println("1 - Ja");
+            System.out.println("2 - Nein");
+            System.out.println("\nEingabe:");
+            Integer boolNum = scanner.nextInt();
+            scanner.nextLine();
+            if (boolNum == 1){
+                mapper.init(true);
+                printOptions();
+            }
+            else if (boolNum == 2){
+                mapper.init(false);
+                printOptions();
+            }
+            else throw new InputMismatchException();
 
-        System.out.println("Waehle eine Option:");
-        for (String option : options) {
-            System.out.println(option);
-        }
-        System.out.println("\nEingabe:");
-
-        int option;
-
-        option = scanner.nextInt();
-        scanner.nextLine();
-        switch (option) {
-            case 1:
-                option1();
-                break;
-            case 2:
-                option2();
-                break;
-            case 3:
-                option3();
-                break;
-            case 4:
-                option4();
-                break;
-            case 5:
-                option5();
-                break;
-            case 6:
-                option6();
-                break;
-            case 7:
-                option7();
-                break;
-            case 8:
-                option8();
-                break;
-            case 9:
-                option9();
-                break;
-            case 10:
-                option10();
-                break;
-        }
-
-       } catch (InputMismatchException ex) {
-            System.out.println("Bitte geben Sie ein Zahl zwischen 1 und " + options.length + "!");
+        } catch (InputMismatchException ex) {
+            System.out.println("Bitte geben Sie ein Zahl zwischen 1 und 2!\n");
             printMenu();
         }
     }
 
-    private void option1() {
-        System.out.println("Option finish ausgewaehlt");
-        mapper.finish();
-        System.out.println("Tschuess!");
-    }
+        public void printOptions() {
+            try {
+                System.out.println("Waehle eine Option:");
+                for (String option : options) {
+                    System.out.println(option);
+                }
+                System.out.println("\nEingabe:");
 
-    private void option2() { //getProduct (String id)
-        System.out.println("Option getProduct ausgewaehlt");
-        System.out.println("Gib den Product-ID ein");
-        String prodID = scanner.nextLine();
-        try {
-            ProductEntity product = mapper.getProduct(prodID);
-            System.out.println(product);
-            if (product.getCdByProdId() != null) {
-                System.out.print(product.getCdByProdId().toString());
-            } else if (product.getBookByProdId() != null) {
-                System.out.print(product.getBookByProdId().toString());
-            } else if (product.getDvdByProdId() != null) {
-                System.out.print(product.getDvdByProdId().toString());
+                int option;
+
+                option = scanner.nextInt();
+                scanner.nextLine();
+                switch (option) {
+                    case 1:
+                        option1();
+                        break;
+                    case 2:
+                        option2();
+                        break;
+                    case 3:
+                        option3();
+                        break;
+                    case 4:
+                        option4();
+                        break;
+                    case 5:
+                        option5();
+                        break;
+                    case 6:
+                        option6();
+                        break;
+                    case 7:
+                        option7();
+                        break;
+                    case 8:
+                        option8();
+                        break;
+                    case 9:
+                        option9();
+                        break;
+                    case 10:
+                        option10();
+                        break;
+                    default: throw new InputMismatchException();
+                }
+
+            } catch (InputMismatchException ex) {
+                System.out.println("\nBitte geben Sie ein Zahl zwischen 1 und " + options.length + "!\n");
+                printOptions();
             }
-        } catch (ProductNotInDatabaseException e) {
-            System.out.println(e.getMessage());
-            option2();
-        }
-    }
-
-    private void option3() { //getProducts (String pattern)
-        System.out.println("Option getProucts (String pattern)");
-        System.out.println("Gib den Pattern ein");
-        String pattern = scanner.nextLine();
-        for (ProductEntity product : mapper.getProducts(pattern)) {
-            System.out.println(product);
         }
 
-    }
+        private void option1 () {
+            System.out.println("Option finish ausgewaehlt");
+            mapper.finish();
+            System.out.println("Tschuess!");
+        }
 
-    private void option4() { //getCategoryTree
-        System.out.println("Option getCategoryTree augewaehlt");
-        CategoryNode root = mapper.getCategoryTree();
-        printTree(0, root);
-        System.out.println("\n\n\nFertig");
+        private void option2 () { //getProduct (String id)
+            System.out.println("Option getProduct ausgewaehlt");
+            System.out.println("Gib den Product-ID ein");
+            String prodID = scanner.nextLine();
+            try {
+                ProductEntity product = mapper.getProduct(prodID);
+                System.out.println(product);
+                if (product.getCdByProdId() != null) {
+                    System.out.print(product.getCdByProdId().toString());
+                } else if (product.getBookByProdId() != null) {
+                    System.out.print(product.getBookByProdId().toString());
+                } else if (product.getDvdByProdId() != null) {
+                    System.out.print(product.getDvdByProdId().toString());
+                }
+            } catch (ProductNotInDatabaseException e) {
+                System.out.println(e.getMessage());
+                option2();
+            }
+        }
 
-    }
+        private void option3 () { //getProducts (String pattern)
+            System.out.println("Option getProucts (String pattern)");
+            System.out.println("Gib den Pattern ein");
+            String pattern = scanner.nextLine();
+            for (ProductEntity product : mapper.getProducts(pattern)) {
+                System.out.println(product);
+            }
+
+        }
+
+        private void option4 () { //getCategoryTree
+            System.out.println("Option getCategoryTree augewaehlt");
+            CategoryNode root = mapper.getCategoryTree();
+            printTree(0, root);
+            System.out.println("\n\n\nFertig");
+
+        }
 
     private void option5() { //getProductsByCategoryPath
         System.out.println("Option getProductsByCategoryPath ausgewaehlt");
@@ -137,130 +154,130 @@ public class Menu {
         System.out.println("Eingabe:");
         String pfad = scanner.nextLine();
 
-        List<ProductEntity> liste = mapper.getProductsByCategoryPath(pfad);
-        for (ProductEntity product : liste) {
-            System.out.println(product.value());
-        }
-    }
-
-    private void option6() { //getTopProducts
-        System.out.println("Option getTopProducts ausgewaehlt");
-        System.out.println("Gib die Anzahl der Reviews ein");
-        Integer k = scanner.nextInt();
-        List<Object[]> liste = mapper.getTopProducts(k);
-        for (Object[] product : liste) {
-            String prodID = (String) product[0];
-            String rating = String.valueOf((double) product[1]);
-            System.out.println(prodID + " " + rating);
-        }
-    }
-
-    private void option7() { //getSimilarCheaperProduct
-        System.out.println("Option getSimilarCheaperProduct ausgewaehlt");
-        System.out.println("Gib ProduktID ein");
-        String prodID = scanner.nextLine();
-        try {
-            List<ProductEntity> liste = mapper.getSimilarCheaperProduct(prodID);
-            if (liste.isEmpty()) {
-                System.out.println("Es gibt keine billigeren ähnlichen Produkte");
+            List<ProductEntity> liste = mapper.getProductsByCategoryPath(pfad);
+            for (ProductEntity product : liste) {
+                System.out.println(product.value());
             }
-            for (ProductEntity produkt : liste) {
-                System.out.println(produkt);
+        }
+
+        private void option6 () { //getTopProducts
+            System.out.println("Option getTopProducts ausgewaehlt");
+            System.out.println("Gib die Anzahl der Reviews ein");
+            Integer k = scanner.nextInt();
+            List<Object[]> liste = mapper.getTopProducts(k);
+            for (Object[] product : liste) {
+                String prodID = (String) product[0];
+                String rating = String.valueOf((double) product[1]);
+                System.out.println(prodID + " " + rating);
             }
-        } catch (ProductNotInDatabaseException e) {
-            System.out.println(e.getMessage());
-            option7();
         }
-    }
 
-    private void option8() { //addNewReview
-        try {
-            System.out.println("Option addNewReview ausgewaehlt");
-            System.out.println("1 - existierenden Review zeigen\n2 - neues Review schreiben");
-            String auswahl = scanner.nextLine();
-            ReviewEntity output;
-            if (auswahl.equals("1")) {
-                System.out.println("Geben Sie den Produkt-ID ein");
-                String prodId = scanner.nextLine();
-                System.out.println("Geben Sie den Username ein");
-                String username = scanner.nextLine();
-                ReviewEntity review = new ReviewEntity();
-                review.setUsername(username);
-                review.setProdId(prodId);
-                output = mapper.addNewReview(review, false);
-                if (output == null) {
-                    System.out.println("Kein review gefunden");
-                } else System.out.println("\n" + output);
-            } else if (auswahl.equals("2")) {
-                System.out.println("Geben Sie den Produkt-ID ein");
-                String prodId = scanner.nextLine();
-
-                System.out.println("Geben Sie den Username ein");
-                String username = scanner.nextLine();
-
-                System.out.println("Geben Sie den Rating ein");
-                int rating = scanner.nextInt();
-                scanner.nextLine();
-
-                System.out.println("Geben Sie die Zusammenfassung");
-                String summary = scanner.nextLine();
-
-                java.sql.Date date = null;
-                date = (java.sql.Date.valueOf(LocalDate.now()));
-
-
-                System.out.println("Geben Sie den Review ein");
-                String reviewText = scanner.nextLine();
-
-
-                ReviewEntity review = new ReviewEntity();
-                review.setHelpfulRating(0);
-                review.setReviewText(reviewText);
-                review.setProdId(prodId);
-                review.setRating(rating);
-                review.setReviewdate(date);
-                review.setUsername(username);
-                review.setReviewSum(summary);
-                mapper.addNewReview(review, true);
-                System.out.println("Fertig");
+        private void option7 () { //getSimilarCheaperProduct
+            System.out.println("Option getSimilarCheaperProduct ausgewaehlt");
+            System.out.println("Gib ProduktID ein");
+            String prodID = scanner.nextLine();
+            try {
+                List<ProductEntity> liste = mapper.getSimilarCheaperProduct(prodID);
+                if (liste.isEmpty()) {
+                    System.out.println("Es gibt keine billigeren ähnlichen Produkte");
+                }
+                for (ProductEntity produkt : liste) {
+                    System.out.println(produkt);
+                }
+            } catch (ProductNotInDatabaseException e) {
+                System.out.println(e.getMessage());
+                option7();
             }
-        } catch (AlreadyInDatabaseException | ProductNotInDatabaseException pe) {
-            System.out.println(pe.getMessage());
-            option8();
         }
-    }
 
-    private void option9() { //getTrolls
-        System.out.println("Option getTrolls gewaehlt");
-        System.out.println("Gib den Rating ein: ");
-        Double rating = scanner.nextDouble();
-        scanner.nextLine();
-        List<User> userList = mapper.getTrolls(rating);
-        for (User user : userList) {
-            System.out.println(user.getUsername());
+        private void option8 () { //addNewReview
+            try {
+                System.out.println("Option addNewReview ausgewaehlt");
+                System.out.println("1 - existierenden Review zeigen\n2 - neues Review schreiben");
+                String auswahl = scanner.nextLine();
+                ReviewEntity output;
+                if (auswahl.equals("1")) {
+                    System.out.println("Geben Sie den Produkt-ID ein");
+                    String prodId = scanner.nextLine();
+                    System.out.println("Geben Sie den Username ein");
+                    String username = scanner.nextLine();
+                    ReviewEntity review = new ReviewEntity();
+                    review.setUsername(username);
+                    review.setProdId(prodId);
+                    output = mapper.addNewReview(review, false);
+                    if (output == null) {
+                        System.out.println("Kein review gefunden");
+                    } else System.out.println("\n" + output);
+                } else if (auswahl.equals("2")) {
+                    System.out.println("Geben Sie den Produkt-ID ein");
+                    String prodId = scanner.nextLine();
+
+                    System.out.println("Geben Sie den Username ein");
+                    String username = scanner.nextLine();
+
+                    System.out.println("Geben Sie den Rating ein");
+                    int rating = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.println("Geben Sie die Zusammenfassung");
+                    String summary = scanner.nextLine();
+
+                    java.sql.Date date = null;
+                    date = (java.sql.Date.valueOf(LocalDate.now()));
+
+
+                    System.out.println("Geben Sie den Review ein");
+                    String reviewText = scanner.nextLine();
+
+
+                    ReviewEntity review = new ReviewEntity();
+                    review.setHelpfulRating(0);
+                    review.setReviewText(reviewText);
+                    review.setProdId(prodId);
+                    review.setRating(rating);
+                    review.setReviewdate(date);
+                    review.setUsername(username);
+                    review.setReviewSum(summary);
+                    mapper.addNewReview(review, true);
+                    System.out.println("Fertig");
+                }
+            } catch (AlreadyInDatabaseException | ProductNotInDatabaseException pe) {
+                System.out.println(pe.getMessage());
+                option8();
+            }
         }
-    }
 
-    private void option10() {
-        System.out.println("Option getOffers gewaehlt");
-        System.out.println("Gib den ProduktID ein");
-        String prodId = scanner.nextLine();
-        List<InventoryEntity> liste;
-        liste = mapper.getOffers(prodId);
-        for (InventoryEntity inventory : liste) {
-            System.out.println(inventory);
+        private void option9 () { //getTrolls
+            System.out.println("Option getTrolls gewaehlt");
+            System.out.println("Gib den Rating ein: ");
+            Double rating = scanner.nextDouble();
+            scanner.nextLine();
+            List<User> userList = mapper.getTrolls(rating);
+            for (User user : userList) {
+                System.out.println(user.getUsername());
+            }
         }
-        System.out.println("Fertig");
 
-    }
+        private void option10 () {
+            System.out.println("Option getOffers gewaehlt");
+            System.out.println("Gib den ProduktID ein");
+            String prodId = scanner.nextLine();
+            List<InventoryEntity> liste;
+            liste = mapper.getOffers(prodId);
+            for (InventoryEntity inventory : liste) {
+                System.out.println(inventory);
+            }
+            System.out.println("Fertig");
 
-    public void printTree(int x, CategoryNode node) {
-        System.out.println(StringUtils.repeat("\t", x) + "|--" + node.getValue());
-
-        for (CategoryNode child : node.getChildCategories()) {
-            printTree(x + 1, child);
         }
+
+        public void printTree ( int x, CategoryNode node){
+            System.out.println(StringUtils.repeat("\t", x) + "|--" + node.getValue());
+
+            for (CategoryNode child : node.getChildCategories()) {
+                printTree(x + 1, child);
+            }
+        }
+
+
     }
-
-
-}
