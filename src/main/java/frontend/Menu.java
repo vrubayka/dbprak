@@ -1,5 +1,6 @@
 package frontend;
 
+import entities.InventoryEntity;
 import entities.ProductEntity;
 import entities.ReviewEntity;
 import logging.exceptions.AlreadyInDatabaseException;
@@ -231,7 +232,14 @@ public class Menu {
 
     private void option10() {
         System.out.println("Option getOffers gewaehlt");
-        System.out.println("Gib den ");
+        System.out.println("Gib den ProduktID ein");
+        String prodId = scanner.nextLine();
+        List<InventoryEntity> liste = new ArrayList<>();
+        liste = mapper.getOffers(prodId);
+        for (InventoryEntity inventory : liste){
+            System.out.println(inventory);
+        }
+        System.out.println("Fertig");
 
     }
 
