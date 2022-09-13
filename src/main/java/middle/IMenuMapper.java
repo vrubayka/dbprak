@@ -30,5 +30,5 @@ public interface IMenuMapper {
 
     List<User> getTrolls(Double rating);
 
-    List<InventoryEntity> getOffers();
+    List<InventoryEntity> getOffers(String prodId);
 }
