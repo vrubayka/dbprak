@@ -209,6 +209,7 @@ public class Menu {
             review.setReviewdate(date);
             review.setUsername(username);
             review.setReviewSum(summary);
+            mapper.addNewReview(review, true);
             System.out.println("Fertig");
         }
     }
