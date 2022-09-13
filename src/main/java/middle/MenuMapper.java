@@ -4,6 +4,7 @@ import daos.*;
 import entities.*;
 import logging.ReadLog;
 import logging.exceptions.AlreadyInDatabaseException;
+import logging.exceptions.ProductNotInDatabaseException;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
 import org.hibernate.SessionFactory;
@@ -92,7 +93,7 @@ public class MenuMapper implements IMenuMapper {
     public List<ProductEntity> getProducts(String pattern) {
         ProductDao productDao = new ProductDao(sessionFactory);
         List<ProductEntity> prodList = productDao.findByPattern(formatPattern(pattern));
-        for (ProductEntity product : prodList){
+        for (ProductEntity product : prodList) {
             retrieveInventory(product);
         }
         return prodList;
@@ -142,7 +143,7 @@ public class MenuMapper implements IMenuMapper {
                     productCategoryDao.findByCategoryId(currentCategory.getCategoryId());
 
             List<ProductEntity> productEntityList = new ArrayList<>();
-            for(ProductCategoryEntity productCategoryEntity: productCategoryEntities) {
+            for (ProductCategoryEntity productCategoryEntity : productCategoryEntities) {
                 productEntityList.add(productCategoryEntity.getProductByProdId());
             }
 
@@ -174,22 +175,23 @@ public class MenuMapper implements IMenuMapper {
         InventoryDao inventoryDao = new InventoryDao(sessionFactory);
         product.setInventoriesByProdId(inventoryDao.findInventoryForProduct(id));
 
-        List <ProductEntity> similars = new ArrayList<>();
-        for (SimilarProductsEntity simProdReference : product.getSimilarProductsByProdId()){
+        List<ProductEntity> similars = new ArrayList<>();
+        for (SimilarProductsEntity simProdReference : product.getSimilarProductsByProdId()) {
             ProductEntity simProd = productDao.findOne(simProdReference.getSimilarProdId());
             simProd.setInventoriesByProdId(inventoryDao.findInventoryForProduct(simProd.getProdId()));
             similars.add(simProd);
         }
         BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
-        for (InventoryEntity inventory : product.getInventoriesByProdId()){
-            if ((inventory.getPrice() != null) && minPrice.compareTo(inventory.getPrice())>0){
+        for (InventoryEntity inventory : product.getInventoriesByProdId()) {
+            if ((inventory.getPrice() != null) && minPrice.compareTo(inventory.getPrice()) > 0) {
                 minPrice = inventory.getPrice();
             }
         }
-        for (ProductEntity simProduct : similars){
+        for (ProductEntity simProduct : similars) {
             BigDecimal finalMinPrice = minPrice;
             simProduct.getInventoriesByProdId().removeIf(inventory -> inventory.getPrice() == null ||
-                    inventory.getPrice().compareTo(finalMinPrice) >= 0);
+                                                                      inventory.getPrice().compareTo(finalMinPrice) >=
+                                                                      0);
         }
         similars.removeIf(simProd -> simProd.getInventoriesByProdId().isEmpty());
 
@@ -197,14 +199,16 @@ public class MenuMapper implements IMenuMapper {
     }
 
     @Override
-    public ReviewEntity addNewReview(ReviewEntity review, boolean newReview) throws AlreadyInDatabaseException {
+    public ReviewEntity addNewReview(ReviewEntity review, boolean newReview)
+    throws AlreadyInDatabaseException, ProductNotInDatabaseException {
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
+        checkProductExistence(review.getProdId());
         ReviewEntityPK reviewEntityPK = new ReviewEntityPK();
         reviewEntityPK.setProdId(review.getProdId());
         reviewEntityPK.setUsername(review.getUsername());
 
-        if(newReview) {
-            if(reviewDao.findOne(reviewEntityPK) == null) {
+        if (newReview) {
+            if (reviewDao.findOne(reviewEntityPK) == null) {
                 reviewDao.create(review);
             } else {
                 throw new AlreadyInDatabaseException("Es gibt bereits ein Review von User " + review.getUsername() +
@@ -217,12 +221,19 @@ public class MenuMapper implements IMenuMapper {
         }
     }
 
+    private void checkProductExistence(String prodId) throws ProductNotInDatabaseException {
+        ProductDao productDao = new ProductDao(sessionFactory);
+        if (productDao.findOne(prodId) == null) {
+            throw new ProductNotInDatabaseException("Das Produkt " + prodId + " existiert nicht in der Datenbank.");
+        }
+    }
+
     @Override
     public List<User> getTrolls(Double rating) {
         ReviewDao reviewDao = new ReviewDao(sessionFactory);
         List<Object[]> usernameAvgListe = reviewDao.findAggregateRatingOfUser(rating);
         List<User> userList = new ArrayList<>();
-        for (Object[] object : usernameAvgListe){
+        for (Object[] object : usernameAvgListe) {
             User user = new User((String) object[0]);
             userList.add(user);
         }
@@ -276,7 +287,7 @@ public class MenuMapper implements IMenuMapper {
         return names;
     }
 
-    public void retrieveInventory(ProductEntity productEntity){
+    public void retrieveInventory(ProductEntity productEntity) {
         String id = productEntity.getProdId();
         InventoryDao inventoryDao = new InventoryDao(sessionFactory);
         productEntity.setInventoriesByProdId(inventoryDao.findInventoryForProduct(id));
