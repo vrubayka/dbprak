@@ -10,8 +10,7 @@ import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.print.attribute.standard.DateTimeAtProcessing;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -26,6 +25,7 @@ public class Menu {
             "9 - getTrolls", "10 - getOffers"};
 
     public void printMenu() {
+        try {
         System.out.println("DB neu laden?");
         System.out.println("1 - Ja");
         System.out.println("2 - Nein");
@@ -41,7 +41,7 @@ public class Menu {
         System.out.println("\nEingabe:");
 
         int option;
-        //try {
+
         option = scanner.nextInt();
         scanner.nextLine();
         switch (option) {
@@ -77,10 +77,10 @@ public class Menu {
                 break;
         }
 
-       /* } catch (Exception ex) {
+       } catch (InputMismatchException ex) {
             System.out.println("Bitte geben Sie ein Zahl zwischen 1 und " + options.length + "!");
-            scanner.nextLine();
-        }*/
+            printMenu();
+        }
     }
 
     private void option1() {
@@ -234,9 +234,9 @@ public class Menu {
         System.out.println("Option getOffers gewaehlt");
         System.out.println("Gib den ProduktID ein");
         String prodId = scanner.nextLine();
-        List<InventoryEntity> liste = new ArrayList<>();
+        List<InventoryEntity> liste;
         liste = mapper.getOffers(prodId);
-        for (InventoryEntity inventory : liste){
+        for (InventoryEntity inventory : liste) {
             System.out.println(inventory);
         }
         System.out.println("Fertig");
