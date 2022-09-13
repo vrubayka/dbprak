@@ -3,6 +3,7 @@ package frontend;
 import entities.ProductEntity;
 import entities.ReviewEntity;
 import logging.exceptions.AlreadyInDatabaseException;
+import logging.exceptions.ProductNotInDatabaseException;
 import middle.MenuMapper;
 import middle.wrapperClass.CategoryNode;
 import middle.wrapperClass.User;
@@ -211,8 +212,8 @@ public class Menu {
                 mapper.addNewReview(review, true);
                 System.out.println("Fertig");
             }
-        } catch (AlreadyInDatabaseException e |  {
-            System.out.println(e.getMessage());
+        } catch (AlreadyInDatabaseException | ProductNotInDatabaseException pe) {
+            System.out.println(pe.getMessage());
             option8();
         }
     }
