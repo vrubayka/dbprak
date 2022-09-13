@@ -207,8 +207,8 @@ public class MenuMapper implements IMenuMapper {
             if(reviewDao.findOne(reviewEntityPK) == null) {
                 reviewDao.create(review);
             } else {
-                throw new AlreadyInDatabaseException("Es gibt bereits ein Review von diesem User zu diesem Produkt in" +
-                                                     " der Datenbank.");
+                throw new AlreadyInDatabaseException("Es gibt bereits ein Review von User " + review.getUsername() +
+                                                     " zu Produkt " + review.getProdId() + " in der Datenbank.");
             }
             return review;
 
@@ -230,8 +230,9 @@ public class MenuMapper implements IMenuMapper {
     }
 
     @Override
-    public List<InventoryEntity> getOffers() {
-        return null;
+    public List<InventoryEntity> getOffers(String prodId) {
+        InventoryDao inventoryDao = new InventoryDao(sessionFactory);
+        return inventoryDao.findInventoryForProduct(prodId);
     }
 
     private static List<Class<?>> getEntityClassesFromPackage(String packageName) throws ClassNotFoundException,
