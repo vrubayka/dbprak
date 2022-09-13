@@ -70,7 +70,8 @@ public class MenuMapper implements IMenuMapper {
     }
 
     @Override
-    public ProductEntity getProduct(String id) {
+    public ProductEntity getProduct(String id) throws ProductNotInDatabaseException {
+        checkProductExistence(id);
         ProductDao productDao = new ProductDao(sessionFactory);
         ProductEntity productEntity = productDao.findOne(id);
         retrieveInventory(productEntity);
@@ -165,7 +166,9 @@ public class MenuMapper implements IMenuMapper {
     }
 
     @Override
-    public List<ProductEntity> getSimilarCheaperProduct(String id) {
+    public List<ProductEntity> getSimilarCheaperProduct(String id) throws ProductNotInDatabaseException {
+        checkProductExistence(id);
+
         ProductDao productDao = new ProductDao(sessionFactory);
         ProductEntity product = productDao.findOne(id);
 

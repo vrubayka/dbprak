@@ -20,9 +20,11 @@ public class Menu {
 
     private final MenuMapper mapper = new MenuMapper();
 
-    private final String[] options = {"1 - finish", "2 - getProduct", "3 - getProducts(String pattern)", "4 - getCategoryTree",
-            "5 - getProductsByCategoryPath", "6 - getTopProducts", "7 - getSimilarCheaperProduct", "8 - addNewReview",
-            "9 - getTrolls", "10 - getOffers"};
+    private final String[] options = {"1 - finish", "2 - getProduct", "3 - getProducts(String pattern)",
+                                      "4 - getCategoryTree",
+                                      "5 - getProductsByCategoryPath", "6 - getTopProducts",
+                                      "7 - getSimilarCheaperProduct", "8 - addNewReview",
+                                      "9 - getTrolls", "10 - getOffers"};
 
     public void printMenu() {
         System.out.println("DB neu laden?");
@@ -88,18 +90,23 @@ public class Menu {
         System.out.println("Tschuess!");
     }
 
-    private void option2() {
+    private void option2() { //getProduct (String id)
         System.out.println("Option getProduct ausgewaehlt");
         System.out.println("Gib den Product-ID ein");
         String prodID = scanner.nextLine();
-        ProductEntity product = mapper.getProduct(prodID);
-        System.out.println(product);
-        if (product.getCdByProdId() != null) {
-            System.out.print(product.getCdByProdId().toString());
-        } else if (product.getBookByProdId() != null) {
-            System.out.print(product.getBookByProdId().toString());
-        } else if (product.getDvdByProdId() != null) {
-            System.out.print(product.getDvdByProdId().toString());
+        try {
+            ProductEntity product = mapper.getProduct(prodID);
+            System.out.println(product);
+            if (product.getCdByProdId() != null) {
+                System.out.print(product.getCdByProdId().toString());
+            } else if (product.getBookByProdId() != null) {
+                System.out.print(product.getBookByProdId().toString());
+            } else if (product.getDvdByProdId() != null) {
+                System.out.print(product.getDvdByProdId().toString());
+            }
+        } catch (ProductNotInDatabaseException e) {
+            System.out.println(e.getMessage());
+            option2();
         }
     }
 
@@ -152,12 +159,17 @@ public class Menu {
         System.out.println("Option getSimilarCheaperProduct ausgewaehlt");
         System.out.println("Gib ProduktID ein");
         String prodID = scanner.nextLine();
-        List<ProductEntity> liste = mapper.getSimilarCheaperProduct(prodID);
-        if (liste.isEmpty()) {
-            System.out.println("Es gibt keine billigeren ähnlichen Produkte");
-        }
-        for (ProductEntity produkt : liste) {
-            System.out.println(produkt);
+        try {
+            List<ProductEntity> liste = mapper.getSimilarCheaperProduct(prodID);
+            if (liste.isEmpty()) {
+                System.out.println("Es gibt keine billigeren ähnlichen Produkte");
+            }
+            for (ProductEntity produkt : liste) {
+                System.out.println(produkt);
+            }
+        } catch (ProductNotInDatabaseException e) {
+            System.out.println(e.getMessage());
+            option7();
         }
     }
 
