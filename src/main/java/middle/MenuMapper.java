@@ -20,9 +20,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.DoubleBinaryOperator;
 
 public class MenuMapper implements IMenuMapper {
@@ -139,16 +137,22 @@ public class MenuMapper implements IMenuMapper {
         if (currentCategory == null) {
             return null;
         } else {
-            ProductCategoryDao productCategoryDao = new ProductCategoryDao(sessionFactory);
-            List<ProductCategoryEntity> productCategoryEntities =
-                    productCategoryDao.findByCategoryId(currentCategory.getCategoryId());
+            List<CategoryEntity> categories = new ArrayList<>();
+            getChildCategories(currentCategory, categories);
+            categories.add(currentCategory);
 
-            List<ProductEntity> productEntityList = new ArrayList<>();
-            for (ProductCategoryEntity productCategoryEntity : productCategoryEntities) {
-                productEntityList.add(productCategoryEntity.getProductByProdId());
+            ProductCategoryDao productCategoryDao = new ProductCategoryDao(sessionFactory);
+            List<ProductCategoryEntity> productCategoryEntities = new ArrayList<>();
+            for(CategoryEntity category : categories) {
+                productCategoryEntities.addAll(productCategoryDao.findByCategoryId(category.getCategoryId()));
             }
 
-            return productEntityList;
+            SortedSet<ProductEntity> prodSet = new TreeSet<>();
+            for (ProductCategoryEntity productCategoryEntity : productCategoryEntities) {
+                prodSet.add(productCategoryEntity.getProductByProdId());
+            }
+
+            return new ArrayList<>(prodSet);
         }
 
         // ToDo: get products when path not complete
@@ -157,6 +161,15 @@ public class MenuMapper implements IMenuMapper {
     private ArrayList<String> createListFromPath(String path) {
         String[] pathArray = path.split("/");
         return new ArrayList<>(Arrays.asList(pathArray));
+    }
+
+    private void getChildCategories(CategoryEntity currentCategory, List<CategoryEntity> categories) {
+        CategoryDao categoryDao = new CategoryDao(sessionFactory);
+        List<CategoryEntity> childCategories = categoryDao.findBySuperCategory(currentCategory.getCategoryId());
+        for(CategoryEntity childCategory : childCategories) {
+            getChildCategories(childCategory,categories);
+        }
+        categories.addAll(childCategories);
     }
 
     @Override

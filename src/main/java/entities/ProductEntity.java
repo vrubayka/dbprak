@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "product", schema = "public", catalog = "dbprak")
-public class ProductEntity {
+public class ProductEntity implements Comparable {
 
     @Id
     @Column(name = "prod_id", nullable = false)
@@ -26,22 +26,22 @@ public class ProductEntity {
     @Column(name = "image")
     private String image;
     @OneToOne(mappedBy = "productByBookId",
-            cascade = CascadeType.ALL)
+              cascade = CascadeType.ALL)
     private BookEntity bookByProdId;
     @OneToOne(mappedBy = "productByCdId",
-            cascade = CascadeType.ALL)
+              cascade = CascadeType.ALL)
     private CdEntity cdByProdId;
     @OneToOne(mappedBy = "productByDvdId",
-            cascade = CascadeType.ALL)
+              cascade = CascadeType.ALL)
     private DvdEntity dvdByProdId;
     @OneToMany(mappedBy = "productByProdId",
-            cascade = CascadeType.ALL)
+               cascade = CascadeType.ALL)
     private Collection<InventoryEntity> inventoriesByProdId;
     @OneToMany(mappedBy = "productByProdId",
-            cascade = CascadeType.ALL)
+               cascade = CascadeType.ALL)
     private Collection<ProductCategoryEntity> productCategoriesByProdId;
     @OneToMany(mappedBy = "productByProdId",
-            cascade = CascadeType.ALL)
+               cascade = CascadeType.ALL)
     private Collection<ReviewEntity> reviewsByProdId;
     @OneToMany(mappedBy = "productByProdId")
     private Collection<SimilarProductsEntity> similarProductsByProdId;
@@ -52,8 +52,8 @@ public class ProductEntity {
     }
 
     public ProductEntity(String prodName, double rating, int salesRank) {
-        this.prodName = prodName;
-        this.rating = rating;
+        this.prodName  = prodName;
+        this.rating    = rating;
         this.salesRank = salesRank;
     }
 
@@ -103,8 +103,7 @@ public class ProductEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductEntity that = (ProductEntity) o;
-        return prodId.equals(that.prodId) && Double.compare(that.rating, rating) == 0 && salesRank == that.salesRank &&
-                Objects.equals(prodName, that.prodName) && image.equals(that.image);
+        return prodId.equals(that.prodId);
     }
 
     @Override
@@ -180,20 +179,25 @@ public class ProductEntity {
     public String toString() {
         String output = "\nProdId: " + prodId + "\nProdName: " + prodName + "\nRating: " + rating;
         for (InventoryEntity inventoryEntity : getInventoriesByProdId()) {
-            if (inventoryEntity.getPrice() == null){
-            output = output + "\nPrice in " + inventoryEntity.getStoreByStoreId().getStoreName() +
-                    ": nicht im Angebot";
-            }
-            else output = output + "\nPrice in " + inventoryEntity.getStoreByStoreId().getStoreName() +
-                    ": " + inventoryEntity.getPrice();
+            if (inventoryEntity.getPrice() == null) {
+                output = output + "\nPrice in " + inventoryEntity.getStoreByStoreId().getStoreName() +
+                         ": nicht im Angebot";
+            } else output = output + "\nPrice in " + inventoryEntity.getStoreByStoreId().getStoreName() +
+                            ": " + inventoryEntity.getPrice();
         }
         return output;
     }
 
-    public String value(){
-        if (prodId == null){
+    public String value() {
+        if (prodId == null) {
             return "";
         }
         return prodId;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        ProductEntity that = (ProductEntity) o;
+        return this.prodId.compareTo(that.prodId);
     }
 }

@@ -135,7 +135,6 @@ public class Menu {
         System.out.println("Beispiel:");
         System.out.println("Features/Alle SACDs");
         System.out.println("Eingabe:");
-        scanner.nextLine();
         String pfad = scanner.nextLine();
 
         List<ProductEntity> liste = mapper.getProductsByCategoryPath(pfad);
