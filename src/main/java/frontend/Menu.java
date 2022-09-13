@@ -35,16 +35,20 @@ public class Menu {
             Integer boolNum = scanner.nextInt();
             scanner.nextLine();
             if (boolNum == 1) {
+                scanner.nextLine();
                 mapper.init(true);
                 printOptions();
             } else if (boolNum == 2) {
+                scanner.nextLine();
                 mapper.init(false);
                 printOptions();
             } else throw new InputMismatchException();
 
         } catch (InputMismatchException ex) {
+            scanner.nextLine();
             System.out.println("Bitte geben Sie eine Zahl zwischen 1 und 2 ein!\n");
             printMenu();
+            scanner.nextLine();
         }
     }
 
@@ -96,6 +100,7 @@ public class Menu {
             }
 
         } catch (InputMismatchException ex) {
+            scanner.nextLine();
             System.out.println("\nBitte geben Sie eine Zahl zwischen 1 und " + options.length + "!\n");
             printOptions();
         }
@@ -265,6 +270,9 @@ public class Menu {
         liste = mapper.getOffers(prodId);
         for (InventoryEntity inventory : liste) {
             System.out.println(inventory);
+        }
+        if (liste.isEmpty()){
+            System.out.println("Keine Angebote gefunden");
         }
         System.out.println("Fertig");
 
