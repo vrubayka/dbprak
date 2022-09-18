@@ -33,7 +33,6 @@ public class Menu {
             System.out.println("2 - Nein");
             System.out.println("\nEingabe:");
             Integer boolNum = scanner.nextInt();
-            scanner.nextLine();
             if (boolNum == 1) {
                 mapper.init(true);
                 printOptions();
@@ -44,60 +43,66 @@ public class Menu {
 
         } catch (InputMismatchException ex) {
             System.out.println("Bitte geben Sie eine Zahl zwischen 1 und 2 ein!\n");
+            scanner.nextLine();
             printMenu();
         }
     }
 
     public void printOptions() {
-        try {
-            System.out.println("Waehle eine Option:");
-            for (String option : options) {
-                System.out.println(option);
+        boolean quit = false;
+        while (!quit) {
+            try {
+                System.out.println("Waehle eine Option:");
+                for (String option : options) {
+                    System.out.println(option);
+                }
+                System.out.println("\nEingabe:");
+
+                int option;
+
+                option = scanner.nextInt();
+                scanner.nextLine();
+                switch (option) {
+                    case 1:
+                        option1();
+                        quit = true;
+                        break;
+                    case 2:
+                        option2();
+                        break;
+                    case 3:
+                        option3();
+                        break;
+                    case 4:
+                        option4();
+                        break;
+                    case 5:
+                        option5();
+                        break;
+                    case 6:
+                        option6();
+                        break;
+                    case 7:
+                        option7();
+                        break;
+                    case 8:
+                        option8();
+                        break;
+                    case 9:
+                        option9();
+                        break;
+                    case 10:
+                        option10();
+                        break;
+                    default:
+                        throw new InputMismatchException();
+                }
+
+            } catch (InputMismatchException ex) {
+                System.out.println("\nBitte geben Sie eine Zahl zwischen 1 und " + options.length + "!\n");
+                scanner.nextLine();
+                printOptions();
             }
-            System.out.println("\nEingabe:");
-
-            int option;
-
-            option = scanner.nextInt();
-            scanner.nextLine();
-            switch (option) {
-                case 1:
-                    option1();
-                    break;
-                case 2:
-                    option2();
-                    break;
-                case 3:
-                    option3();
-                    break;
-                case 4:
-                    option4();
-                    break;
-                case 5:
-                    option5();
-                    break;
-                case 6:
-                    option6();
-                    break;
-                case 7:
-                    option7();
-                    break;
-                case 8:
-                    option8();
-                    break;
-                case 9:
-                    option9();
-                    break;
-                case 10:
-                    option10();
-                    break;
-                default:
-                    throw new InputMismatchException();
-            }
-
-        } catch (InputMismatchException ex) {
-            System.out.println("\nBitte geben Sie eine Zahl zwischen 1 und " + options.length + "!\n");
-            printOptions();
         }
     }
 
@@ -115,11 +120,11 @@ public class Menu {
             ProductEntity product = mapper.getProduct(prodID);
             System.out.println(product);
             if (product.getCdByProdId() != null) {
-                System.out.print(product.getCdByProdId().toString());
+                System.out.print(product.getCdByProdId().toString() + "\n");
             } else if (product.getBookByProdId() != null) {
-                System.out.print(product.getBookByProdId().toString());
+                System.out.print(product.getBookByProdId().toString() + "\n");
             } else if (product.getDvdByProdId() != null) {
-                System.out.print(product.getDvdByProdId().toString());
+                System.out.print(product.getDvdByProdId().toString() + "\n");
             }
         } catch (ProductNotInDatabaseException e) {
             System.out.println(e.getMessage());
@@ -131,8 +136,14 @@ public class Menu {
         System.out.println("Option getProducts (String pattern)");
         System.out.println("Gib das Pattern ein");
         String pattern = scanner.nextLine();
-        for (ProductEntity product : mapper.getProducts(pattern)) {
-            System.out.println(product);
+        List<ProductEntity> products = mapper.getProducts(pattern);
+        if (products.isEmpty()) {
+            System.out.println("Es gibt keine Produkte mit diesem Pattern.\n");
+        } else {
+            for (ProductEntity product : mapper.getProducts(pattern)) {
+                System.out.println(product);
+            }
+            System.out.println("");
         }
 
     }
@@ -141,7 +152,7 @@ public class Menu {
         System.out.println("Option getCategoryTree augewaehlt");
         CategoryNode root = mapper.getCategoryTree();
         printTree(0, root);
-        System.out.println("\n\n\nFertig");
+        System.out.println("\nFertig\n");
 
     }
 
@@ -157,6 +168,7 @@ public class Menu {
         for (ProductEntity product : liste) {
             System.out.println(product.value());
         }
+        System.out.println("");
     }
 
     private void option6() { //getTopProducts
@@ -169,6 +181,7 @@ public class Menu {
             String rating = String.valueOf((double) product[1]);
             System.out.println(prodID + " " + rating);
         }
+        System.out.println("");
     }
 
     private void option7() { //getSimilarCheaperProduct
@@ -183,6 +196,7 @@ public class Menu {
             for (ProductEntity produkt : liste) {
                 System.out.println(produkt);
             }
+            System.out.println("");
         } catch (ProductNotInDatabaseException e) {
             System.out.println(e.getMessage());
             option7();
@@ -214,9 +228,14 @@ public class Menu {
                 System.out.println("Geben Sie den Username ein");
                 String username = scanner.nextLine();
 
-                System.out.println("Geben Sie das Rating ein");
+                System.out.println("Geben Sie das Rating ein (1, 2,... 5)");
                 int rating = scanner.nextInt();
                 scanner.nextLine();
+                while (rating <= 0 || rating > 5) {
+                    System.out.println("Rating muss zwischen 1 und 5 sein!\nBitte Rating eingeben");
+                    rating = scanner.nextInt();
+                    scanner.nextLine();
+                }
 
                 System.out.println("Geben Sie die Zusammenfassung ein");
                 String summary = scanner.nextLine();
@@ -238,7 +257,7 @@ public class Menu {
                 review.setUsername(username);
                 review.setReviewSum(summary);
                 mapper.addNewReview(review, true);
-                System.out.println("Fertig");
+                System.out.println("Fertig\n");
             }
         } catch (AlreadyInDatabaseException | ProductNotInDatabaseException pe) {
             System.out.println(pe.getMessage());
@@ -255,6 +274,7 @@ public class Menu {
         for (User user : userList) {
             System.out.println(user.getUsername());
         }
+        System.out.println("");
     }
 
     private void option10() {
@@ -266,7 +286,7 @@ public class Menu {
         for (InventoryEntity inventory : liste) {
             System.out.println(inventory);
         }
-        System.out.println("Fertig");
+        System.out.println("\nFertig\n");
 
     }
 

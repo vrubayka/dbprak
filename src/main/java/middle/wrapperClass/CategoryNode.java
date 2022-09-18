@@ -50,7 +50,7 @@ public class CategoryNode {
     }
 
     public String getValue(){
-        return StringUtils.substring(name, 0, 10);
+        return StringUtils.substring(name, 0, 50);
     }
 
 }
